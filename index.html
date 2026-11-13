@@ -35,18 +35,12 @@
             50% { top: 85%; opacity: 1; }
             100% { top: 10%; opacity: 0.2; }
         }
-        .fingerprint-btn { animation: pulse-ring 2.5s infinite cubic-bezier(0.66, 0, 0, 1); transition: all 0.2s ease; }
+        .fingerprint-btn { animation: pulse-ring 2.5s infinite cubic-bezier(0.66, 0, 0, 1); transition: all 0.2s ease; cursor: pointer; }
         .fingerprint-btn:active { transform: scale(0.94); }
         .scanner-laser {
             position: absolute; left: 15%; right: 15%; height: 3px;
             background: linear-gradient(90deg, transparent, #F97316, transparent);
             box-shadow: 0 0 8px #F97316; animation: scan-line 2s infinite ease-in-out;
-        }
-        @media print {
-            body * { visibility: hidden; }
-            #printable-rh-report, #printable-rh-report * { visibility: visible; }
-            #printable-rh-report { position: absolute; left: 0; top: 0; width: 100%; background: white !important; padding: 20px !important; }
-            .no-print { display: none !important; }
         }
     </style>
 </head>
@@ -64,14 +58,14 @@
                         <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Sistema Global de Controlo e Assiduidade</p>
+                    <p class="text-xs text-slate-500">Sistema Biométrico Avançado com Auditoria</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-4">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span id="cloud-sync-status">Sistema Operacional Ativo</span>
+                    <span>Segurança Ativa</span>
                 </div>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
@@ -89,11 +83,11 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div class="text-center md:text-left z-10">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-edm-100 text-edm-700 mb-2">
-                        <i class="fa-regular fa-clock"></i> Controlo Rigoroso com Biometria e PIN
+                        <i class="fa-regular fa-clock"></i> Controlo Rigoroso com Biometria Exata e PIN
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo de Presença</h2>
                     <p class="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-                        Insira a sua senha pessoal ou utilize o leitor biométrico. O relógio e o sistema funcionam imediatamente sem atrasos.
+                        Toque no sensor biométrico com o dedo configurado ou insira a sua senha pessoal. Se o dedo não estiver registado, o acesso será negado.
                     </p>
                 </div>
 
@@ -104,56 +98,61 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                <!-- Biometria -->
+                <!-- Biometria Exata -->
                 <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col items-center justify-between text-center">
                     <div class="w-full">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Biometria</span>
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-mobile-screen"></i> Touch / USB</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Biometria Registada</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-fingerprint"></i> Leitor Restrito</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mt-2">Leitor de Impressão Digital</h3>
-                        <p class="text-sm text-slate-500 mt-1">Toque no sensor para validar presença</p>
+                        <h3 class="text-xl font-bold text-slate-800 mt-2">Sensor de Impressão Digital</h3>
+                        <p class="text-sm text-slate-500 mt-1">Selecione o operário e toque para simular a biometria exata</p>
                     </div>
 
-                    <div class="my-8 relative flex flex-col items-center">
-                        <button onclick="handleTerminalBiometricClick()" class="fingerprint-btn relative w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-b from-edm-50 to-edm-100 border-4 border-edm-500 flex items-center justify-center text-edm-600 cursor-pointer group">
+                    <div class="w-full my-4">
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Escolher Trabalhador para simular o toque do dedo:</label>
+                        <select id="biometric-target-worker" class="w-full px-4 py-2.5 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
+                    </div>
+
+                    <div class="my-4 relative flex flex-col items-center">
+                        <button onclick="handleStrictBiometricScan()" class="fingerprint-btn relative w-32 h-32 rounded-full bg-gradient-to-b from-edm-50 to-edm-100 border-4 border-edm-500 flex items-center justify-center text-edm-600 shadow-lg group">
                             <div class="scanner-laser rounded-full"></div>
-                            <i class="fa-solid fa-fingerprint text-6xl sm:text-7xl group-hover:scale-105 transition-transform"></i>
+                            <i class="fa-solid fa-fingerprint text-5xl group-hover:scale-105 transition-transform"></i>
                         </button>
-                        <span class="mt-4 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Toque para autenticar</span>
+                        <span class="mt-3 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Toque no Sensor</span>
                     </div>
                 </div>
 
-                <!-- Senha Pessoal -->
+                <!-- Senha Pessoal (PIN) -->
                 <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">Opção 2 • Código Pessoal</span>
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-keyboard"></i> Teclado</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-keyboard"></i> Teclado Numérico</span>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mt-2">Registo por Senha do Trabalhador</h3>
-                        <p class="text-sm text-slate-500 mt-1">Digite a sua senha numérica pessoal fornecida pelo chefe</p>
+                        <p class="text-sm text-slate-500 mt-1">Digite o PIN restrito fornecido pelo chefe</p>
 
-                        <form onsubmit="handlePasswordClockIn(event)" class="mt-6 space-y-4">
+                        <form onsubmit="handlePasswordClockIn(event)" class="mt-4 space-y-4">
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><i class="fa-solid fa-key"></i></span>
                                 <input type="password" id="worker-pin-input" required autocomplete="off" placeholder="Ex: 1001" 
-                                    class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold tracking-widest text-slate-800 focus:bg-white focus:ring-2 focus:ring-edm-500 outline-none">
+                                    class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold tracking-widest text-slate-800 focus:bg-white focus:ring-2 focus:ring-edm-500 outline-none">
                             </div>
 
                             <div class="grid grid-cols-3 gap-2">
-                                <button type="button" onclick="appendPin('1')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">1</button>
-                                <button type="button" onclick="appendPin('2')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">2</button>
-                                <button type="button" onclick="appendPin('3')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">3</button>
-                                <button type="button" onclick="appendPin('4')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">4</button>
-                                <button type="button" onclick="appendPin('5')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">5</button>
-                                <button type="button" onclick="appendPin('6')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">6</button>
-                                <button type="button" onclick="appendPin('7')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">7</button>
-                                <button type="button" onclick="appendPin('8')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">8</button>
-                                <button type="button" onclick="appendPin('9')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">9</button>
-                                <button type="button" onclick="clearPin()" class="py-2.5 rounded-xl bg-rose-50 border border-rose-200 font-semibold text-rose-600 text-xs">LIMPAR</button>
-                                <button type="button" onclick="appendPin('0')" class="py-2.5 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">0</button>
-                                <button type="submit" class="py-2.5 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-1">
+                                <button type="button" onclick="appendPin('1')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">1</button>
+                                <button type="button" onclick="appendPin('2')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">2</button>
+                                <button type="button" onclick="appendPin('3')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">3</button>
+                                <button type="button" onclick="appendPin('4')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">4</button>
+                                <button type="button" onclick="appendPin('5')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">5</button>
+                                <button type="button" onclick="appendPin('6')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">6</button>
+                                <button type="button" onclick="appendPin('7')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">7</button>
+                                <button type="button" onclick="appendPin('8')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">8</button>
+                                <button type="button" onclick="appendPin('9')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">9</button>
+                                <button type="button" onclick="clearPin()" class="py-2 rounded-xl bg-rose-50 border border-rose-200 font-semibold text-rose-600 text-xs">LIMPAR</button>
+                                <button type="button" onclick="appendPin('0')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">0</button>
+                                <button type="submit" class="py-2 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-1">
                                     <span>ENTRAR</span> <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
@@ -170,14 +169,14 @@
             </div>
         </section>
 
-        <!-- VISTA 2: PAINEL DO CHEFE -->
+        <!-- VISTA 2: PAINEL DO CHEFE COM RELATÓRIOS COMPLETOS -->
         <section id="view-admin" class="hidden space-y-6">
             <div class="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Painel de Fiscalização Geral (Chefia)</h2>
-                        <p class="text-xs text-slate-300">Controlo global restrito • Cadastre ou elimine trabalhadores com segurança</p>
+                        <h2 class="text-lg sm:text-xl font-bold">Painel de Fiscalização Geral & Relatórios</h2>
+                        <p class="text-xs text-slate-300">Gestão rigorosa de PIN, Biometria Exata e Auditoria Total</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -186,13 +185,14 @@
                 </div>
             </div>
 
-            <!-- Abas -->
+            <!-- Abas do Administrador -->
             <div class="flex overflow-x-auto gap-2 pb-1">
                 <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm">1. Fiscalização Geral</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Cadastrar Trabalhadores</button>
-                <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">3. Calendário & Faltas</button>
-                <button onclick="setAdminTab('justifications')" id="tab-btn-justifications" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Justificar Faltas</button>
-                <button onclick="setAdminTab('export')" id="tab-btn-export" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">5. Exportar para RH</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Cadastrar Trabalhadores & Biometria</button>
+                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">3. Relatórios de Auditoria</button>
+                <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Calendário & Faltas</button>
+                <button onclick="setAdminTab('justifications')" id="tab-btn-justifications" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">5. Justificações</button>
+                <button onclick="setAdminTab('export')" id="tab-btn-export" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">6. Exportar RH</button>
             </div>
 
             <!-- ABA 1: DASHBOARD -->
@@ -210,18 +210,18 @@
                         <input type="date" id="filter-log-date" onchange="renderDashboard()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50">
                     </div>
                     <table class="w-full text-left border-collapse">
-                        <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Trabalhador</th><th class="p-3">Cargo</th><th class="p-3">Entrada</th><th class="p-3">Saída</th><th class="p-3">Estado</th></tr></thead>
+                        <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Trabalhador</th><th class="p-3">Cargo</th><th class="p-3">Método</th><th class="p-3">Entrada</th><th class="p-3">Saída</th><th class="p-3">Estado</th></tr></thead>
                         <tbody id="dashboard-logs-table" class="divide-y text-sm"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- ABA 2: CADASTRO -->
+            <!-- ABA 2: CADASTRO COM BIOMETRIA OBRIGATÓRIA -->
             <div id="admin-tab-workers" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 id="worker-form-title" class="font-bold text-lg text-slate-800">Cadastrar Novo Trabalhador</h3>
+                            <h3 id="worker-form-title" class="font-bold text-lg text-slate-800">Cadastrar Trabalhador & Biometria</h3>
                             <button type="button" id="btn-cancel-edit" onclick="resetWorkerForm()" class="hidden text-xs font-semibold text-slate-500">Cancelar</button>
                         </div>
                         <form onsubmit="saveWorker(event)" class="space-y-4">
@@ -245,6 +245,13 @@
                                 <label class="block text-xs font-semibold mb-1">Senha Pessoal (PIN) *</label>
                                 <input type="text" id="worker-pin" required placeholder="Ex: 2026" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
                             </div>
+                            <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" id="worker-has-fingerprint" checked class="w-4 h-4 text-edm-600 rounded">
+                                    <span class="text-xs font-bold text-amber-900">Configurar Biometria Digital Obrigatória</span>
+                                </label>
+                                <p class="text-[11px] text-amber-700 mt-1">Se ativo, o trabalhador poderá usar a impressão digital configurada.</p>
+                            </div>
                             <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md">
                                 <span id="worker-submit-text">Guardar Trabalhador</span>
                             </button>
@@ -258,7 +265,34 @@
                 </div>
             </div>
 
-            <!-- ABA 3: CALENDÁRIO -->
+            <!-- ABA 3: RELATÓRIOS DE AUDITORIA -->
+            <div id="admin-tab-reports" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b">
+                        <div>
+                            <h3 class="font-bold text-xl text-slate-900">Relatórios de Auditoria e Atividade por Trabalhador</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Visualize detalhadamente todos os eventos, horários e métodos utilizados.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <select id="report-worker-select" onchange="renderAuditReports()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
+                        </div>
+                    </div>
+
+                    <div id="audit-report-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-700 mb-3">Histórico Completo de Movimentos do Trabalhador</h4>
+                        <div class="overflow-hidden border rounded-2xl">
+                            <table class="w-full text-left border-collapse">
+                                <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Método (PIN / Digital)</th><th class="p-3">Entrada</th><th class="p-3">Saída</th><th class="p-3">Estado</th></tr></thead>
+                                <tbody id="audit-report-table" class="divide-y text-sm"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 4: CALENDÁRIO -->
             <div id="admin-tab-calendar" class="admin-tab-content hidden space-y-6">
                 <div class="bg-white rounded-3xl p-6 border shadow-sm">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 mb-4 border-b">
@@ -276,7 +310,7 @@
                 </div>
             </div>
 
-            <!-- ABA 4: JUSTIFICAÇÕES -->
+            <!-- ABA 5: JUSTIFICAÇÕES -->
             <div id="admin-tab-justifications" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
@@ -299,7 +333,7 @@
                 </div>
             </div>
 
-            <!-- ABA 5: EXPORTAR RH -->
+            <!-- ABA 6: EXPORTAR RH -->
             <div id="admin-tab-export" class="admin-tab-content hidden space-y-6">
                 <div class="bg-white rounded-3xl p-6 border shadow-sm text-center py-12 space-y-4">
                     <h3 class="text-xl font-bold">Central de Exportação para Recursos Humanos</h3>
@@ -312,7 +346,7 @@
         </section>
     </main>
 
-    <!-- MODAL DE BOAS-VINDAS COM VOZ -->
+    <!-- MODAL DE BOAS-VINDAS COM VOZ (MANTIDO) -->
     <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative">
             <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 mb-4">ENTRADA</div>
@@ -348,21 +382,20 @@
         <span id="toast-message">Mensagem</span>
     </div>
 
-    <!-- MOTOR DE PERSISTÊNCIA ROBUSTO E IMEDIATO -->
+    <!-- MOTOR LÓGICO COM BIOMETRIA EXATA E AUDITORIA -->
     <script>
-        const STORAGE_KEY_WORKERS = 'edm_workers_stable_v1';
-        const STORAGE_KEY_LOGS = 'edm_logs_stable_v1';
-        const STORAGE_KEY_JUST = 'edm_just_stable_v1';
+        const STORAGE_KEY_WORKERS = 'edm_workers_strict_v2';
+        const STORAGE_KEY_LOGS = 'edm_logs_strict_v2';
+        const STORAGE_KEY_JUST = 'edm_just_strict_v2';
 
         let isAdminAuthenticated = false;
         let currentPhotoBase64 = '';
         let currentProofBase64 = '';
 
         function initSystem() {
-            // Inicializar dados de fábrica caso esteja vazio
             if (!localStorage.getItem(STORAGE_KEY_WORKERS)) {
                 localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify([
-                    { id: 'w_1', name: 'Alberto Mugabe', role: 'Administrador Geral', pin: '2026', photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
+                    { id: 'w_1', name: 'Alberto Mugabe', role: 'Administrador Geral', pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
                 ]));
             }
             if (!localStorage.getItem(STORAGE_KEY_LOGS)) localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify([]));
@@ -370,13 +403,14 @@
 
             startLiveClock();
             renderTerminalRecentLogs();
+            populateBiometricWorkerSelect();
             document.getElementById('filter-log-date').value = getTodayDateString();
             document.getElementById('calendar-month-input').value = getTodayDateString().slice(0, 7);
             document.getElementById('just-date').value = getTodayDateString();
         }
 
         function getWorkers() { return JSON.parse(localStorage.getItem(STORAGE_KEY_WORKERS) || '[]'); }
-        function saveWorkers(list) { localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify(list)); }
+        function saveWorkers(list) { localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify(list)); populateBiometricWorkerSelect(); }
 
         function getLogs() { return JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS) || '[]'); }
         function saveLogs(list) { localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(list)); }
@@ -411,6 +445,14 @@
         function appendPin(d) { document.getElementById('worker-pin-input').value += d; }
         function clearPin() { document.getElementById('worker-pin-input').value = ''; }
 
+        function populateBiometricWorkerSelect() {
+            const workers = getWorkers();
+            const select = document.getElementById('biometric-target-worker');
+            if (!select) return;
+            select.innerHTML = workers.map(w => `<option value="${w.id}">${w.name} ${w.hasFingerprint ? '(Digital Ativa)' : '(Sem Digital)'}</option>`).join('') || '<option value="">Sem trabalhadores</option>';
+        }
+
+        // Validação Estrita de PIN
         function handlePasswordClockIn(e) {
             e.preventDefault();
             const pin = document.getElementById('worker-pin-input').value.trim();
@@ -418,24 +460,34 @@
             const worker = workers.find(w => w.pin === pin);
 
             if (!worker) {
-                showToast('Acesso Negado! Senha incorreta ou trabalhador não registado.', 'error');
+                showToast('Acesso Negado! Senha incorreta ou inexistente.', 'error');
                 speakText('Senha incorreta. Acesso negado.');
                 clearPin();
                 return;
             }
             clearPin();
-            processAttendanceRecord(worker, 'Senha Pessoal');
+            processAttendanceRecord(worker, 'Senha Pessoal (PIN)');
         }
 
-        function handleTerminalBiometricClick() {
+        // Validação Estrita de Biometria Exata (Verifica se o trabalhador selecionado tem o dedo configurado)
+        function handleStrictBiometricScan() {
+            const workerId = document.getElementById('biometric-target-worker').value;
             const workers = getWorkers();
-            if (workers.length === 0) {
-                showToast('Acesso Negado! Nenhum trabalhador configurado.', 'error');
-                speakText('Acesso negado. Nenhum trabalhador registado.');
+            const worker = workers.find(w => w.id === workerId);
+
+            if (!worker) {
+                showToast('Erro: Selecione um trabalhador válido no leitor.', 'error');
+                speakText('Erro de biometria. Trabalhador não selecionado.');
                 return;
             }
-            const worker = workers[Math.floor(Math.random() * workers.length)];
-            processAttendanceRecord(worker, 'Impressão Digital');
+
+            if (!worker.hasFingerprint) {
+                showToast(`Acesso Negado! ${worker.name} não tem biometria configurada pelo chefe.`, 'error');
+                speakText(`Acesso negado para ${worker.name}. Biometria não configurada.`);
+                return;
+            }
+
+            processAttendanceRecord(worker, 'Impressão Digital Exata');
         }
 
         function processAttendanceRecord(worker, method) {
@@ -479,7 +531,7 @@
             badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA REGISTADA' : action === 'SAIDA' ? '🔴 SAÍDA REGISTADA' : '🔒 TURNO CONCLUÍDO';
 
             document.getElementById('modal-welcome').classList.remove('hidden');
-            speakText(speech);
+            speakText(speech); // Síntese de voz perfeitamente ativa
         }
 
         function closeWelcomeModal() { document.getElementById('modal-welcome').classList.add('hidden'); }
@@ -506,13 +558,13 @@
             }
 
             container.innerHTML = logs.map(l => {
-                const w = workers.find(item => item.id === l.workerId) || { name: 'Trabalhador', photo: '' };
+                const w = workers.find(item => item.id === l.workerId) || { name: 'Trabalhador Removido', photo: 'https://ui-avatars.com/api/?name=X' };
                 return `
                     <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
                         <div class="min-w-0 flex-grow">
                             <p class="font-bold text-sm truncate">${w.name}</p>
-                            <p class="text-xs text-emerald-700 font-semibold">Entrada: ${l.checkIn} ${l.checkOut ? '| Saída: '+l.checkOut : ''}</p>
+                            <p class="text-xs text-emerald-700 font-semibold">${l.method} • ${l.checkIn} ${l.checkOut ? '| Saída: '+l.checkOut : ''}</p>
                         </div>
                     </div>
                 `;
@@ -548,6 +600,7 @@
             document.getElementById('view-admin').classList.add('hidden');
             document.getElementById('view-terminal').classList.remove('hidden');
             renderTerminalRecentLogs();
+            populateBiometricWorkerSelect();
         }
 
         function logoutAdmin() {
@@ -564,6 +617,7 @@
 
             if (tab === 'dashboard') renderDashboard();
             if (tab === 'workers') renderWorkersList();
+            if (tab === 'reports') { populateReportWorkerSelect(); renderAuditReports(); }
             if (tab === 'calendar') { populateWorkerSelects(); renderCalendarView(); }
             if (tab === 'justifications') { populateWorkerSelects(); renderJustificationsList(); }
         }
@@ -577,8 +631,8 @@
             
             document.getElementById('dashboard-logs-table').innerHTML = workers.map(w => {
                 const l = logs.find(item => item.workerId === w.id);
-                return `<tr><td class="p-3 font-bold">${w.name}</td><td class="p-3">${w.role}</td><td class="p-3">${l ? l.checkIn : '--'}</td><td class="p-3">${l && l.checkOut ? l.checkOut : '--'}</td><td class="p-3">${l ? 'Presente' : 'Ausente'}</td></tr>`;
-            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum trabalhador registado.</td></tr>';
+                return `<tr><td class="p-3 font-bold">${w.name}</td><td class="p-3">${w.role}</td><td class="p-3"><span class="px-2 py-1 bg-slate-100 rounded text-xs font-semibold">${l ? l.method : '--'}</span></td><td class="p-3">${l ? l.checkIn : '--'}</td><td class="p-3">${l && l.checkOut ? l.checkOut : '--'}</td><td class="p-3">${l ? 'Presente' : 'Ausente'}</td></tr>`;
+            }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum trabalhador registado.</td></tr>';
         }
 
         function handleWorkerPhotoUpload(e) {
@@ -598,6 +652,7 @@
             const name = document.getElementById('worker-name').value.trim();
             const role = document.getElementById('worker-role').value.trim();
             const pin = document.getElementById('worker-pin').value.trim();
+            const hasFingerprint = document.getElementById('worker-has-fingerprint').checked;
             const workers = getWorkers();
 
             if (workers.some(w => w.pin === pin && w.id !== id)) {
@@ -610,13 +665,16 @@
             if (id) {
                 const idx = workers.findIndex(w => w.id === id);
                 if (idx !== -1) {
-                    workers[idx].name = name; workers[idx].role = role; workers[idx].pin = pin;
+                    workers[idx].name = name; 
+                    workers[idx].role = role; 
+                    workers[idx].pin = pin;
+                    workers[idx].hasFingerprint = hasFingerprint;
                     if (currentPhotoBase64) workers[idx].photo = currentPhotoBase64;
                 }
-                showToast('Trabalhador atualizado com sucesso!', 'info');
+                showToast('Trabalhador e biometria atualizados!', 'info');
             } else {
-                workers.push({ id: 'w_'+Date.now(), name, role, pin, photo: currentPhotoBase64 || avatar });
-                showToast('Novo trabalhador guardado com sucesso!', 'info');
+                workers.push({ id: 'w_'+Date.now(), name, role, pin, hasFingerprint, photo: currentPhotoBase64 || avatar });
+                showToast('Trabalhador e biometria registados com sucesso!', 'info');
             }
 
             saveWorkers(workers);
@@ -631,9 +689,10 @@
             document.getElementById('worker-name').value = w.name;
             document.getElementById('worker-role').value = w.role;
             document.getElementById('worker-pin').value = w.pin;
+            document.getElementById('worker-has-fingerprint').checked = w.hasFingerprint;
             document.getElementById('worker-photo-preview').src = w.photo;
             currentPhotoBase64 = '';
-            document.getElementById('worker-form-title').textContent = 'Editar Trabalhador';
+            document.getElementById('worker-form-title').textContent = 'Editar Trabalhador & Biometria';
             document.getElementById('worker-submit-text').textContent = 'Salvar Alterações';
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
         }
@@ -643,19 +702,21 @@
             document.getElementById('worker-name').value = '';
             document.getElementById('worker-role').value = '';
             document.getElementById('worker-pin').value = '';
+            document.getElementById('worker-has-fingerprint').checked = true;
             currentPhotoBase64 = '';
             document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
-            document.getElementById('worker-form-title').textContent = 'Cadastrar Novo Trabalhador';
+            document.getElementById('worker-form-title').textContent = 'Cadastrar Trabalhador & Biometria';
             document.getElementById('worker-submit-text').textContent = 'Guardar Trabalhador';
             document.getElementById('btn-cancel-edit').classList.add('hidden');
         }
 
+        // Eliminação permanente (desaparece para sempre)
         function deleteWorker(id) {
-            if (!confirm('Deseja eliminar este trabalhador?')) return;
+            if (!confirm('Deseja eliminar permanentemente este trabalhador? Ele desaparecerá para sempre e perderá todos os acessos.')) return;
             const updated = getWorkers().filter(w => w.id !== id);
             saveWorkers(updated);
             renderWorkersList();
-            showToast('Trabalhador eliminado.', 'info');
+            showToast('Trabalhador eliminado para sempre.', 'info');
         }
 
         function renderWorkersList() {
@@ -665,7 +726,10 @@
                 <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
                     <div class="flex items-center gap-3">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
-                        <div><p class="font-bold text-sm">${w.name}</p><p class="text-xs text-slate-500">${w.role} • PIN: <strong>${w.pin}</strong></p></div>
+                        <div>
+                            <p class="font-bold text-sm">${w.name}</p>
+                            <p class="text-xs text-slate-500">${w.role} • PIN: <strong>${w.pin}</strong> • <span class="${w.hasFingerprint ? 'text-emerald-600 font-semibold' : 'text-rose-500'}">${w.hasFingerprint ? 'Digital Ativa' : 'Sem Digital'}</span></p>
+                        </div>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white text-edm-700 border text-xs font-bold rounded-lg">Editar</button>
@@ -675,11 +739,44 @@
             `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum trabalhador cadastrado.</p>';
         }
 
+        function populateReportWorkerSelect() {
+            const workers = getWorkers();
+            document.getElementById('report-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem trabalhadores</option>';
+            renderAuditReports();
+        }
+
+        function renderAuditReports() {
+            const workerId = document.getElementById('report-worker-select').value;
+            if (!workerId) return;
+            const logs = getLogs().filter(l => l.workerId === workerId);
+            const totalDays = logs.length;
+            const biometricCount = logs.filter(l => l.method.includes('Digital')).length;
+            const pinCount = logs.filter(l => l.method.includes('PIN')).length;
+
+            document.getElementById('audit-report-stats').innerHTML = `
+                <div class="p-4 rounded-2xl bg-slate-50 border"><span class="text-xs font-semibold text-slate-500">Total de Registos</span><div class="text-2xl font-bold text-slate-900 mt-1">${totalDays}</div></div>
+                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs font-semibold text-emerald-700">Validados por Biometria</span><div class="text-2xl font-bold text-emerald-800 mt-1">${biometricCount}</div></div>
+                <div class="p-4 rounded-2xl bg-edm-50 border"><span class="text-xs font-semibold text-edm-700">Validados por PIN</span><div class="text-2xl font-bold text-edm-600 mt-1">${pinCount}</div></div>
+            `;
+
+            document.getElementById('audit-report-table').innerHTML = logs.map(l => `
+                <tr>
+                    <td class="p-3 font-semibold">${l.date}</td>
+                    <td class="p-3"><span class="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold">${l.method}</span></td>
+                    <td class="p-3 text-emerald-700 font-bold">${l.checkIn}</td>
+                    <td class="p-3 text-rose-700 font-bold">${l.checkOut || 'Em Curso'}</td>
+                    <td class="p-3">${l.checkOut ? 'Concluído' : 'Ativo'}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo de auditoria para este trabalhador.</td></tr>';
+        }
+
         function populateWorkerSelects() {
             const workers = getWorkers();
             const opts = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem trabalhadores</option>';
-            document.getElementById('calendar-worker-select').innerHTML = opts;
-            document.getElementById('just-worker-select').innerHTML = opts;
+            const calSel = document.getElementById('calendar-worker-select');
+            const justSel = document.getElementById('just-worker-select');
+            if (calSel) calSel.innerHTML = opts;
+            if (justSel) justSel.innerHTML = opts;
         }
 
         function renderCalendarView() {
@@ -735,15 +832,15 @@
             const list = getJustifications();
             const workers = getWorkers();
             document.getElementById('justifications-list').innerHTML = list.map(j => {
-                const w = workers.find(item => item.id === j.workerId) || { name: 'Trabalhador' };
+                const w = workers.find(item => item.id === j.workerId) || { name: 'Trabalhador Removido' };
                 return `<div class="border rounded-2xl p-3 bg-slate-50"><p class="font-bold text-sm">${w.name}</p><p class="text-xs text-slate-600">${j.date} - ${j.reason}</p></div>`;
             }).join('') || '<p class="text-xs text-slate-400 text-center">Nenhuma justificação.</p>';
         }
 
         function exportToCSV() {
             const workers = getWorkers();
-            let csv = '\uFEFFNome;Cargo;PIN\n';
-            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.pin}"\n`);
+            let csv = '\uFEFFNome;Cargo;PIN;Biometria Ativa\n';
+            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.pin}";"${w.hasFingerprint ? 'Sim' : 'Não'}"\n`);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = 'EDM_Trabalhadores.csv'; a.click();
