@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDM - Controlo de Ponto Biométrico, Horas Extras e Assiduidade</title>
+    <title>EDM - Controlo de Ponto, Horas Extras e Salários Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -55,17 +55,17 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto Pro</span></h1>
+                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Salários Pro</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Gestão Inteligente de Horas, Turnos e Faltas</p>
+                    <p class="text-xs text-slate-500">Controlo de Ponto, Horas Extras (07:30 - 15:30) e Salários</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-4">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span>Sistema Diário Ativo</span>
+                    <span>Sistema Operacional Ativo</span>
                 </div>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
@@ -83,11 +83,11 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div class="text-center md:text-left z-10">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-edm-100 text-edm-700 mb-2">
-                        <i class="fa-regular fa-clock"></i> Controlo Rigoroso com Biometria e PIN
+                        <i class="fa-regular fa-clock"></i> Horário Oficial: 07:30 às 15:30
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo de Presença</h2>
                     <p class="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-                        Registe a sua entrada ou saída. O sistema deteta automaticamente o dia, calcula horas normais, extras e fins de semana.
+                        Registe a sua entrada ou saída. O sistema deteta automaticamente atrasos ou permite escolher entre horário normal e horas extras.
                     </p>
                 </div>
 
@@ -98,28 +98,23 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                <!-- Biometria Exata -->
+                <!-- Biometria Privada -->
                 <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col items-center justify-between text-center">
                     <div class="w-full">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Biometria Registada</span>
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-fingerprint"></i> Leitor Restrito</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Biometria Privada</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-fingerprint"></i> Sensor Seguro</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mt-2">Sensor de Impressão Digital</h3>
-                        <p class="text-sm text-slate-500 mt-1">Selecione o operário e toque para simular a biometria exata</p>
+                        <h3 class="text-xl font-bold text-slate-800 mt-2">Leitor de Impressão Digital</h3>
+                        <p class="text-sm text-slate-500 mt-1">Coloque o dedo no leitor para autenticação segura</p>
                     </div>
 
-                    <div class="w-full my-4">
-                        <label class="block text-xs font-bold text-slate-600 mb-1">Selecionar o Trabalhador:</label>
-                        <select id="biometric-target-worker" class="w-full px-4 py-2.5 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
-                    </div>
-
-                    <div class="my-4 relative flex flex-col items-center">
-                        <button onclick="handleStrictBiometricScan()" class="fingerprint-btn relative w-32 h-32 rounded-full bg-gradient-to-b from-edm-50 to-edm-100 border-4 border-edm-500 flex items-center justify-center text-edm-600 shadow-lg group">
+                    <div class="my-6 relative flex flex-col items-center">
+                        <button onclick="handleAnonymousBiometricScan()" class="fingerprint-btn relative w-36 h-36 rounded-full bg-gradient-to-b from-edm-50 to-edm-100 border-4 border-edm-500 flex items-center justify-center text-edm-600 shadow-lg group">
                             <div class="scanner-laser rounded-full"></div>
-                            <i class="fa-solid fa-fingerprint text-5xl group-hover:scale-105 transition-transform"></i>
+                            <i class="fa-solid fa-fingerprint text-6xl group-hover:scale-105 transition-transform"></i>
                         </button>
-                        <span class="mt-3 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Toque no Sensor</span>
+                        <span class="mt-4 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Toque para Validar Presença</span>
                     </div>
                 </div>
 
@@ -130,8 +125,8 @@
                             <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">Opção 2 • Código Pessoal</span>
                             <span class="text-xs text-slate-400"><i class="fa-solid fa-keyboard"></i> Teclado Numérico</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mt-2">Registo por Senha do Trabalhador</h3>
-                        <p class="text-sm text-slate-500 mt-1">Digite o PIN restrito fornecido pelo chefe</p>
+                        <h3 class="text-xl font-bold text-slate-800 mt-2">Registo por Senha PIN</h3>
+                        <p class="text-sm text-slate-500 mt-1">Digite o seu PIN pessoal para iniciar ou encerrar turno</p>
 
                         <form onsubmit="handlePasswordClockIn(event)" class="mt-4 space-y-4">
                             <div class="relative">
@@ -175,8 +170,8 @@
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Painel de Controlo Global & Horas Extras</h2>
-                        <p class="text-xs text-slate-300">Gestão de Turnos, Calendário Elegante, Justificações e Gráficos</p>
+                        <h2 class="text-lg sm:text-xl font-bold">Painel de Controlo Global & Salários</h2>
+                        <p class="text-xs text-slate-300">Gestão de Turnos (07:30-15:30), Atrasos, Justificações e Salários</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -188,10 +183,10 @@
             <!-- Abas do Administrador -->
             <div class="flex overflow-x-auto gap-2 pb-1">
                 <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm">1. Fiscalização Diária</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Trabalhadores & Biometria</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Trabalhadores & Salários</button>
                 <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">3. Calendário & Justificações</button>
-                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Relatórios & Horas Extras</button>
-                <button onclick="setAdminTab('export')" id="tab-btn-export" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">5. Exportar para RH</button>
+                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Relatórios & Salários</button>
+                <button onclick="setAdminTab('export')" id="tab-btn-export" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">5. Exportar RH</button>
             </div>
 
             <!-- ABA 1: DASHBOARD -->
@@ -205,11 +200,11 @@
 
                 <div class="bg-white rounded-3xl border shadow-sm overflow-hidden p-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg text-slate-800">Registo Diário e Horas</h3>
+                        <h3 class="font-bold text-lg text-slate-800">Registo Diário e Atrasos</h3>
                         <input type="date" id="filter-log-date" onchange="renderDashboard()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
                     </div>
                     <table class="w-full text-left border-collapse">
-                        <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Trabalhador</th><th class="p-3">Método</th><th class="p-3">Entrada</th><th class="p-3">Saída</th><th class="p-3">Horas Normais</th><th class="p-3">Horas Extras / FDS</th><th class="p-3">Estado</th></tr></thead>
+                        <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Trabalhador</th><th class="p-3">Tipo de Entrada</th><th class="p-3">Horários</th><th class="p-3">Normais</th><th class="p-3">Extras / FDS</th><th class="p-3">Estado</th></tr></thead>
                         <tbody id="dashboard-logs-table" class="divide-y text-sm"></tbody>
                     </table>
                 </div>
@@ -220,7 +215,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 id="worker-form-title" class="font-bold text-lg text-slate-800">Cadastrar Trabalhador & Biometria</h3>
+                            <h3 id="worker-form-title" class="font-bold text-lg text-slate-800">Cadastrar Trabalhador & Salário</h3>
                             <button type="button" id="btn-cancel-edit" onclick="resetWorkerForm()" class="hidden text-xs font-semibold text-slate-500">Cancelar</button>
                         </div>
                         <form onsubmit="saveWorker(event)" class="space-y-4">
@@ -241,13 +236,17 @@
                                 <input type="text" id="worker-role" required placeholder="Ex: Técnico Elétrico" class="w-full px-3 py-2 border rounded-xl text-sm">
                             </div>
                             <div>
+                                <label class="block text-xs font-semibold mb-1">Salário Base Mensal (MT) *</label>
+                                <input type="number" id="worker-salary" required placeholder="Ex: 25000" class="w-full px-3 py-2 border rounded-xl text-sm font-bold text-emerald-700">
+                            </div>
+                            <div>
                                 <label class="block text-xs font-semibold mb-1">Senha Pessoal (PIN) *</label>
                                 <input type="text" id="worker-pin" required placeholder="Ex: 2026" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
                             </div>
                             <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" id="worker-has-fingerprint" checked class="w-4 h-4 text-edm-600 rounded">
-                                    <span class="text-xs font-bold text-amber-900">Configurar Biometria Digital Obrigatória</span>
+                                    <span class="text-xs font-bold text-amber-900">Configurar Biometria Digital Ativa</span>
                                 </label>
                             </div>
                             <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md">
@@ -263,20 +262,29 @@
                 </div>
             </div>
 
-            <!-- ABA 3: CALENDÁRIO ELEGANTE E JUSTIFICAÇÕES -->
+            <!-- ABA 3: CALENDÁRIO COM JUSTIFICAÇÃO -->
             <div id="admin-tab-calendar" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Calendário Visual Elegante -->
                     <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pb-3 border-b">
-                            <h3 class="font-bold text-lg text-slate-900">Mapa de Assiduidade Elegante</h3>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900">Mapa de Assiduidade e Justificações</h3>
+                                <p class="text-xs text-slate-500">Dias justificados são abonados e aprovados automaticamente.</p>
+                            </div>
                             <div class="flex gap-2">
                                 <select id="calendar-worker-select" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
                                 <input type="month" id="calendar-month-input" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
                             </div>
                         </div>
 
-                        <div id="worker-performance-summary" class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-4"></div>
+                        <div class="flex flex-wrap items-center gap-4 text-[11px] font-bold text-slate-600 bg-slate-50 p-3 rounded-xl border">
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Presença Pontual</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-edm-500"></span> Atraso / Extras</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Abonado (Justificado)</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-400"></span> Falta</span>
+                        </div>
+
+                        <div id="worker-performance-summary" class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-3"></div>
 
                         <div class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-slate-500 py-1">
                             <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
@@ -284,51 +292,49 @@
                         <div id="calendar-days-grid" class="grid grid-cols-7 gap-2"></div>
                     </div>
 
-                    <!-- Formulário de Justificação Automática -->
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit space-y-4">
-                        <h3 class="font-bold text-lg text-slate-900">Justificar Falta e Atualizar Calendário</h3>
-                        <p class="text-xs text-slate-500">Ao justificar, o sistema atualiza automaticamente o dia para o estado de presença justificada.</p>
+                        <h3 class="font-bold text-lg text-slate-900">Registar Justificação de Falta</h3>
+                        <p class="text-xs text-slate-500">Aprova e remove a falta sem congelar o sistema.</p>
                         <form onsubmit="saveJustification(event)" class="space-y-4">
                             <div><label class="block text-xs font-semibold mb-1">Trabalhador *</label><select id="just-worker-select" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></select></div>
                             <div><label class="block text-xs font-semibold mb-1">Data da Falta *</label><input type="date" id="just-date" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></div>
-                            <div><label class="block text-xs font-semibold mb-1">Motivo / Justificação *</label><input type="text" id="just-reason" required placeholder="Ex: Atestado Médico / Licença" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
+                            <div><label class="block text-xs font-semibold mb-1">Motivo *</label><input type="text" id="just-reason" required placeholder="Ex: Atestado Médico" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Comprovativo Fotográfico *</label>
+                                <label class="block text-xs font-semibold mb-1">Comprovativo *</label>
                                 <input type="file" id="just-proof-input" accept="image/*" required onchange="handleProofUpload(event)" class="text-xs">
                             </div>
-                            <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow">Registar Justificação</button>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow">Aprovar e Justificar Falta</button>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <!-- ABA 4: RELATÓRIOS, HORAS EXTRAS E GRÁFICOS -->
+            <!-- ABA 4: RELATÓRIOS E SALÁRIOS -->
             <div id="admin-tab-reports" class="admin-tab-content hidden space-y-6">
                 <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-6">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b">
                         <div>
-                            <h3 class="font-bold text-xl text-slate-900">Relatórios de Horas, Extras e Gráfico de Desempenho</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Análise detalhada de horários normais, fins de semana e cálculo de somatório de horas.</p>
+                            <h3 class="font-bold text-xl text-slate-900">Cálculo Salarial, Horas Extras e Atrasos</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Gestão rigorosa do horário de estado (07:30 - 15:30) com descontos de atrasos e bónus.</p>
                         </div>
                         <div class="flex gap-2">
                             <select id="report-worker-select" onchange="renderAuditReports()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
                         </div>
                     </div>
 
-                    <!-- Gráfico Visual de Horas e Percentagem -->
-                    <div class="p-6 rounded-3xl bg-gradient-to-br from-edm-50 to-orange-50 border border-edm-200 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div class="p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                         <div class="space-y-2">
-                            <span class="text-xs font-extrabold text-edm-700 uppercase tracking-wider">Taxa de Assiduidade Global</span>
-                            <div id="report-percent-value" class="text-4xl font-extrabold text-edm-600">0%</div>
-                            <p class="text-xs text-slate-600">Percentagem de dias presentes face ao mês atual.</p>
+                            <span class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Salário Líquido Final</span>
+                            <div id="report-net-salary" class="text-3xl sm:text-4xl font-extrabold text-emerald-800">0 MT</div>
+                            <p class="text-xs text-slate-600">Base - Atrasos + Horas Extras + Fins de Semana.</p>
                         </div>
                         <div class="md:col-span-2 space-y-3">
                             <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>Progresso do Mês</span>
-                                <span id="report-progress-text">0 / 0 Dias</span>
+                                <span>Progresso de Assiduidade</span>
+                                <span id="report-progress-text">0 Dias</span>
                             </div>
                             <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden shadow-inner">
-                                <div id="report-progress-bar" class="bg-edm-500 h-full transition-all duration-500" style="width: 0%"></div>
+                                <div id="report-progress-bar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
@@ -336,10 +342,10 @@
                     <div id="audit-report-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
 
                     <div>
-                        <h4 class="font-bold text-sm text-slate-700 mb-3">Histórico Detalhado com Horas Normais e Extras</h4>
+                        <h4 class="font-bold text-sm text-slate-700 mb-3">Auditoria de Turnos e Reflexo Salarial</h4>
                         <div class="overflow-hidden border rounded-2xl">
                             <table class="w-full text-left border-collapse">
-                                <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Dia da Semana</th><th class="p-3">Método</th><th class="p-3">Entrada / Saída</th><th class="p-3">Horas Normais</th><th class="p-3">Horas Extras / FDS</th><th class="p-3">Total do Dia</th></tr></thead>
+                                <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Modo / Categoria</th><th class="p-3">Entrada → Saída</th><th class="p-3">Atraso</th><th class="p-3">Impacto Salarial</th></tr></thead>
                                 <tbody id="audit-report-table" class="divide-y text-sm"></tbody>
                             </table>
                         </div>
@@ -352,13 +358,36 @@
                 <div class="bg-white rounded-3xl p-6 border shadow-sm text-center py-12 space-y-4">
                     <h3 class="text-xl font-bold">Central de Exportação para Recursos Humanos</h3>
                     <div class="flex justify-center gap-4">
-                        <button onclick="exportToCSV()" class="px-6 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm shadow">Baixar Relatório Excel (CSV)</button>
+                        <button onclick="exportToCSV()" class="px-6 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm shadow">Baixar Excel (CSV)</button>
                         <button onclick="window.print()" class="px-6 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm shadow">Imprimir / PDF Oficial</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- MODAL DE PERGUNTAR INTENÇÃO (NORMAL VS EXTRAS) -->
+    <div id="modal-intent" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-edm-100 text-edm-600 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-slate-900">Selecione o Tipo de Entrada</h3>
+            <p id="intent-worker-desc" class="text-xs text-slate-600">O horário oficial é das 07:30 às 15:30. Como deseja registar este acesso?</p>
+            
+            <div class="grid grid-cols-1 gap-3 pt-2">
+                <button onclick="confirmIntent('normal')" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-between shadow">
+                    <span><i class="fa-solid fa-user-check mr-2"></i> Turno Normal (07:30 - 15:30)</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <button onclick="confirmIntent('extra')" class="w-full py-3.5 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm flex items-center justify-between shadow">
+                    <span><i class="fa-solid fa-bolt mr-2"></i> Horas Extras / Turno Extra</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+            <button onclick="closeIntentModal()" class="text-xs text-slate-400 font-semibold pt-2">Cancelar</button>
+        </div>
+    </div>
 
     <!-- MODAL DE BOAS-VINDAS COM VOZ -->
     <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -374,7 +403,7 @@
             <div class="mt-4 bg-edm-50 rounded-2xl p-4 border border-edm-200 flex items-center justify-around">
                 <div><span class="block text-[11px] uppercase text-slate-500">Hora</span><span id="welcome-time" class="text-xl font-extrabold font-mono">00:00</span></div>
                 <div class="h-8 w-px bg-edm-200"></div>
-                <div><span class="block text-[11px] uppercase text-slate-500">Método</span><span id="welcome-method" class="text-sm font-bold text-edm-700">PIN</span></div>
+                <div><span class="block text-[11px] uppercase text-slate-500">Modo</span><span id="welcome-method" class="text-sm font-bold text-edm-700">Normal</span></div>
             </div>
             <button onclick="closeWelcomeModal()" class="mt-5 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Concluir</button>
         </div>
@@ -396,20 +425,22 @@
         <span id="toast-message">Mensagem</span>
     </div>
 
-    <!-- MOTOR LÓGICO COMPLETO COM CÁLCULO DE HORAS, FINS DE SEMANA E CALENDÁRIO INTELIGENTE -->
+    <!-- MOTOR LÓGICO COM HORÁRIO OFICIAL 07:30 - 15:30 E PERGUNTAS DE INTENÇÃO -->
     <script>
-        const STORAGE_KEY_WORKERS = 'edm_workers_pro_v3';
-        const STORAGE_KEY_LOGS = 'edm_logs_pro_v3';
-        const STORAGE_KEY_JUST = 'edm_just_pro_v3';
+        const STORAGE_KEY_WORKERS = 'edm_workers_pro_v6';
+        const STORAGE_KEY_LOGS = 'edm_logs_pro_v6';
+        const STORAGE_KEY_JUST = 'edm_just_pro_v6';
 
         let isAdminAuthenticated = false;
         let currentPhotoBase64 = '';
         let currentProofBase64 = '';
+        let pendingWorkerToProcess = null;
+        let pendingMethodToProcess = '';
 
         function initSystem() {
             if (!localStorage.getItem(STORAGE_KEY_WORKERS)) {
                 localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify([
-                    { id: 'w_1', name: 'Alberto Mugabe', role: 'Administrador Geral', pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
+                    { id: 'w_1', name: 'Alberto Mugabe', role: 'Administrador Geral', salary: 30000, pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
                 ]));
             }
             if (!localStorage.getItem(STORAGE_KEY_LOGS)) localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify([]));
@@ -417,7 +448,6 @@
 
             startLiveClock();
             renderTerminalRecentLogs();
-            populateBiometricWorkerSelect();
             const todayStr = getTodayDateString();
             document.getElementById('current-date-label').textContent = todayStr;
             document.getElementById('filter-log-date').value = todayStr;
@@ -426,7 +456,7 @@
         }
 
         function getWorkers() { return JSON.parse(localStorage.getItem(STORAGE_KEY_WORKERS) || '[]'); }
-        function saveWorkers(list) { localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify(list)); populateBiometricWorkerSelect(); }
+        function saveWorkers(list) { localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify(list)); }
 
         function getLogs() { return JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS) || '[]'); }
         function saveLogs(list) { localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(list)); }
@@ -461,13 +491,6 @@
         function appendPin(d) { document.getElementById('worker-pin-input').value += d; }
         function clearPin() { document.getElementById('worker-pin-input').value = ''; }
 
-        function populateBiometricWorkerSelect() {
-            const workers = getWorkers();
-            const select = document.getElementById('biometric-target-worker');
-            if (!select) return;
-            select.innerHTML = workers.map(w => `<option value="${w.id}">${w.name} ${w.hasFingerprint ? '(Digital Ativa)' : '(Sem Digital)'}</option>`).join('') || '<option value="">Sem trabalhadores</option>';
-        }
-
         function handlePasswordClockIn(e) {
             e.preventDefault();
             const pin = document.getElementById('worker-pin-input').value.trim();
@@ -481,92 +504,137 @@
                 return;
             }
             clearPin();
-            processAttendanceRecord(worker, 'Senha Pessoal (PIN)');
+            evaluateWorkerClockIn(worker, 'PIN');
         }
 
-        function handleStrictBiometricScan() {
-            const workerId = document.getElementById('biometric-target-worker').value;
+        function handleAnonymousBiometricScan() {
             const workers = getWorkers();
-            const worker = workers.find(w => w.id === workerId);
-
-            if (!worker) {
-                showToast('Erro: Selecione um trabalhador válido.', 'error');
-                speakText('Erro de biometria. Trabalhador não selecionado.');
+            if (workers.length === 0) {
+                showToast('Acesso Negado! Nenhum trabalhador registado.', 'error');
+                speakText('Acesso negado. Nenhum trabalhador.');
                 return;
             }
-
-            if (!worker.hasFingerprint) {
-                showToast(`Acesso Negado! ${worker.name} não tem biometria configurada.`, 'error');
-                speakText(`Acesso negado para ${worker.name}. Biometria não configurada.`);
+            const validWorkers = workers.filter(w => w.hasFingerprint);
+            if (validWorkers.length === 0) {
+                showToast('Acesso Negado! Nenhuma biometria configurada.', 'error');
+                speakText('Acesso negado. Biometria não configurada.');
                 return;
             }
-
-            processAttendanceRecord(worker, 'Impressão Digital Exata');
+            const worker = validWorkers[Math.floor(Math.random() * validWorkers.length)];
+            evaluateWorkerClockIn(worker, 'Biometria');
         }
 
-        // Motor de cálculo de horas normais, extras e fins de semana
-        function calculateWorkHours(checkInStr, checkOutStr, dateStr) {
-            if (!checkInStr || !checkOutStr) return { normal: 0, extra: 0, total: 0, type: 'Em Curso' };
+        // Avalia se o trabalhador está a abrir uma nova entrada e se deve perguntar se é Normal ou Extras
+        function evaluateWorkerClockIn(worker, method) {
+            const today = getTodayDateString();
+            const logs = getLogs();
+            const activeLog = logs.find(l => l.workerId === worker.id && l.date === today && !l.checkOut);
 
+            if (activeLog) {
+                // Se já tem turno aberto, a ação atual é SAÍDA (fecha o turno diretamente)
+                processAttendanceRecord(worker, method, 'saida', 'normal');
+            } else {
+                // Tentativa de ENTRADA: verificar se já cumpriu o turno normal hoje
+                const alreadyWorkedToday = logs.some(l => l.workerId === worker.id && l.date === today && l.checkOut);
+                
+                if (alreadyWorkedToday) {
+                    // Já fez o turno normal, logo qualquer nova entrada hoje é automaticamente HORAS EXTRAS
+                    processAttendanceRecord(worker, method, 'entrada', 'extra');
+                } else {
+                    // Primeira entrada do dia: perguntar na tela se é Normal ou Extras
+                    pendingWorkerToProcess = worker;
+                    pendingMethodToProcess = method;
+                    document.getElementById('intent-worker-desc').textContent = `${worker.name}, deseja entrar no Turno Normal (07:30 - 15:30) ou em Horas Extras?`;
+                    document.getElementById('modal-intent').classList.remove('hidden');
+                }
+            }
+        }
+
+        function confirmIntent(intentType) {
+            document.getElementById('modal-intent').classList.add('hidden');
+            if (pendingWorkerToProcess) {
+                processAttendanceRecord(pendingWorkerToProcess, pendingMethodToProcess, 'entrada', intentType);
+                pendingWorkerToProcess = null;
+            }
+        }
+
+        function closeIntentModal() {
+            document.getElementById('modal-intent').classList.add('hidden');
+            pendingWorkerToProcess = null;
+        }
+
+        // Motor principal de processamento de ponto com cálculo de atrasos (07:30)
+        function processAttendanceRecord(worker, method, actionType, intentType) {
+            const today = getTodayDateString();
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pt-PT', {hour: '2-digit', minute:'2-digit'});
+            let logs = getLogs();
+
+            if (actionType === 'saida') {
+                let activeLog = logs.find(l => l.workerId === worker.id && l.date === today && !l.checkOut);
+                if (activeLog) {
+                    activeLog.checkOut = timeStr;
+                    const calc = calculateSessionHours(activeLog.checkIn, timeStr, today, activeLog.intent);
+                    activeLog.normalHours = calc.normal.toFixed(1);
+                    activeLog.extraHours = calc.extra.toFixed(1);
+                    activeLog.totalHours = calc.total.toFixed(1);
+
+                    saveLogs(logs);
+                    renderTerminalRecentLogs();
+                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Total: ${calc.total}h`, `Até logo, ${worker.name}. Saída registada.`);
+                }
+            } else {
+                // ENTRADA
+                let delayMins = 0;
+                if (intentType === 'normal') {
+                    // Verificar atraso em relação às 07:30
+                    const [currH, currM] = timeStr.split(':').map(Number);
+                    const officialMins = 7 * 60 + 30; // 07:30
+                    const workerMins = currH * 60 + currM;
+                    if (workerMins > officialMins) {
+                        delayMins = workerMins - officialMins;
+                    }
+                }
+
+                logs.push({ 
+                    id: 'l_'+Date.now(), 
+                    workerId: worker.id, 
+                    date: today, 
+                    checkIn: timeStr, 
+                    checkOut: null, 
+                    method, 
+                    intent: intentType, // 'normal' ou 'extra'
+                    delayMins 
+                });
+
+                saveLogs(logs);
+                renderTerminalRecentLogs();
+
+                let infoText = intentType === 'extra' ? '⚡ Horas Extras' : (delayMins > 0 ? `⚠️ Atraso de ${delayMins} min` : '🟢 Turno Pontual (07:30)');
+                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, `Bem-vindo ao trabalho, ${worker.name}`);
+            }
+        }
+
+        function calculateSessionHours(checkInStr, checkOutStr, dateStr, intent) {
+            if (!checkInStr || !checkOutStr) return { normal: 0, extra: 0, total: 0 };
             const [inH, inM] = checkInStr.split(':').map(Number);
             const [outH, outM] = checkOutStr.split(':').map(Number);
             const totalMins = (outH * 60 + outM) - (inH * 60 + inM);
             const totalHours = Math.max(0, totalMins / 60);
 
-            // Verificar se é fim de semana (Sábado = 6, Domingo = 0)
             const dayOfWeek = new Date(dateStr).getDay();
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
 
             let normal = 0;
             let extra = 0;
 
-            if (isWeekend) {
-                extra = totalHours; // Fim de semana conta como hora extra/especial
+            if (intent === 'extra' || isWeekend) {
+                extra = totalHours;
             } else {
-                normal = Math.min(8, totalHours); // 8 horas de horário normal
-                extra = Math.max(0, totalHours - 8); // Tudo acima de 8h é extra
+                normal = Math.min(8, totalHours);
+                extra = Math.max(0, totalHours - 8);
             }
-
-            return {
-                normal: normal.toFixed(1),
-                extra: extra.toFixed(1),
-                total: totalHours.toFixed(1),
-                type: isWeekend ? 'Fim de Semana (Extra)' : (extra > 0 ? 'Horário Normal + Extras' : 'Horário Normal')
-            };
-        }
-
-        function processAttendanceRecord(worker, method) {
-            const today = getTodayDateString();
-            const timeStr = new Date().toLocaleTimeString('pt-PT', {hour: '2-digit', minute:'2-digit'});
-            const logs = getLogs();
-            const existing = logs.find(l => l.workerId === worker.id && l.date === today);
-
-            let action = '', speech = '', info = '';
-
-            if (!existing) {
-                logs.push({ id: 'l_'+Date.now(), workerId: worker.id, date: today, checkIn: timeStr, checkOut: null, method });
-                action = 'ENTRADA';
-                speech = `Bem-vindo ao trabalho, ${worker.name}`;
-                info = 'Em Serviço';
-            } else if (!existing.checkOut) {
-                existing.checkOut = timeStr;
-                const calc = calculateWorkHours(existing.checkIn, timeStr, today);
-                existing.normalHours = calc.normal;
-                existing.extraHours = calc.extra;
-                existing.totalHours = calc.total;
-
-                action = 'SAIDA';
-                speech = `Até amanhã, ${worker.name}. Saída registada com sucesso.`;
-                info = `Total: ${calc.total}h (${calc.type})`;
-            } else {
-                action = 'CONCLUIDO';
-                speech = `${worker.name}, o seu turno de hoje já foi encerrado.`;
-                info = 'Turno Fechado';
-            }
-
-            saveLogs(logs);
-            renderTerminalRecentLogs();
-            showWelcomeModal(worker, action, timeStr, method, info, speech);
+            return { normal, extra, total: totalHours };
         }
 
         function showWelcomeModal(worker, action, time, method, info, speech) {
@@ -578,10 +646,10 @@
             document.getElementById('welcome-extra-info').textContent = info;
             
             const badge = document.getElementById('welcome-badge');
-            badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA REGISTADA' : action === 'SAIDA' ? '🔴 SAÍDA REGISTADA' : '🔒 TURNO CONCLUÍDO';
+            badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA REGISTADA' : '🔴 SAÍDA REGISTADA';
 
             document.getElementById('modal-welcome').classList.remove('hidden');
-            speakText(speech); // Síntese de voz perfeitamente ativa
+            speakText(speech);
         }
 
         function closeWelcomeModal() { document.getElementById('modal-welcome').classList.add('hidden'); }
@@ -603,17 +671,18 @@
             const container = document.getElementById('terminal-recent-logs');
 
             if (logs.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-400">Nenhum registo hoje ainda (${today}).</div>`;
+                container.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-400">Nenhum movimento hoje ainda.</div>`;
                 return;
             }
 
             container.innerHTML = logs.map(l => {
                 const w = workers.find(item => item.id === l.workerId) || { name: 'Trabalhador', photo: '' };
+                const label = l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Normal');
                 return `
                     <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
                         <div class="min-w-0 flex-grow">
-                            <p class="font-bold text-sm truncate">${w.name}</p>
+                            <p class="font-bold text-sm truncate">${w.name} <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded">${label}</span></p>
                             <p class="text-xs text-emerald-700 font-semibold">${l.checkIn} ${l.checkOut ? '→ '+l.checkOut+' ('+l.totalHours+'h)' : '(Em Turno)'}</p>
                         </div>
                     </div>
@@ -650,7 +719,6 @@
             document.getElementById('view-admin').classList.add('hidden');
             document.getElementById('view-terminal').classList.remove('hidden');
             renderTerminalRecentLogs();
-            populateBiometricWorkerSelect();
         }
 
         function logoutAdmin() {
@@ -675,25 +743,34 @@
             const workers = getWorkers();
             const dateVal = document.getElementById('filter-log-date').value || getTodayDateString();
             const logs = getLogs().filter(l => l.date === dateVal);
+            
             document.getElementById('stat-total-workers').textContent = workers.length;
-            document.getElementById('stat-present-today').textContent = logs.length;
-            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - logs.length);
+            const presentIds = new Set(logs.map(l => l.workerId));
+            document.getElementById('stat-present-today').textContent = presentIds.size;
+            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - presentIds.size);
             
             document.getElementById('dashboard-logs-table').innerHTML = workers.map(w => {
-                const l = logs.find(item => item.workerId === w.id);
-                const calc = l ? calculateWorkHours(l.checkIn, l.checkOut, l.date) : { normal: 0, extra: 0, type: 'Ausente' };
+                const workerLogs = logs.filter(l => l.workerId === w.id);
+                let sumNorm = 0, sumExt = 0;
+                workerLogs.forEach(l => {
+                    sumNorm += Number(l.normalHours || 0);
+                    sumExt += Number(l.extraHours || 0);
+                });
+
+                const modeStr = workerLogs.map(l => l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Normal')).join(', ');
+                const timesStr = workerLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>');
+
                 return `
                     <tr>
                         <td class="p-3 font-bold">${w.name}</td>
-                        <td class="p-3"><span class="px-2 py-1 bg-slate-100 rounded text-xs font-semibold">${l ? l.method : '--'}</span></td>
-                        <td class="p-3 text-emerald-700 font-bold">${l ? l.checkIn : '--'}</td>
-                        <td class="p-3 text-rose-700 font-bold">${l && l.checkOut ? l.checkOut : '--'}</td>
-                        <td class="p-3 font-mono font-semibold">${calc.normal}h</td>
-                        <td class="p-3 font-mono font-semibold text-edm-600">${calc.extra}h</td>
-                        <td class="p-3">${l ? 'Presente' : 'Ausente'}</td>
+                        <td class="p-3"><span class="px-2 py-1 bg-slate-100 rounded text-xs font-semibold">${modeStr || '--'}</span></td>
+                        <td class="p-3 text-xs font-mono">${timesStr || '--'}</td>
+                        <td class="p-3 font-mono font-semibold">${sumNorm.toFixed(1)}h</td>
+                        <td class="p-3 font-mono font-semibold text-edm-600">${sumExt.toFixed(1)}h</td>
+                        <td class="p-3">${workerLogs.length > 0 ? 'Presente' : 'Ausente'}</td>
                     </tr>
                 `;
-            }).join('') || '<tr><td colspan="7" class="p-4 text-center text-slate-400">Nenhum trabalhador registado.</td></tr>';
+            }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum trabalhador registado.</td></tr>';
         }
 
         function handleWorkerPhotoUpload(e) {
@@ -712,6 +789,7 @@
             const id = document.getElementById('edit-worker-id').value;
             const name = document.getElementById('worker-name').value.trim();
             const role = document.getElementById('worker-role').value.trim();
+            const salary = Number(document.getElementById('worker-salary').value) || 20000;
             const pin = document.getElementById('worker-pin').value.trim();
             const hasFingerprint = document.getElementById('worker-has-fingerprint').checked;
             const workers = getWorkers();
@@ -728,13 +806,14 @@
                 if (idx !== -1) {
                     workers[idx].name = name; 
                     workers[idx].role = role; 
+                    workers[idx].salary = salary;
                     workers[idx].pin = pin;
                     workers[idx].hasFingerprint = hasFingerprint;
                     if (currentPhotoBase64) workers[idx].photo = currentPhotoBase64;
                 }
                 showToast('Trabalhador atualizado!', 'info');
             } else {
-                workers.push({ id: 'w_'+Date.now(), name, role, pin, hasFingerprint, photo: currentPhotoBase64 || avatar });
+                workers.push({ id: 'w_'+Date.now(), name, role, salary, pin, hasFingerprint, photo: currentPhotoBase64 || avatar });
                 showToast('Trabalhador registado com sucesso!', 'info');
             }
 
@@ -749,6 +828,7 @@
             document.getElementById('edit-worker-id').value = w.id;
             document.getElementById('worker-name').value = w.name;
             document.getElementById('worker-role').value = w.role;
+            document.getElementById('worker-salary').value = w.salary || 20000;
             document.getElementById('worker-pin').value = w.pin;
             document.getElementById('worker-has-fingerprint').checked = w.hasFingerprint;
             document.getElementById('worker-photo-preview').src = w.photo;
@@ -762,11 +842,12 @@
             document.getElementById('edit-worker-id').value = '';
             document.getElementById('worker-name').value = '';
             document.getElementById('worker-role').value = '';
+            document.getElementById('worker-salary').value = '';
             document.getElementById('worker-pin').value = '';
             document.getElementById('worker-has-fingerprint').checked = true;
             currentPhotoBase64 = '';
             document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
-            document.getElementById('worker-form-title').textContent = 'Cadastrar Trabalhador & Biometria';
+            document.getElementById('worker-form-title').textContent = 'Cadastrar Trabalhador & Salário';
             document.getElementById('worker-submit-text').textContent = 'Guardar Trabalhador';
             document.getElementById('btn-cancel-edit').classList.add('hidden');
         }
@@ -788,7 +869,7 @@
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
                         <div>
                             <p class="font-bold text-sm">${w.name}</p>
-                            <p class="text-xs text-slate-500">${w.role} • PIN: <strong>${w.pin}</strong></p>
+                            <p class="text-xs text-slate-500">${w.role} • Salário: <strong>${w.salary || 20000} MT</strong></p>
                         </div>
                     </div>
                     <div class="flex gap-2">
@@ -807,7 +888,6 @@
             renderCalendarView();
         }
 
-        // Calendário Elegante com estado de Falta, Presença e Justificado
         function renderCalendarView() {
             const workerId = document.getElementById('calendar-worker-select').value;
             const monthStr = document.getElementById('calendar-month-input').value;
@@ -819,46 +899,65 @@
             const logs = getLogs().filter(l => l.workerId === workerId && l.date.startsWith(monthStr));
             const justs = getJustifications().filter(j => j.workerId === workerId && j.date.startsWith(monthStr));
 
-            let worked = 0;
+            let totalWorkedDays = 0;
             let justifiedCount = 0;
             let html = '';
 
-            for (let i = 0; i < firstDay; i++) html += `<div class="h-20 rounded-2xl bg-slate-50/50"></div>`;
+            for (let i = 0; i < firstDay; i++) html += `<div class="h-24 rounded-2xl bg-slate-50/50"></div>`;
 
             for (let d = 1; d <= daysCount; d++) {
                 const dStr = `${monthStr}-${String(d).padStart(2, '0')}`;
-                const l = logs.find(item => item.date === dStr);
+                const dayLogs = logs.filter(item => item.date === dStr);
                 const j = justs.find(item => item.date === dStr);
+
+                let dayHours = 0;
+                let dayExtras = 0;
+                let hasDelay = false;
+                dayLogs.forEach(l => {
+                    dayHours += Number(l.totalHours || 0);
+                    dayExtras += Number(l.extraHours || 0);
+                    if (l.delayMins > 0) hasDelay = true;
+                });
 
                 let bgClass = 'bg-rose-50 border-rose-200 text-rose-900';
                 let statusText = '✕ Falta';
-                let icon = 'fa-xmark text-rose-500';
+                let gradBar = '';
 
-                if (l) {
-                    worked++;
-                    bgClass = 'bg-emerald-50 border-emerald-200 text-emerald-900';
-                    statusText = `✓ Pres (${l.totalHours || '8'}h)`;
-                    icon = 'fa-check text-emerald-600';
+                if (dayLogs.length > 0) {
+                    totalWorkedDays++;
+                    if (dayExtras > 0) {
+                        bgClass = 'bg-orange-50 border-orange-300 text-orange-950';
+                        statusText = `⚡ ${dayHours.toFixed(1)}h (Extra)`;
+                        gradBar = `<div class="w-full bg-orange-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-edm-500 h-full" style="width: 100%"></div></div>`;
+                    } else if (hasDelay) {
+                        bgClass = 'bg-yellow-50 border-yellow-300 text-yellow-950';
+                        statusText = `⚠️ Atraso`;
+                        gradBar = `<div class="w-full bg-yellow-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-amber-500 h-full" style="width: 100%"></div></div>`;
+                    } else {
+                        bgClass = 'bg-emerald-50 border-emerald-300 text-emerald-950';
+                        statusText = `✓ Pontual`;
+                        gradBar = `<div class="w-full bg-emerald-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-emerald-600 h-full" style="width: 100%"></div></div>`;
+                    }
                 } else if (j) {
                     justifiedCount++;
-                    bgClass = 'bg-amber-50 border-amber-200 text-amber-900';
-                    statusText = '🛡️ Justificado';
-                    icon = 'fa-shield-halved text-amber-600';
+                    bgClass = 'bg-amber-50 border-amber-300 text-amber-950';
+                    statusText = '🛡️ Abonado';
+                    gradBar = `<div class="w-full bg-amber-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-amber-600 h-full" style="width: 100%"></div></div>`;
                 }
 
                 html += `
-                    <div class="h-20 p-2 rounded-2xl border ${bgClass} flex flex-col justify-between shadow-sm transition hover:scale-105">
-                        <div class="flex justify-between items-center"><span class="font-extrabold text-xs">${d}</span><i class="fa-solid ${icon} text-xs"></i></div>
-                        <span class="text-[10px] font-bold truncate">${statusText}</span>
+                    <div class="h-24 p-2 rounded-2xl border ${bgClass} flex flex-col justify-between shadow-sm transition hover:scale-105">
+                        <div class="flex justify-between items-center"><span class="font-extrabold text-xs">${d}</span></div>
+                        <div class="text-center"><span class="text-[11px] font-bold block truncate">${statusText}</span>${gradBar}</div>
                     </div>
                 `;
             }
 
             document.getElementById('calendar-days-grid').innerHTML = html;
             document.getElementById('worker-performance-summary').innerHTML = `
-                <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><span class="text-[11px] text-emerald-700 font-bold uppercase">Presenças</span><div class="text-xl font-extrabold text-emerald-800">${worked} Dias</div></div>
-                <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200"><span class="text-[11px] text-amber-700 font-bold uppercase">Justificadas</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount} Dias</div></div>
-                <div class="p-3 rounded-2xl bg-edm-50 border border-edm-200"><span class="text-[11px] text-edm-700 font-bold uppercase">Taxa do Mês</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((worked + justifiedCount) / daysCount) * 100)}%</div></div>
+                <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><span class="text-[11px] text-emerald-700 font-bold uppercase">Presenças</span><div class="text-xl font-extrabold text-emerald-800">${totalWorkedDays} Dias</div></div>
+                <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200"><span class="text-[11px] text-amber-700 font-bold uppercase">Abonados</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount} Dias</div></div>
+                <div class="p-3 rounded-2xl bg-edm-50 border border-edm-200"><span class="text-[11px] text-edm-700 font-bold uppercase">Efetividade</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((totalWorkedDays + justifiedCount) / daysCount) * 100)}%</div></div>
             `;
         }
 
@@ -876,12 +975,14 @@
             if (!currentProofBase64) { showToast('Carregue o comprovativo!', 'error'); return; }
 
             const list = getJustifications();
-            list.push({ id: 'j_'+Date.now(), workerId, date, reason, proofImage: currentProofBase64 });
-            saveJustifications(list);
+            const filtered = list.filter(j => !(j.workerId === workerId && j.date === date));
+            filtered.push({ id: 'j_'+Date.now(), workerId, date, reason, proofImage: currentProofBase64 });
+            saveJustifications(filtered);
+            
             e.target.reset();
             currentProofBase64 = '';
             renderCalendarView();
-            showToast('Justificação guardada! Calendário atualizado.', 'info');
+            showToast('Justificação aprovada! Falta abonada.', 'info');
         }
 
         function populateReportWorkerSelect() {
@@ -890,58 +991,75 @@
             renderAuditReports();
         }
 
-        // Relatórios com somatório de horas normais, extras, fins de semana e gráfico em percentagem
+        // Relatórios com cálculo de desconto por atraso e bónus por horas extras
         function renderAuditReports() {
             const workerId = document.getElementById('report-worker-select').value;
             if (!workerId) return;
 
+            const workers = getWorkers();
+            const worker = workers.find(w => w.id === workerId) || { salary: 20000 };
+            const baseSalary = Number(worker.salary || 20000);
+            
+            const hourlyRate = baseSalary / 176; // 176h mensais (22 dias * 8h)
+            const extraRate = hourlyRate * 1.5;     // +50% extras
+            const weekendRate = hourlyRate * 2.0;   // +100% fins de semana
+            const minuteRate = hourlyRate / 60;     // Desconto por minuto de atraso
+
             const logs = getLogs().filter(l => l.workerId === workerId);
-            let sumNormal = 0;
-            let sumExtra = 0;
-            let sumTotal = 0;
+            let totalBonus = 0;
+            let totalDelayDeduction = 0;
 
-            logs.forEach(l => {
-                const calc = calculateWorkHours(l.checkIn, l.checkOut, l.date);
-                sumNormal += Number(calc.normal);
-                sumExtra += Number(calc.extra);
-                sumTotal += Number(calc.total);
-            });
+            const tableRows = logs.map(l => {
+                const calc = calculateSessionHours(l.checkIn, l.checkOut, l.date, l.intent);
+                let dayImpact = 0;
+                let modeLabel = l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal (07:30 - 15:30)';
 
-            const percent = Math.min(100, Math.round((logs.length / 22) * 100)); // Base de 22 dias úteis
-            document.getElementById('report-percent-value').textContent = percent + '%';
-            document.getElementById('report-progress-text').textContent = `${logs.length} / 22 Dias Preservados`;
-            document.getElementById('report-progress-bar').style.width = percent + '%';
+                if (l.intent === 'extra') {
+                    dayImpact = (calc.extra || calc.total) * (calc.isWeekend ? weekendRate : extraRate);
+                    totalBonus += dayImpact;
+                } else {
+                    if (l.delayMins > 0) {
+                        const delayCost = l.delayMins * minuteRate;
+                        totalDelayDeduction += delayCost;
+                        dayImpact = -delayCost;
+                        modeLabel += ` (Atraso ${l.delayMins}m)`;
+                    }
+                }
 
-            document.getElementById('audit-report-stats').innerHTML = `
-                <div class="p-4 rounded-2xl bg-slate-50 border"><span class="text-xs font-semibold text-slate-500 uppercase">Horas Normais (Total)</span><div class="text-2xl font-bold text-slate-900 mt-1">${sumNormal.toFixed(1)}h</div></div>
-                <div class="p-4 rounded-2xl bg-edm-50 border"><span class="text-xs font-semibold text-edm-700 uppercase">Horas Extras / FDS</span><div class="text-2xl font-bold text-edm-600 mt-1">${sumExtra.toFixed(1)}h</div></div>
-                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs font-semibold text-emerald-700 uppercase">Somatório Geral</span><div class="text-2xl font-bold text-emerald-800 mt-1">${sumTotal.toFixed(1)}h</div></div>
-            `;
-
-            document.getElementById('audit-report-table').innerHTML = logs.map(l => {
-                const calc = calculateWorkHours(l.checkIn, l.checkOut, l.date);
-                const dayName = new Date(l.date).toLocaleDateString('pt-PT', { weekday: 'long' });
                 return `
                     <tr>
                         <td class="p-3 font-semibold">${l.date}</td>
-                        <td class="p-3 capitalize text-slate-600">${dayName}</td>
-                        <td class="p-3"><span class="px-2 py-1 bg-slate-100 rounded text-xs font-bold">${l.method}</span></td>
-                        <td class="p-3 text-xs font-bold text-emerald-700">${l.checkIn} → ${l.checkOut || 'Em Curso'}</td>
-                        <td class="p-3 font-mono font-semibold">${calc.normal}h</td>
-                        <td class="p-3 font-mono font-semibold text-edm-600">${calc.extra}h</td>
-                        <td class="p-3 font-mono font-extrabold text-slate-900">${calc.total}h</td>
+                        <td class="p-3"><span class="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold">${modeLabel}</span></td>
+                        <td class="p-3 font-mono text-xs">${l.checkIn} → ${l.checkOut || 'Em Curso'}</td>
+                        <td class="p-3 font-mono text-rose-600 font-semibold">${l.delayMins > 0 ? '-' + l.delayMins + ' min' : '--'}</td>
+                        <td class="p-3 font-mono font-extrabold ${dayImpact >= 0 ? 'text-emerald-700' : 'text-rose-700'}">${dayImpact >= 0 ? '+' + dayImpact.toFixed(0) : dayImpact.toFixed(0)} MT</td>
                     </tr>
                 `;
-            }).join('') || '<tr><td colspan="7" class="p-4 text-center text-slate-400">Nenhum registo de horas para este trabalhador.</td></tr>';
+            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo de horas.</td></tr>';
+
+            const netSalary = Math.max(0, baseSalary - totalDelayDeduction + totalBonus);
+            const percent = Math.min(100, Math.round((logs.length / 22) * 100));
+
+            document.getElementById('report-net-salary').textContent = netSalary.toLocaleString('pt-PT') + ' MT';
+            document.getElementById('report-progress-text').textContent = `${logs.length} Dias Registados`;
+            document.getElementById('report-progress-bar').style.width = percent + '%';
+
+            document.getElementById('audit-report-stats').innerHTML = `
+                <div class="p-4 rounded-2xl bg-slate-50 border"><span class="text-xs font-semibold text-slate-500 uppercase">Salário Base</span><div class="text-2xl font-bold text-slate-900 mt-1">${baseSalary.toLocaleString('pt-PT')} MT</div></div>
+                <div class="p-4 rounded-2xl bg-rose-50 border"><span class="text-xs font-semibold text-rose-700 uppercase">Descontos por Atraso</span><div class="text-2xl font-bold text-rose-600 mt-1">-${totalDelayDeduction.toFixed(0)} MT</div></div>
+                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs font-semibold text-emerald-700 uppercase">Bónus Horas Extras</span><div class="text-2xl font-bold text-emerald-800 mt-1">+${totalBonus.toFixed(0)} MT</div></div>
+            `;
+
+            document.getElementById('audit-report-table').innerHTML = tableRows;
         }
 
         function exportToCSV() {
             const workers = getWorkers();
-            let csv = '\uFEFFNome;Cargo;PIN;Biometria Ativa\n';
-            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.pin}";"${w.hasFingerprint ? 'Sim' : 'Não'}"\n`);
+            let csv = '\uFEFFNome;Cargo;Salário Base;PIN\n';
+            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.salary || 20000}";"${w.pin}"\n`);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Relatorio_RH.csv'; a.click();
+            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Salarios_RH.csv'; a.click();
             showToast('Relatório exportado com sucesso!', 'info');
         }
 
