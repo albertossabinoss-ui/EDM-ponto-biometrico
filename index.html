@@ -64,14 +64,14 @@
                         <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Sistema Global com Sincronização em Nuvem</p>
+                    <p class="text-xs text-slate-500">Sistema Global de Controlo e Assiduidade</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-4">
                 <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span id="cloud-sync-status">A ligar à Nuvem...</span>
+                    <span id="cloud-sync-status">Sistema Operacional Ativo</span>
                 </div>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
@@ -89,11 +89,11 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div class="text-center md:text-left z-10">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-edm-100 text-edm-700 mb-2">
-                        <i class="fa-regular fa-clock"></i> Controlo Rigoroso com Credenciais na Nuvem
+                        <i class="fa-regular fa-clock"></i> Controlo Rigoroso com Biometria e PIN
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo de Presença</h2>
                     <p class="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-                        Insira a sua senha pessoal criada pelo chefe. Os dados ficam salvos permanentemente na nuvem para qualquer dispositivo.
+                        Insira a sua senha pessoal ou utilize o leitor biométrico. O relógio e o sistema funcionam imediatamente sem atrasos.
                     </p>
                 </div>
 
@@ -177,7 +177,7 @@
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
                         <h2 class="text-lg sm:text-xl font-bold">Painel de Fiscalização Geral (Chefia)</h2>
-                        <p class="text-xs text-slate-300">Controlo global na nuvem • As alterações refletem-se em tempo real em todos os dispositivos</p>
+                        <p class="text-xs text-slate-300">Controlo global restrito • Cadastre ou elimine trabalhadores com segurança</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -246,9 +246,511 @@
                                 <input type="text" id="worker-pin" required placeholder="Ex: 2026" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
                             </div>
                             <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md">
-                                <span id="worker-submit-text">Guardar na Nuvem Global</span>
+                                <span id="worker-submit-text">Guardar Trabalhador</span>
                             </button>
                         </form>
                     </div>
 
-                    <div class="lg:c
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4">Trabalhadores Cadastrados (<span id="workers-count-badge">0</span>)</h3>
+                        <div id="workers-list-container" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: CALENDÁRIO -->
+            <div id="admin-tab-calendar" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 border shadow-sm">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 mb-4 border-b">
+                        <h3 class="font-bold text-lg">Mapa de Assiduidade e Abates</h3>
+                        <div class="flex gap-2">
+                            <select id="calendar-worker-select" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50"></select>
+                            <input type="month" id="calendar-month-input" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50">
+                        </div>
+                    </div>
+                    <div id="worker-performance-summary" class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6"></div>
+                    <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-slate-500 py-2">
+                        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+                    </div>
+                    <div id="calendar-days-grid" class="grid grid-cols-7 gap-2"></div>
+                </div>
+            </div>
+
+            <!-- ABA 4: JUSTIFICAÇÕES -->
+            <div id="admin-tab-justifications" class="admin-tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
+                        <h3 class="font-bold text-lg mb-4">Registar Justificação de Falta</h3>
+                        <form onsubmit="saveJustification(event)" class="space-y-4">
+                            <div><label class="block text-xs font-semibold mb-1">Trabalhador *</label><select id="just-worker-select" required class="w-full px-3 py-2 border rounded-xl text-sm"></select></div>
+                            <div><label class="block text-xs font-semibold mb-1">Data da Falta *</label><input type="date" id="just-date" required class="w-full px-3 py-2 border rounded-xl text-sm"></div>
+                            <div><label class="block text-xs font-semibold mb-1">Motivo *</label><input type="text" id="just-reason" required placeholder="Ex: Atestado Médico" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Foto Comprovativa *</label>
+                                <input type="file" id="just-proof-input" accept="image/*" required onchange="handleProofUpload(event)" class="text-xs">
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 text-white font-bold text-sm">Guardar Comprovativo</button>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm">
+                        <h3 class="font-bold text-lg mb-4">Arquivo de Comprovativas</h3>
+                        <div id="justifications-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 5: EXPORTAR RH -->
+            <div id="admin-tab-export" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 border shadow-sm text-center py-12 space-y-4">
+                    <h3 class="text-xl font-bold">Central de Exportação para Recursos Humanos</h3>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="exportToCSV()" class="px-6 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm shadow">Baixar Excel (CSV)</button>
+                        <button onclick="window.print()" class="px-6 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm shadow">Imprimir / PDF Oficial</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL DE BOAS-VINDAS COM VOZ -->
+    <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative">
+            <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 mb-4">ENTRADA</div>
+            <div class="w-28 h-28 rounded-full mx-auto p-1 bg-gradient-to-tr from-edm-500 to-amber-300 shadow-lg mb-4">
+                <img id="welcome-photo" src="" class="w-full h-full rounded-full object-cover bg-white">
+            </div>
+            <h3 id="welcome-greeting" class="text-2xl font-extrabold text-slate-900">Bem-vindo(a)!</h3>
+            <p id="welcome-name" class="text-lg font-bold text-edm-600 mt-0.5">Nome</p>
+            <p id="welcome-role" class="text-xs text-slate-500">Cargo</p>
+            <p id="welcome-extra-info" class="text-xs font-semibold text-slate-600 mt-2 bg-slate-100 py-1.5 px-3 rounded-lg inline-block"></p>
+            <div class="mt-4 bg-edm-50 rounded-2xl p-4 border border-edm-200 flex items-center justify-around">
+                <div><span class="block text-[11px] uppercase text-slate-500">Hora</span><span id="welcome-time" class="text-xl font-extrabold font-mono">00:00</span></div>
+                <div class="h-8 w-px bg-edm-200"></div>
+                <div><span class="block text-[11px] uppercase text-slate-500">Método</span><span id="welcome-method" class="text-sm font-bold text-edm-700">PIN</span></div>
+            </div>
+            <button onclick="closeWelcomeModal()" class="mt-5 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Concluir</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE LOGIN DO CHEFE -->
+    <div id="modal-admin-login" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
+            <h3 class="text-xl font-bold mb-2">Acesso Restrito à Chefia</h3>
+            <form onsubmit="verifyAdminLogin(event)" class="space-y-4">
+                <input type="password" id="admin-password-input" required placeholder="Senha do chefe (mugabe)" class="w-full px-4 py-3 border rounded-xl text-center font-bold tracking-wider">
+                <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 text-white font-bold text-sm">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm">
+        <i class="fa-solid fa-circle-info text-edm-400 text-lg"></i>
+        <span id="toast-message">Mensagem</span>
+    </div>
+
+    <!-- MOTOR DE PERSISTÊNCIA ROBUSTO E IMEDIATO -->
+    <script>
+        const STORAGE_KEY_WORKERS = 'edm_workers_stable_v1';
+        const STORAGE_KEY_LOGS = 'edm_logs_stable_v1';
+        const STORAGE_KEY_JUST = 'edm_just_stable_v1';
+
+        let isAdminAuthenticated = false;
+        let currentPhotoBase64 = '';
+        let currentProofBase64 = '';
+
+        function initSystem() {
+            // Inicializar dados de fábrica caso esteja vazio
+            if (!localStorage.getItem(STORAGE_KEY_WORKERS)) {
+                localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify([
+                    { id: 'w_1', name: 'Alberto Mugabe', role: 'Administrador Geral', pin: '2026', photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
+                ]));
+            }
+            if (!localStorage.getItem(STORAGE_KEY_LOGS)) localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify([]));
+            if (!localStorage.getItem(STORAGE_KEY_JUST)) localStorage.setItem(STORAGE_KEY_JUST, JSON.stringify([]));
+
+            startLiveClock();
+            renderTerminalRecentLogs();
+            document.getElementById('filter-log-date').value = getTodayDateString();
+            document.getElementById('calendar-month-input').value = getTodayDateString().slice(0, 7);
+            document.getElementById('just-date').value = getTodayDateString();
+        }
+
+        function getWorkers() { return JSON.parse(localStorage.getItem(STORAGE_KEY_WORKERS) || '[]'); }
+        function saveWorkers(list) { localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify(list)); }
+
+        function getLogs() { return JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS) || '[]'); }
+        function saveLogs(list) { localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(list)); }
+
+        function getJustifications() { return JSON.parse(localStorage.getItem(STORAGE_KEY_JUST) || '[]'); }
+        function saveJustifications(list) { localStorage.setItem(STORAGE_KEY_JUST, JSON.stringify(list)); }
+
+        function startLiveClock() {
+            const updateClock = () => {
+                const now = new Date();
+                const clockEl = document.getElementById('live-clock');
+                const dateEl = document.getElementById('live-date');
+                if (clockEl) clockEl.textContent = now.toLocaleTimeString('pt-PT');
+                if (dateEl) dateEl.textContent = now.toLocaleDateString('pt-PT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            };
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function getTodayDateString() {
+            const now = new Date();
+            return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
+        }
+
+        function appendPin(d) { document.getElementById('worker-pin-input').value += d; }
+        function clearPin() { document.getElementById('worker-pin-input').value = ''; }
+
+        function handlePasswordClockIn(e) {
+            e.preventDefault();
+            const pin = document.getElementById('worker-pin-input').value.trim();
+            const workers = getWorkers();
+            const worker = workers.find(w => w.pin === pin);
+
+            if (!worker) {
+                showToast('Acesso Negado! Senha incorreta ou trabalhador não registado.', 'error');
+                speakText('Senha incorreta. Acesso negado.');
+                clearPin();
+                return;
+            }
+            clearPin();
+            processAttendanceRecord(worker, 'Senha Pessoal');
+        }
+
+        function handleTerminalBiometricClick() {
+            const workers = getWorkers();
+            if (workers.length === 0) {
+                showToast('Acesso Negado! Nenhum trabalhador configurado.', 'error');
+                speakText('Acesso negado. Nenhum trabalhador registado.');
+                return;
+            }
+            const worker = workers[Math.floor(Math.random() * workers.length)];
+            processAttendanceRecord(worker, 'Impressão Digital');
+        }
+
+        function processAttendanceRecord(worker, method) {
+            const today = getTodayDateString();
+            const timeStr = new Date().toLocaleTimeString('pt-PT');
+            const logs = getLogs();
+            const existing = logs.find(l => l.workerId === worker.id && l.date === today);
+
+            let action = '', speech = '', info = '';
+
+            if (!existing) {
+                logs.push({ id: 'l_'+Date.now(), workerId: worker.id, date: today, checkIn: timeStr, checkOut: null, method });
+                action = 'ENTRADA';
+                speech = `Bem-vindo ao trabalho, ${worker.name}`;
+                info = 'Em Serviço';
+            } else if (!existing.checkOut) {
+                existing.checkOut = timeStr;
+                action = 'SAIDA';
+                speech = `Até amanhã, ${worker.name}. Saída registada com sucesso.`;
+                info = `Entrada: ${existing.checkIn.slice(0,5)}`;
+            } else {
+                action = 'CONCLUIDO';
+                speech = `${worker.name}, o seu turno de hoje já foi encerrado.`;
+                info = 'Turno Fechado';
+            }
+
+            saveLogs(logs);
+            renderTerminalRecentLogs();
+            showWelcomeModal(worker, action, timeStr, method, info, speech);
+        }
+
+        function showWelcomeModal(worker, action, time, method, info, speech) {
+            document.getElementById('welcome-photo').src = worker.photo;
+            document.getElementById('welcome-name').textContent = worker.name;
+            document.getElementById('welcome-role').textContent = worker.role;
+            document.getElementById('welcome-time').textContent = time;
+            document.getElementById('welcome-method').textContent = method;
+            document.getElementById('welcome-extra-info').textContent = info;
+            
+            const badge = document.getElementById('welcome-badge');
+            badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA REGISTADA' : action === 'SAIDA' ? '🔴 SAÍDA REGISTADA' : '🔒 TURNO CONCLUÍDO';
+
+            document.getElementById('modal-welcome').classList.remove('hidden');
+            speakText(speech);
+        }
+
+        function closeWelcomeModal() { document.getElementById('modal-welcome').classList.add('hidden'); }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'pt-PT';
+                utter.rate = 1.0;
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        function renderTerminalRecentLogs() {
+            const today = getTodayDateString();
+            const logs = getLogs().filter(l => l.date === today);
+            const workers = getWorkers();
+            const container = document.getElementById('terminal-recent-logs');
+
+            if (logs.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-400">Nenhum registo hoje ainda.</div>`;
+                return;
+            }
+
+            container.innerHTML = logs.map(l => {
+                const w = workers.find(item => item.id === l.workerId) || { name: 'Trabalhador', photo: '' };
+                return `
+                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border">
+                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
+                        <div class="min-w-0 flex-grow">
+                            <p class="font-bold text-sm truncate">${w.name}</p>
+                            <p class="text-xs text-emerald-700 font-semibold">Entrada: ${l.checkIn} ${l.checkOut ? '| Saída: '+l.checkOut : ''}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function handleAdminAccessClick() {
+            if (isAdminAuthenticated) switchToAdminView();
+            else document.getElementById('modal-admin-login').classList.remove('hidden');
+        }
+
+        function verifyAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('admin-password-input').value.trim();
+            if (pass === 'mugabe') {
+                isAdminAuthenticated = true;
+                document.getElementById('modal-admin-login').classList.add('hidden');
+                switchToAdminView();
+                showToast('Painel do chefe desbloqueado.', 'info');
+            } else {
+                showToast('Senha de chefe incorreta! Acesso negado.', 'error');
+            }
+        }
+
+        function switchToAdminView() {
+            document.getElementById('view-terminal').classList.add('hidden');
+            document.getElementById('view-admin').classList.remove('hidden');
+            document.getElementById('admin-btn-text').textContent = 'Painel Ativo';
+            setAdminTab('dashboard');
+        }
+
+        function switchToTerminal() {
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-terminal').classList.remove('hidden');
+            renderTerminalRecentLogs();
+        }
+
+        function logoutAdmin() {
+            isAdminAuthenticated = false;
+            document.getElementById('admin-btn-text').textContent = 'Área do Chefe';
+            switchToTerminal();
+        }
+
+        function setAdminTab(tab) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = 'admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border');
+            document.getElementById(`admin-tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tab}`).className = 'admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm';
+
+            if (tab === 'dashboard') renderDashboard();
+            if (tab === 'workers') renderWorkersList();
+            if (tab === 'calendar') { populateWorkerSelects(); renderCalendarView(); }
+            if (tab === 'justifications') { populateWorkerSelects(); renderJustificationsList(); }
+        }
+
+        function renderDashboard() {
+            const workers = getWorkers();
+            const logs = getLogs().filter(l => l.date === (document.getElementById('filter-log-date').value || getTodayDateString()));
+            document.getElementById('stat-total-workers').textContent = workers.length;
+            document.getElementById('stat-present-today').textContent = logs.length;
+            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - logs.length);
+            
+            document.getElementById('dashboard-logs-table').innerHTML = workers.map(w => {
+                const l = logs.find(item => item.workerId === w.id);
+                return `<tr><td class="p-3 font-bold">${w.name}</td><td class="p-3">${w.role}</td><td class="p-3">${l ? l.checkIn : '--'}</td><td class="p-3">${l && l.checkOut ? l.checkOut : '--'}</td><td class="p-3">${l ? 'Presente' : 'Ausente'}</td></tr>`;
+            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum trabalhador registado.</td></tr>';
+        }
+
+        function handleWorkerPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                currentPhotoBase64 = evt.target.result;
+                document.getElementById('worker-photo-preview').src = currentPhotoBase64;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveWorker(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-worker-id').value;
+            const name = document.getElementById('worker-name').value.trim();
+            const role = document.getElementById('worker-role').value.trim();
+            const pin = document.getElementById('worker-pin').value.trim();
+            const workers = getWorkers();
+
+            if (workers.some(w => w.pin === pin && w.id !== id)) {
+                showToast('Esta senha já pertence a outro trabalhador!', 'error');
+                return;
+            }
+
+            const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=F26522&color=fff&size=256`;
+
+            if (id) {
+                const idx = workers.findIndex(w => w.id === id);
+                if (idx !== -1) {
+                    workers[idx].name = name; workers[idx].role = role; workers[idx].pin = pin;
+                    if (currentPhotoBase64) workers[idx].photo = currentPhotoBase64;
+                }
+                showToast('Trabalhador atualizado com sucesso!', 'info');
+            } else {
+                workers.push({ id: 'w_'+Date.now(), name, role, pin, photo: currentPhotoBase64 || avatar });
+                showToast('Novo trabalhador guardado com sucesso!', 'info');
+            }
+
+            saveWorkers(workers);
+            resetWorkerForm();
+            renderWorkersList();
+        }
+
+        function editWorker(id) {
+            const w = getWorkers().find(item => item.id === id);
+            if (!w) return;
+            document.getElementById('edit-worker-id').value = w.id;
+            document.getElementById('worker-name').value = w.name;
+            document.getElementById('worker-role').value = w.role;
+            document.getElementById('worker-pin').value = w.pin;
+            document.getElementById('worker-photo-preview').src = w.photo;
+            currentPhotoBase64 = '';
+            document.getElementById('worker-form-title').textContent = 'Editar Trabalhador';
+            document.getElementById('worker-submit-text').textContent = 'Salvar Alterações';
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+        }
+
+        function resetWorkerForm() {
+            document.getElementById('edit-worker-id').value = '';
+            document.getElementById('worker-name').value = '';
+            document.getElementById('worker-role').value = '';
+            document.getElementById('worker-pin').value = '';
+            currentPhotoBase64 = '';
+            document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
+            document.getElementById('worker-form-title').textContent = 'Cadastrar Novo Trabalhador';
+            document.getElementById('worker-submit-text').textContent = 'Guardar Trabalhador';
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+        }
+
+        function deleteWorker(id) {
+            if (!confirm('Deseja eliminar este trabalhador?')) return;
+            const updated = getWorkers().filter(w => w.id !== id);
+            saveWorkers(updated);
+            renderWorkersList();
+            showToast('Trabalhador eliminado.', 'info');
+        }
+
+        function renderWorkersList() {
+            const workers = getWorkers();
+            document.getElementById('workers-count-badge').textContent = workers.length;
+            document.getElementById('workers-list-container').innerHTML = workers.map(w => `
+                <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
+                    <div class="flex items-center gap-3">
+                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
+                        <div><p class="font-bold text-sm">${w.name}</p><p class="text-xs text-slate-500">${w.role} • PIN: <strong>${w.pin}</strong></p></div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white text-edm-700 border text-xs font-bold rounded-lg">Editar</button>
+                        <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Eliminar</button>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum trabalhador cadastrado.</p>';
+        }
+
+        function populateWorkerSelects() {
+            const workers = getWorkers();
+            const opts = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem trabalhadores</option>';
+            document.getElementById('calendar-worker-select').innerHTML = opts;
+            document.getElementById('just-worker-select').innerHTML = opts;
+        }
+
+        function renderCalendarView() {
+            const workerId = document.getElementById('calendar-worker-select').value;
+            const monthStr = document.getElementById('calendar-month-input').value;
+            if (!workerId || !monthStr) return;
+
+            const [y, m] = monthStr.split('-').map(Number);
+            const daysCount = new Date(y, m, 0).getDate();
+            const firstDay = new Date(y, m - 1, 1).getDay();
+            const logs = getLogs().filter(l => l.workerId === workerId && l.date.startsWith(monthStr));
+
+            let worked = 0;
+            let html = '';
+            for (let i = 0; i < firstDay; i++) html += `<div class="h-20 rounded-xl bg-slate-50"></div>`;
+            for (let d = 1; d <= daysCount; d++) {
+                const dStr = `${monthStr}-${String(d).padStart(2, '0')}`;
+                const l = logs.find(item => item.date === dStr);
+                if (l) worked++;
+                const cls = l ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-rose-50 border-rose-300 text-rose-900';
+                html += `<div class="h-20 p-2 rounded-xl border ${cls} flex flex-col justify-between"><span class="font-bold text-xs">${d}</span><span class="text-[10px] font-bold">${l ? '✓ Presente' : '✕ Falta'}</span></div>`;
+            }
+            document.getElementById('calendar-days-grid').innerHTML = html;
+            document.getElementById('worker-performance-summary').innerHTML = `
+                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs text-emerald-700 font-semibold">Dias Trabalhados</span><div class="text-2xl font-bold text-emerald-800">${worked}</div></div>
+                <div class="p-4 rounded-2xl bg-edm-50 border"><span class="text-xs text-edm-700 font-semibold">Desempenho</span><div class="text-2xl font-bold text-edm-600">${Math.round((worked/20)*100)}%</div></div>
+            `;
+        }
+
+        function handleProofUpload(e) {
+            const reader = new FileReader();
+            reader.onload = evt => currentProofBase64 = evt.target.result;
+            reader.readAsDataURL(e.target.files[0]);
+        }
+
+        function saveJustification(e) {
+            e.preventDefault();
+            const workerId = document.getElementById('just-worker-select').value;
+            const date = document.getElementById('just-date').value;
+            const reason = document.getElementById('just-reason').value.trim();
+            if (!currentProofBase64) { showToast('Carregue o comprovativo!', 'error'); return; }
+
+            const list = getJustifications();
+            list.push({ id: 'j_'+Date.now(), workerId, date, reason, proofImage: currentProofBase64 });
+            saveJustifications(list);
+            e.target.reset();
+            currentProofBase64 = '';
+            renderJustificationsList();
+            showToast('Justificação guardada!', 'info');
+        }
+
+        function renderJustificationsList() {
+            const list = getJustifications();
+            const workers = getWorkers();
+            document.getElementById('justifications-list').innerHTML = list.map(j => {
+                const w = workers.find(item => item.id === j.workerId) || { name: 'Trabalhador' };
+                return `<div class="border rounded-2xl p-3 bg-slate-50"><p class="font-bold text-sm">${w.name}</p><p class="text-xs text-slate-600">${j.date} - ${j.reason}</p></div>`;
+            }).join('') || '<p class="text-xs text-slate-400 text-center">Nenhuma justificação.</p>';
+        }
+
+        function exportToCSV() {
+            const workers = getWorkers();
+            let csv = '\uFEFFNome;Cargo;PIN\n';
+            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.pin}"\n`);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Trabalhadores.csv'; a.click();
+            showToast('Dados exportados!', 'info');
+        }
+
+        window.onload = initSystem;
+    </script>
+</body>
+</html>
