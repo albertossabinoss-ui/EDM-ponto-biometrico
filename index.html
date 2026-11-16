@@ -65,7 +65,7 @@
             <div class="flex items-center gap-2 sm:gap-4">
                 <div id="cloud-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span id="cloud-status-text">Sincronização Ativa</span>
+                    <span id="cloud-status-text">Nuvem Firebase Online</span>
                 </div>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
@@ -435,125 +435,67 @@
         <span id="toast-message">Mensagem</span>
     </div>
 
-    <!-- FIREBASE SDK + MOTOR DE SINCRONIZAÇÃO EM TEMPO REAL -->
+    <!-- FIREBASE SDK + CONFIGURAÇÃO EXATA DO TEU PROJETO -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         // =========================================================================
-        // CONFIGURAÇÃO DO FIREBASE (COLE AQUI AS SUAS CREDENCIAIS DO FIREBASE CONSOLE)
+        // CONFIGURAÇÃO DO FIREBASE (O teu projeto: edm-ponto-digital)
         // =========================================================================
         const firebaseConfig = {
-            apiKey: "COLE_SUA_API_KEY_AQUI",
-            authDomain: "SEU_PROJETO.firebaseapp.com",
-            projectId: "SEU_PROJETO_ID",
-            storageBucket: "SEU_PROJETO.appspot.com",
-            messagingSenderId: "000000000000",
-            appId: "1:000000000000:web:000000000000"
+            apiKey: "AIzaSyQkKqa-vrWzyJx10fKhtn-s1ZBNY5CMM",
+            authDomain: "edm-ponto-digital.firebaseapp.com",
+            projectId: "edm-ponto-digital",
+            storageBucket: "edm-ponto-digital.firebasestorage.app",
+            messagingSenderId: "650975815111",
+            appId: "1:650975815111:web:505f334d4e9390b137a5e2",
+            measurementId: "G-C86ETL055J"
         };
 
-        const isFirebaseConfigured = firebaseConfig.apiKey !== "COLE_SUA_API_KEY_AQUI";
-        let db = null;
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        document.getElementById('cloud-status-text').textContent = 'Nuvem Firebase Online';
 
-        // Estado em memória sincronizado com a nuvem
         let stateWorkers = [];
         let stateLogs = [];
         let stateJustifications = [];
 
-        // Fallback local caso ainda não tenha colado as chaves Firebase
-        const LS_WORKERS = 'edm_cloud_workers_v1';
-        const LS_LOGS = 'edm_cloud_logs_v1';
-        const LS_JUST = 'edm_cloud_just_v1';
-
-        if (isFirebaseConfigured) {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                document.getElementById('cloud-status-text').textContent = 'Nuvem Firebase Online';
-
-                // Escuta em tempo real: Colaboradores
-                onSnapshot(collection(db, "workers"), (snapshot) => {
-                    stateWorkers = snapshot.docs.map(d => d.data());
-                    refreshAllUI();
-                });
-
-                // Escuta em tempo real: Registos de Ponto
-                onSnapshot(collection(db, "logs"), (snapshot) => {
-                    stateLogs = snapshot.docs.map(d => d.data());
-                    refreshAllUI();
-                });
-
-                // Escuta em tempo real: Justificações
-                onSnapshot(collection(db, "justifications"), (snapshot) => {
-                    stateJustifications = snapshot.docs.map(d => d.data());
-                    refreshAllUI();
-                });
-            } catch (err) {
-                console.error("Erro Firebase:", err);
-                loadFromLocalFallback();
-            }
-        } else {
-            document.getElementById('cloud-status-text').textContent = 'Modo Local (Configure Firebase)';
-            loadFromLocalFallback();
-        }
-
-        function loadFromLocalFallback() {
-            stateWorkers = JSON.parse(localStorage.getItem(LS_WORKERS) || '[]');
+        // Sincronização em tempo real (Firestore)
+        onSnapshot(collection(db, "workers"), (snapshot) => {
+            stateWorkers = snapshot.docs.map(d => d.data());
+            // Se estiver vazio, cria o administrador inicial automaticamente na nuvem
             if (stateWorkers.length === 0) {
-                stateWorkers = [
-                    { id: 'w_admin', name: 'Alberto Mugabe', role: 'Administrador Geral', salary: 30000, pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
-                ];
-                localStorage.setItem(LS_WORKERS, JSON.stringify(stateWorkers));
+                const adminDefault = { id: 'w_admin', name: 'Alberto Mugabe', role: 'Administrador Geral', salary: 30000, pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' };
+                setDoc(doc(db, "workers", adminDefault.id), adminDefault);
             }
-            stateLogs = JSON.parse(localStorage.getItem(LS_LOGS) || '[]');
-            stateJustifications = JSON.parse(localStorage.getItem(LS_JUST) || '[]');
             refreshAllUI();
-        }
+        });
 
-        // Funções universais de gravação (Nuvem + Cache Local)
+        onSnapshot(collection(db, "logs"), (snapshot) => {
+            stateLogs = snapshot.docs.map(d => d.data());
+            refreshAllUI();
+        });
+
+        onSnapshot(collection(db, "justifications"), (snapshot) => {
+            stateJustifications = snapshot.docs.map(d => d.data());
+            refreshAllUI();
+        });
+
         window.dbSaveWorker = async function(workerObj) {
-            if (db) {
-                await setDoc(doc(db, "workers", workerObj.id), workerObj);
-            } else {
-                const idx = stateWorkers.findIndex(w => w.id === workerObj.id);
-                if (idx >= 0) stateWorkers[idx] = workerObj;
-                else stateWorkers.push(workerObj);
-                localStorage.setItem(LS_WORKERS, JSON.stringify(stateWorkers));
-                refreshAllUI();
-            }
+            await setDoc(doc(db, "workers", workerObj.id), workerObj);
         };
 
         window.dbDeleteWorker = async function(id) {
-            if (db) {
-                await deleteDoc(doc(db, "workers", id));
-            } else {
-                stateWorkers = stateWorkers.filter(w => w.id !== id);
-                localStorage.setItem(LS_WORKERS, JSON.stringify(stateWorkers));
-                refreshAllUI();
-            }
+            await deleteDoc(doc(db, "workers", id));
         };
 
         window.dbSaveLog = async function(logObj) {
-            if (db) {
-                await setDoc(doc(db, "logs", logObj.id), logObj);
-            } else {
-                const idx = stateLogs.findIndex(l => l.id === logObj.id);
-                if (idx >= 0) stateLogs[idx] = logObj;
-                else stateLogs.push(logObj);
-                localStorage.setItem(LS_LOGS, JSON.stringify(stateLogs));
-                refreshAllUI();
-            }
+            await setDoc(doc(db, "logs", logObj.id), logObj);
         };
 
         window.dbSaveJustification = async function(justObj) {
-            if (db) {
-                await setDoc(doc(db, "justifications", justObj.id), justObj);
-            } else {
-                stateJustifications = stateJustifications.filter(j => !(j.workerId === justObj.workerId && j.date === justObj.date));
-                stateJustifications.push(justObj);
-                localStorage.setItem(LS_JUST, JSON.stringify(stateJustifications));
-                refreshAllUI();
-            }
+            await setDoc(doc(db, "justifications", justObj.id), justObj);
         };
 
         window.getWorkers = () => stateWorkers;
@@ -571,14 +513,12 @@
 
     <!-- MOTOR DE REGRAS DE NEGÓCIO, PONTUALIDADE E SALÁRIOS -->
     <script>
-        // Credencial de acesso administrativo (armazenada de forma não visível na interface)
         const ADMIN_SECRET = "mugabe";
 
-        // Parâmetros Corporativos Equilibrados (Justos para Trabalhador e Empresa)
         const OFFICIAL_START_MINS = 7 * 60 + 30;  // 07:30
-        const TOLERANCE_MINS = 10;                // 10 minutos de tolerância (até 07:40 sem desconto)
-        const MAX_DAILY_DELAY_DEDUCTION = 300;    // Teto máximo de 300 MZN de desconto por atraso/dia
-        const EXTRA_MULTIPLIER_WEEKDAY = 2.0;     // +100% (Dobro) em dias normais
+        const TOLERANCE_MINS = 10;                // 10 minutos de tolerância
+        const MAX_DAILY_DELAY_DEDUCTION = 300;    // Teto máximo de 300 MZN de desconto por dia
+        const EXTRA_MULTIPLIER_WEEKDAY = 2.0;     // +100% (Dobro) em dias úteis
         const EXTRA_MULTIPLIER_WEEKEND = 2.5;     // +150% aos fins de semana
 
         let isAdminAuthenticated = false;
@@ -713,7 +653,6 @@
                     const workerMins = currH * 60 + currM;
                     if (workerMins > OFFICIAL_START_MINS) {
                         rawDelayMins = workerMins - OFFICIAL_START_MINS;
-                        // Aplica tolerância justa de 10 minutos
                         if (rawDelayMins > TOLERANCE_MINS) {
                             billableDelayMins = rawDelayMins - TOLERANCE_MINS;
                         }
@@ -1128,7 +1067,6 @@
             document.getElementById('report-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem colaboradores</option>';
         }
 
-        // CÁLCULO SALARIAL JUSTO E EQUILIBRADO
         window.renderAuditReports = function() {
             const selectEl = document.getElementById('report-worker-select');
             if (!selectEl || !selectEl.value) return;
@@ -1138,7 +1076,6 @@
             const worker = workers.find(w => w.id === workerId) || { salary: 20000 };
             const baseSalary = Number(worker.salary || 20000);
             
-            // Base de 176 horas mensais (22 dias úteis x 8h)
             const hourlyRate = baseSalary / 176;
             const extraRateWeekday = hourlyRate * EXTRA_MULTIPLIER_WEEKDAY; // +100% (2x)
             const extraRateWeekend = hourlyRate * EXTRA_MULTIPLIER_WEEKEND; // +150% (2.5x)
@@ -1167,7 +1104,6 @@
                     if (isJustified) {
                         modeLabel += ' (Abonado)';
                     } else {
-                        // Desconto justo: proporcional aos minutos após tolerância, com teto máximo de 300 MT/dia
                         const rawCost = l.delayMins * minuteRate;
                         const cappedCost = Math.min(MAX_DAILY_DELAY_DEDUCTION, rawCost);
                         totalDelayDeduction += cappedCost;
