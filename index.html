@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDM - Controlo de Ponto, Horas Extras e Salários Pro</title>
+    <title>EDM - Controlo de Presença Corporativo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-edm-200 selection:text-edm-900">
 
-    <!-- CABEÇALHO CORPORATIVO -->
+    <!-- CABEÇALHO DISCRETO E CORPORATIVO -->
     <header class="bg-white border-b border-edm-200 sticky top-0 z-30 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -55,21 +55,21 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Salários Pro</span></h1>
+                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto Digital</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Controlo de Ponto, Horas Extras (07:30 - 15:30) e Salários</p>
+                    <p class="text-xs text-slate-500">Sistema Integrado de Registo de Assiduidade</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-4">
-                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
+                <div id="cloud-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span>Sistema Operacional Ativo</span>
+                    <span id="cloud-status-text">Sincronização Ativa</span>
                 </div>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
-                    <span id="admin-btn-text">Área do Chefe</span>
+                    <span id="admin-btn-text">Área Restrita</span>
                 </button>
             </div>
         </div>
@@ -83,11 +83,11 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div class="text-center md:text-left z-10">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-edm-100 text-edm-700 mb-2">
-                        <i class="fa-regular fa-clock"></i> Horário Oficial: 07:30 às 15:30
+                        <i class="fa-regular fa-clock"></i> Horário Padrão: 07:30 às 15:30 (Tolerância: 10 min)
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo de Presença</h2>
                     <p class="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-                        Registe a sua entrada ou saída. O sistema deteta automaticamente atrasos ou permite escolher entre horário normal e horas extras.
+                        Valide a sua entrada ou saída utilizando a leitura biométrica ou o seu código pessoal PIN.
                     </p>
                 </div>
 
@@ -102,11 +102,11 @@
                 <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col items-center justify-between text-center">
                     <div class="w-full">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Biometria Privada</span>
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-fingerprint"></i> Sensor Seguro</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Biometria</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-fingerprint"></i> Leitor Ótico</span>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mt-2">Leitor de Impressão Digital</h3>
-                        <p class="text-sm text-slate-500 mt-1">Coloque o dedo no leitor para autenticação segura</p>
+                        <p class="text-sm text-slate-500 mt-1">Toque no sensor abaixo para validar o seu registo</p>
                     </div>
 
                     <div class="my-6 relative flex flex-col items-center">
@@ -114,7 +114,7 @@
                             <div class="scanner-laser rounded-full"></div>
                             <i class="fa-solid fa-fingerprint text-6xl group-hover:scale-105 transition-transform"></i>
                         </button>
-                        <span class="mt-4 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Toque para Validar Presença</span>
+                        <span class="mt-4 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Toque para Autenticar</span>
                     </div>
                 </div>
 
@@ -123,15 +123,15 @@
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">Opção 2 • Código Pessoal</span>
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-keyboard"></i> Teclado Numérico</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-keyboard"></i> Teclado Seguro</span>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mt-2">Registo por Senha PIN</h3>
-                        <p class="text-sm text-slate-500 mt-1">Digite o seu PIN pessoal para iniciar ou encerrar turno</p>
+                        <p class="text-sm text-slate-500 mt-1">Introduza o seu código pessoal privado</p>
 
                         <form onsubmit="handlePasswordClockIn(event)" class="mt-4 space-y-4">
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><i class="fa-solid fa-key"></i></span>
-                                <input type="password" id="worker-pin-input" required autocomplete="off" placeholder="Ex: 1001" 
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" id="worker-pin-input" required autocomplete="off" placeholder="••••" 
                                     class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold tracking-widest text-slate-800 focus:bg-white focus:ring-2 focus:ring-edm-500 outline-none">
                             </div>
 
@@ -148,7 +148,7 @@
                                 <button type="button" onclick="clearPin()" class="py-2 rounded-xl bg-rose-50 border border-rose-200 font-semibold text-rose-600 text-xs">LIMPAR</button>
                                 <button type="button" onclick="appendPin('0')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">0</button>
                                 <button type="submit" class="py-2 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-1">
-                                    <span>ENTRAR</span> <i class="fa-solid fa-arrow-right"></i>
+                                    <span>CONFIRMAR</span> <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
                         </form>
@@ -158,55 +158,57 @@
 
             <div class="bg-white rounded-3xl p-6 border border-edm-200 shadow-sm">
                 <h4 class="font-bold text-slate-800 flex items-center gap-2 mb-4">
-                    <i class="fa-solid fa-list-check text-edm-500"></i> Movimentos de Hoje (<span id="current-date-label">--</span>)
+                    <i class="fa-solid fa-list-check text-edm-500"></i> Registos de Hoje (<span id="current-date-label">--</span>)
                 </h4>
                 <div id="terminal-recent-logs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
             </div>
         </section>
 
-        <!-- VISTA 2: PAINEL DO CHEFE -->
+        <!-- VISTA 2: PAINEL DE GESTÃO (APENAS CHEFIA) -->
         <section id="view-admin" class="hidden space-y-6">
             <div class="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Painel de Controlo Global & Salários</h2>
-                        <p class="text-xs text-slate-300">Gestão de Turnos (07:30-15:30), Atrasos, Justificações e Salários</p>
+                        <h2 class="text-lg sm:text-xl font-bold">Gestão Empresarial, Assiduidade & Folha Salarial</h2>
+                        <p class="text-xs text-slate-300">Tolerância de 10 min • Desconto máximo diário de 300 MT • Extras valorizadas a +100%</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="switchToTerminal()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold">Voltar ao Terminal</button>
-                    <button onclick="logoutAdmin()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold">Bloquear Painel</button>
+                    <button onclick="logoutAdmin()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold">Terminar Sessão</button>
                 </div>
             </div>
 
             <!-- Abas do Administrador -->
             <div class="flex overflow-x-auto gap-2 pb-1">
                 <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm">1. Fiscalização Diária</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Trabalhadores & Salários</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Colaboradores & Salários</button>
                 <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">3. Calendário & Justificações</button>
-                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Relatórios & Salários</button>
+                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Processamento Salarial</button>
                 <button onclick="setAdminTab('export')" id="tab-btn-export" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">5. Exportar RH</button>
             </div>
 
             <!-- ABA 1: DASHBOARD -->
             <div id="admin-tab-dashboard" class="admin-tab-content space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-slate-500 uppercase">Total Trabalhadores</span><div id="stat-total-workers" class="text-3xl font-extrabold text-slate-900 mt-2">0</div></div>
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-emerald-600 uppercase">Presentes Hoje</span><div id="stat-present-today" class="text-3xl font-extrabold text-emerald-700 mt-2">0</div></div>
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-rose-600 uppercase">Ausentes Hoje</span><div id="stat-absent-today" class="text-3xl font-extrabold text-rose-700 mt-2">0</div></div>
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-edm-600 uppercase">Assiduidade Média</span><div id="stat-avg-score" class="text-3xl font-extrabold text-edm-600 mt-2">100%</div></div>
+                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-slate-500 uppercase">Equipa Total</span><div id="stat-total-workers" class="text-3xl font-extrabold text-slate-900 mt-2">0</div></div>
+                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-emerald-600 uppercase">Presentes</span><div id="stat-present-today" class="text-3xl font-extrabold text-emerald-700 mt-2">0</div></div>
+                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-rose-600 uppercase">Ausentes</span><div id="stat-absent-today" class="text-3xl font-extrabold text-rose-700 mt-2">0</div></div>
+                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-edm-600 uppercase">Taxa de Presença</span><div id="stat-avg-score" class="text-3xl font-extrabold text-edm-600 mt-2">0%</div></div>
                 </div>
 
                 <div class="bg-white rounded-3xl border shadow-sm overflow-hidden p-6">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg text-slate-800">Registo Diário e Atrasos</h3>
+                        <h3 class="font-bold text-lg text-slate-800">Controlo Diário de Pontualidade</h3>
                         <input type="date" id="filter-log-date" onchange="renderDashboard()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
                     </div>
-                    <table class="w-full text-left border-collapse">
-                        <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Trabalhador</th><th class="p-3">Tipo de Entrada</th><th class="p-3">Horários</th><th class="p-3">Normais</th><th class="p-3">Extras / FDS</th><th class="p-3">Estado</th></tr></thead>
-                        <tbody id="dashboard-logs-table" class="divide-y text-sm"></tbody>
-                    </table>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Colaborador</th><th class="p-3">Regime</th><th class="p-3">Horários</th><th class="p-3">Normais</th><th class="p-3">Extras</th><th class="p-3">Estado</th></tr></thead>
+                            <tbody id="dashboard-logs-table" class="divide-y text-sm"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -215,7 +217,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
                         <div class="flex justify-between items-center mb-4">
-                            <h3 id="worker-form-title" class="font-bold text-lg text-slate-800">Cadastrar Trabalhador & Salário</h3>
+                            <h3 id="worker-form-title" class="font-bold text-lg text-slate-800">Registar Colaborador</h3>
                             <button type="button" id="btn-cancel-edit" onclick="resetWorkerForm()" class="hidden text-xs font-semibold text-slate-500">Cancelar</button>
                         </div>
                         <form onsubmit="saveWorker(event)" class="space-y-4">
@@ -223,7 +225,7 @@
                             <div class="flex flex-col items-center p-4 bg-edm-50 rounded-2xl border border-dashed">
                                 <img id="worker-photo-preview" src="https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-3">
                                 <label for="worker-photo-input" class="cursor-pointer px-4 py-2 rounded-xl bg-white text-edm-700 border text-xs font-bold shadow-sm">
-                                    <i class="fa-solid fa-camera mr-1"></i> Escolher Foto
+                                    <i class="fa-solid fa-camera mr-1"></i> Carregar Fotografia
                                 </label>
                                 <input type="file" id="worker-photo-input" accept="image/*" onchange="handleWorkerPhotoUpload(event)" class="hidden">
                             </div>
@@ -233,30 +235,30 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold mb-1">Cargo / Departamento *</label>
-                                <input type="text" id="worker-role" required placeholder="Ex: Técnico Elétrico" class="w-full px-3 py-2 border rounded-xl text-sm">
+                                <input type="text" id="worker-role" required placeholder="Ex: Técnico de Redes" class="w-full px-3 py-2 border rounded-xl text-sm">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Salário Base Mensal (MT) *</label>
+                                <label class="block text-xs font-semibold mb-1">Salário Base Mensal (MZN) *</label>
                                 <input type="number" id="worker-salary" required placeholder="Ex: 25000" class="w-full px-3 py-2 border rounded-xl text-sm font-bold text-emerald-700">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Senha Pessoal (PIN) *</label>
-                                <input type="text" id="worker-pin" required placeholder="Ex: 2026" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
+                                <label class="block text-xs font-semibold mb-1">Código PIN Pessoal *</label>
+                                <input type="password" id="worker-pin" required placeholder="Crie um código numérico" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
                             </div>
                             <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" id="worker-has-fingerprint" checked class="w-4 h-4 text-edm-600 rounded">
-                                    <span class="text-xs font-bold text-amber-900">Configurar Biometria Digital Ativa</span>
+                                    <span class="text-xs font-bold text-amber-900">Ativar Autenticação Biométrica</span>
                                 </label>
                             </div>
                             <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md">
-                                <span id="worker-submit-text">Guardar Trabalhador</span>
+                                <span id="worker-submit-text">Guardar na Base de Dados</span>
                             </button>
                         </form>
                     </div>
 
                     <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm">
-                        <h3 class="font-bold text-lg text-slate-800 mb-4">Trabalhadores Cadastrados (<span id="workers-count-badge">0</span>)</h3>
+                        <h3 class="font-bold text-lg text-slate-800 mb-4">Quadro de Pessoal (<span id="workers-count-badge">0</span>)</h3>
                         <div id="workers-list-container" class="space-y-3"></div>
                     </div>
                 </div>
@@ -268,8 +270,8 @@
                     <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pb-3 border-b">
                             <div>
-                                <h3 class="font-bold text-lg text-slate-900">Mapa de Assiduidade e Justificações</h3>
-                                <p class="text-xs text-slate-500">Dias justificados são abonados e aprovados automaticamente.</p>
+                                <h3 class="font-bold text-lg text-slate-900">Mapa Mensal de Assiduidade</h3>
+                                <p class="text-xs text-slate-500">Faltas justificadas são abonadas integralmente sem desconto salarial.</p>
                             </div>
                             <div class="flex gap-2">
                                 <select id="calendar-worker-select" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
@@ -278,8 +280,8 @@
                         </div>
 
                         <div class="flex flex-wrap items-center gap-4 text-[11px] font-bold text-slate-600 bg-slate-50 p-3 rounded-xl border">
-                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Presença Pontual</span>
-                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-edm-500"></span> Atraso / Extras</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Pontual</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-edm-500"></span> Horas Extras</span>
                             <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Abonado (Justificado)</span>
                             <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-400"></span> Falta</span>
                         </div>
@@ -293,17 +295,17 @@
                     </div>
 
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit space-y-4">
-                        <h3 class="font-bold text-lg text-slate-900">Registar Justificação de Falta</h3>
-                        <p class="text-xs text-slate-500">Aprova e remove a falta sem congelar o sistema.</p>
+                        <h3 class="font-bold text-lg text-slate-900">Registar Justificação Oficial</h3>
+                        <p class="text-xs text-slate-500">Anexe o comprovativo para abonar a ausência ou atraso.</p>
                         <form onsubmit="saveJustification(event)" class="space-y-4">
-                            <div><label class="block text-xs font-semibold mb-1">Trabalhador *</label><select id="just-worker-select" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></select></div>
-                            <div><label class="block text-xs font-semibold mb-1">Data da Falta *</label><input type="date" id="just-date" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></div>
-                            <div><label class="block text-xs font-semibold mb-1">Motivo *</label><input type="text" id="just-reason" required placeholder="Ex: Atestado Médico" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
+                            <div><label class="block text-xs font-semibold mb-1">Colaborador *</label><select id="just-worker-select" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></select></div>
+                            <div><label class="block text-xs font-semibold mb-1">Data *</label><input type="date" id="just-date" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></div>
+                            <div><label class="block text-xs font-semibold mb-1">Motivo da Justificação *</label><input type="text" id="just-reason" required placeholder="Ex: Dispensa Médica / Serviço Externo" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Comprovativo *</label>
+                                <label class="block text-xs font-semibold mb-1">Documento Comprovativo *</label>
                                 <input type="file" id="just-proof-input" accept="image/*" required onchange="handleProofUpload(event)" class="text-xs">
                             </div>
-                            <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow">Aprovar e Justificar Falta</button>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow">Aprovar e Abonar Dia</button>
                         </form>
                     </div>
                 </div>
@@ -314,8 +316,8 @@
                 <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-6">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b">
                         <div>
-                            <h3 class="font-bold text-xl text-slate-900">Cálculo Salarial, Horas Extras e Atrasos</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Gestão rigorosa do horário de estado (07:30 - 15:30) com descontos de atrasos e bónus.</p>
+                            <h3 class="font-bold text-xl text-slate-900">Demonstrativo Salarial Justo</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Tolerância de 10 min • Desconto teto de 300 MT/dia • Horas extras pagas a 200% (dias úteis) e 250% (fins de semana).</p>
                         </div>
                         <div class="flex gap-2">
                             <select id="report-worker-select" onchange="renderAuditReports()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
@@ -324,13 +326,13 @@
 
                     <div class="p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                         <div class="space-y-2">
-                            <span class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Salário Líquido Final</span>
+                            <span class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Vencimento Líquido Estimado</span>
                             <div id="report-net-salary" class="text-3xl sm:text-4xl font-extrabold text-emerald-800">0 MT</div>
-                            <p class="text-xs text-slate-600">Base - Atrasos + Horas Extras + Fins de Semana.</p>
+                            <p class="text-xs text-slate-600">Salário Base - Descontos Moderados + Acréscimo Horas Extras.</p>
                         </div>
                         <div class="md:col-span-2 space-y-3">
                             <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>Progresso de Assiduidade</span>
+                                <span>Cumprimento Mensal</span>
                                 <span id="report-progress-text">0 Dias</span>
                             </div>
                             <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden shadow-inner">
@@ -342,10 +344,10 @@
                     <div id="audit-report-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
 
                     <div>
-                        <h4 class="font-bold text-sm text-slate-700 mb-3">Auditoria de Turnos e Reflexo Salarial</h4>
-                        <div class="overflow-hidden border rounded-2xl">
+                        <h4 class="font-bold text-sm text-slate-700 mb-3">Detalhamento por Turno</h4>
+                        <div class="overflow-x-auto border rounded-2xl">
                             <table class="w-full text-left border-collapse">
-                                <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Modo / Categoria</th><th class="p-3">Entrada → Saída</th><th class="p-3">Atraso</th><th class="p-3">Impacto Salarial</th></tr></thead>
+                                <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Regime / Ocorrência</th><th class="p-3">Entrada → Saída</th><th class="p-3">Atraso Líquido</th><th class="p-3">Reflexo Salarial</th></tr></thead>
                                 <tbody id="audit-report-table" class="divide-y text-sm"></tbody>
                             </table>
                         </div>
@@ -356,24 +358,25 @@
             <!-- ABA 5: EXPORTAR RH -->
             <div id="admin-tab-export" class="admin-tab-content hidden space-y-6">
                 <div class="bg-white rounded-3xl p-6 border shadow-sm text-center py-12 space-y-4">
-                    <h3 class="text-xl font-bold">Central de Exportação para Recursos Humanos</h3>
+                    <h3 class="text-xl font-bold">Exportação de Folha de Ponto e Salários</h3>
+                    <p class="text-xs text-slate-500 max-w-md mx-auto">Exporte os dados consolidados da nuvem para contabilidade e arquivo de Recursos Humanos.</p>
                     <div class="flex justify-center gap-4">
-                        <button onclick="exportToCSV()" class="px-6 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm shadow">Baixar Excel (CSV)</button>
-                        <button onclick="window.print()" class="px-6 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm shadow">Imprimir / PDF Oficial</button>
+                        <button onclick="exportToCSV()" class="px-6 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm shadow">Exportar Excel (CSV)</button>
+                        <button onclick="window.print()" class="px-6 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm shadow">Imprimir Relatório PDF</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- MODAL DE PERGUNTAR INTENÇÃO (NORMAL VS EXTRAS) -->
+    <!-- MODAL DE SELEÇÃO DE REGIME -->
     <div id="modal-intent" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative space-y-4">
             <div class="w-16 h-16 rounded-2xl bg-edm-100 text-edm-600 flex items-center justify-center mx-auto text-2xl">
                 <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
-            <h3 class="text-xl font-extrabold text-slate-900">Selecione o Tipo de Entrada</h3>
-            <p id="intent-worker-desc" class="text-xs text-slate-600">O horário oficial é das 07:30 às 15:30. Como deseja registar este acesso?</p>
+            <h3 class="text-xl font-extrabold text-slate-900">Confirmar Modalidade de Turno</h3>
+            <p id="intent-worker-desc" class="text-xs text-slate-600">Selecione como deseja registar a sua entrada:</p>
             
             <div class="grid grid-cols-1 gap-3 pt-2">
                 <button onclick="confirmIntent('normal')" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-between shadow">
@@ -381,7 +384,7 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
                 <button onclick="confirmIntent('extra')" class="w-full py-3.5 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm flex items-center justify-between shadow">
-                    <span><i class="fa-solid fa-bolt mr-2"></i> Horas Extras / Turno Extra</span>
+                    <span><i class="fa-solid fa-bolt mr-2"></i> Serviço Extraordinário / Horas Extras</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
@@ -389,33 +392,40 @@
         </div>
     </div>
 
-    <!-- MODAL DE BOAS-VINDAS COM VOZ -->
+    <!-- MODAL DE CONFIRMAÇÃO -->
     <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative">
             <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 mb-4">ENTRADA</div>
             <div class="w-28 h-28 rounded-full mx-auto p-1 bg-gradient-to-tr from-edm-500 to-amber-300 shadow-lg mb-4">
                 <img id="welcome-photo" src="" class="w-full h-full rounded-full object-cover bg-white">
             </div>
-            <h3 id="welcome-greeting" class="text-2xl font-extrabold text-slate-900">Bem-vindo(a)!</h3>
+            <h3 id="welcome-greeting" class="text-2xl font-extrabold text-slate-900">Registo Confirmado</h3>
             <p id="welcome-name" class="text-lg font-bold text-edm-600 mt-0.5">Nome</p>
             <p id="welcome-role" class="text-xs text-slate-500">Cargo</p>
             <p id="welcome-extra-info" class="text-xs font-semibold text-slate-600 mt-2 bg-slate-100 py-1.5 px-3 rounded-lg inline-block"></p>
             <div class="mt-4 bg-edm-50 rounded-2xl p-4 border border-edm-200 flex items-center justify-around">
                 <div><span class="block text-[11px] uppercase text-slate-500">Hora</span><span id="welcome-time" class="text-xl font-extrabold font-mono">00:00</span></div>
                 <div class="h-8 w-px bg-edm-200"></div>
-                <div><span class="block text-[11px] uppercase text-slate-500">Modo</span><span id="welcome-method" class="text-sm font-bold text-edm-700">Normal</span></div>
+                <div><span class="block text-[11px] uppercase text-slate-500">Validação</span><span id="welcome-method" class="text-sm font-bold text-edm-700">PIN</span></div>
             </div>
             <button onclick="closeWelcomeModal()" class="mt-5 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Concluir</button>
         </div>
     </div>
 
-    <!-- MODAL DE LOGIN DO CHEFE -->
+    <!-- MODAL DE LOGIN DA CHEFIA (SEM SENHA VISÍVEL) -->
     <div id="modal-admin-login" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
-            <h3 class="text-xl font-bold mb-2">Acesso Restrito à Chefia</h3>
+            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center mx-auto mb-3 text-xl">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-1">Acesso Restrito à Gestão</h3>
+            <p class="text-xs text-slate-500 mb-4">Introduza a credencial de administração</p>
             <form onsubmit="verifyAdminLogin(event)" class="space-y-4">
-                <input type="password" id="admin-password-input" required placeholder="Senha do chefe (mugabe)" class="w-full px-4 py-3 border rounded-xl text-center font-bold tracking-wider">
-                <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 text-white font-bold text-sm">Entrar</button>
+                <input type="password" id="admin-password-input" required placeholder="••••••••" class="w-full px-4 py-3 border rounded-xl text-center font-bold tracking-widest focus:ring-2 focus:ring-edm-500 outline-none">
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAdminLoginModal()" class="w-1/3 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold text-sm">Fechar</button>
+                    <button type="submit" class="w-2/3 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm">Entrar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -425,11 +435,151 @@
         <span id="toast-message">Mensagem</span>
     </div>
 
-    <!-- MOTOR LÓGICO COM HORÁRIO OFICIAL 07:30 - 15:30 E PERGUNTAS DE INTENÇÃO -->
+    <!-- FIREBASE SDK + MOTOR DE SINCRONIZAÇÃO EM TEMPO REAL -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // =========================================================================
+        // CONFIGURAÇÃO DO FIREBASE (COLE AQUI AS SUAS CREDENCIAIS DO FIREBASE CONSOLE)
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "COLE_SUA_API_KEY_AQUI",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            projectId: "SEU_PROJETO_ID",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "000000000000",
+            appId: "1:000000000000:web:000000000000"
+        };
+
+        const isFirebaseConfigured = firebaseConfig.apiKey !== "COLE_SUA_API_KEY_AQUI";
+        let db = null;
+
+        // Estado em memória sincronizado com a nuvem
+        let stateWorkers = [];
+        let stateLogs = [];
+        let stateJustifications = [];
+
+        // Fallback local caso ainda não tenha colado as chaves Firebase
+        const LS_WORKERS = 'edm_cloud_workers_v1';
+        const LS_LOGS = 'edm_cloud_logs_v1';
+        const LS_JUST = 'edm_cloud_just_v1';
+
+        if (isFirebaseConfigured) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                document.getElementById('cloud-status-text').textContent = 'Nuvem Firebase Online';
+
+                // Escuta em tempo real: Colaboradores
+                onSnapshot(collection(db, "workers"), (snapshot) => {
+                    stateWorkers = snapshot.docs.map(d => d.data());
+                    refreshAllUI();
+                });
+
+                // Escuta em tempo real: Registos de Ponto
+                onSnapshot(collection(db, "logs"), (snapshot) => {
+                    stateLogs = snapshot.docs.map(d => d.data());
+                    refreshAllUI();
+                });
+
+                // Escuta em tempo real: Justificações
+                onSnapshot(collection(db, "justifications"), (snapshot) => {
+                    stateJustifications = snapshot.docs.map(d => d.data());
+                    refreshAllUI();
+                });
+            } catch (err) {
+                console.error("Erro Firebase:", err);
+                loadFromLocalFallback();
+            }
+        } else {
+            document.getElementById('cloud-status-text').textContent = 'Modo Local (Configure Firebase)';
+            loadFromLocalFallback();
+        }
+
+        function loadFromLocalFallback() {
+            stateWorkers = JSON.parse(localStorage.getItem(LS_WORKERS) || '[]');
+            if (stateWorkers.length === 0) {
+                stateWorkers = [
+                    { id: 'w_admin', name: 'Alberto Mugabe', role: 'Administrador Geral', salary: 30000, pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
+                ];
+                localStorage.setItem(LS_WORKERS, JSON.stringify(stateWorkers));
+            }
+            stateLogs = JSON.parse(localStorage.getItem(LS_LOGS) || '[]');
+            stateJustifications = JSON.parse(localStorage.getItem(LS_JUST) || '[]');
+            refreshAllUI();
+        }
+
+        // Funções universais de gravação (Nuvem + Cache Local)
+        window.dbSaveWorker = async function(workerObj) {
+            if (db) {
+                await setDoc(doc(db, "workers", workerObj.id), workerObj);
+            } else {
+                const idx = stateWorkers.findIndex(w => w.id === workerObj.id);
+                if (idx >= 0) stateWorkers[idx] = workerObj;
+                else stateWorkers.push(workerObj);
+                localStorage.setItem(LS_WORKERS, JSON.stringify(stateWorkers));
+                refreshAllUI();
+            }
+        };
+
+        window.dbDeleteWorker = async function(id) {
+            if (db) {
+                await deleteDoc(doc(db, "workers", id));
+            } else {
+                stateWorkers = stateWorkers.filter(w => w.id !== id);
+                localStorage.setItem(LS_WORKERS, JSON.stringify(stateWorkers));
+                refreshAllUI();
+            }
+        };
+
+        window.dbSaveLog = async function(logObj) {
+            if (db) {
+                await setDoc(doc(db, "logs", logObj.id), logObj);
+            } else {
+                const idx = stateLogs.findIndex(l => l.id === logObj.id);
+                if (idx >= 0) stateLogs[idx] = logObj;
+                else stateLogs.push(logObj);
+                localStorage.setItem(LS_LOGS, JSON.stringify(stateLogs));
+                refreshAllUI();
+            }
+        };
+
+        window.dbSaveJustification = async function(justObj) {
+            if (db) {
+                await setDoc(doc(db, "justifications", justObj.id), justObj);
+            } else {
+                stateJustifications = stateJustifications.filter(j => !(j.workerId === justObj.workerId && j.date === justObj.date));
+                stateJustifications.push(justObj);
+                localStorage.setItem(LS_JUST, JSON.stringify(stateJustifications));
+                refreshAllUI();
+            }
+        };
+
+        window.getWorkers = () => stateWorkers;
+        window.getLogs = () => stateLogs;
+        window.getJustifications = () => stateJustifications;
+
+        function refreshAllUI() {
+            if (typeof window.renderTerminalRecentLogs === 'function') window.renderTerminalRecentLogs();
+            if (typeof window.renderDashboard === 'function') window.renderDashboard();
+            if (typeof window.renderWorkersList === 'function') window.renderWorkersList();
+            if (typeof window.renderCalendarView === 'function') window.renderCalendarView();
+            if (typeof window.renderAuditReports === 'function') window.renderAuditReports();
+        }
+    </script>
+
+    <!-- MOTOR DE REGRAS DE NEGÓCIO, PONTUALIDADE E SALÁRIOS -->
     <script>
-        const STORAGE_KEY_WORKERS = 'edm_workers_pro_v6';
-        const STORAGE_KEY_LOGS = 'edm_logs_pro_v6';
-        const STORAGE_KEY_JUST = 'edm_just_pro_v6';
+        // Credencial de acesso administrativo (armazenada de forma não visível na interface)
+        const ADMIN_SECRET = "mugabe";
+
+        // Parâmetros Corporativos Equilibrados (Justos para Trabalhador e Empresa)
+        const OFFICIAL_START_MINS = 7 * 60 + 30;  // 07:30
+        const TOLERANCE_MINS = 10;                // 10 minutos de tolerância (até 07:40 sem desconto)
+        const MAX_DAILY_DELAY_DEDUCTION = 300;    // Teto máximo de 300 MZN de desconto por atraso/dia
+        const EXTRA_MULTIPLIER_WEEKDAY = 2.0;     // +100% (Dobro) em dias normais
+        const EXTRA_MULTIPLIER_WEEKEND = 2.5;     // +150% aos fins de semana
 
         let isAdminAuthenticated = false;
         let currentPhotoBase64 = '';
@@ -438,31 +588,16 @@
         let pendingMethodToProcess = '';
 
         function initSystem() {
-            if (!localStorage.getItem(STORAGE_KEY_WORKERS)) {
-                localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify([
-                    { id: 'w_1', name: 'Alberto Mugabe', role: 'Administrador Geral', salary: 30000, pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' }
-                ]));
-            }
-            if (!localStorage.getItem(STORAGE_KEY_LOGS)) localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify([]));
-            if (!localStorage.getItem(STORAGE_KEY_JUST)) localStorage.setItem(STORAGE_KEY_JUST, JSON.stringify([]));
-
             startLiveClock();
-            renderTerminalRecentLogs();
             const todayStr = getTodayDateString();
             document.getElementById('current-date-label').textContent = todayStr;
             document.getElementById('filter-log-date').value = todayStr;
             document.getElementById('calendar-month-input').value = todayStr.slice(0, 7);
             document.getElementById('just-date').value = todayStr;
+            setTimeout(() => {
+                if (typeof renderTerminalRecentLogs === 'function') renderTerminalRecentLogs();
+            }, 400);
         }
-
-        function getWorkers() { return JSON.parse(localStorage.getItem(STORAGE_KEY_WORKERS) || '[]'); }
-        function saveWorkers(list) { localStorage.setItem(STORAGE_KEY_WORKERS, JSON.stringify(list)); }
-
-        function getLogs() { return JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS) || '[]'); }
-        function saveLogs(list) { localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(list)); }
-
-        function getJustifications() { return JSON.parse(localStorage.getItem(STORAGE_KEY_JUST) || '[]'); }
-        function saveJustifications(list) { localStorage.setItem(STORAGE_KEY_JUST, JSON.stringify(list)); }
 
         function startLiveClock() {
             const updateClock = () => {
@@ -481,7 +616,7 @@
             return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
         }
 
-        function showToast(msg, type = 'info') {
+        function showToast(msg) {
             const toast = document.getElementById('toast-notification');
             document.getElementById('toast-message').textContent = msg;
             toast.classList.remove('translate-y-24', 'opacity-0');
@@ -494,12 +629,12 @@
         function handlePasswordClockIn(e) {
             e.preventDefault();
             const pin = document.getElementById('worker-pin-input').value.trim();
-            const workers = getWorkers();
+            const workers = window.getWorkers();
             const worker = workers.find(w => w.pin === pin);
 
             if (!worker) {
-                showToast('Acesso Negado! Senha incorreta.', 'error');
-                speakText('Senha incorreta. Acesso negado.');
+                showToast('Código PIN inválido. Tente novamente.');
+                speakText('Código inválido.');
                 clearPin();
                 return;
             }
@@ -508,43 +643,31 @@
         }
 
         function handleAnonymousBiometricScan() {
-            const workers = getWorkers();
-            if (workers.length === 0) {
-                showToast('Acesso Negado! Nenhum trabalhador registado.', 'error');
-                speakText('Acesso negado. Nenhum trabalhador.');
-                return;
-            }
+            const workers = window.getWorkers();
             const validWorkers = workers.filter(w => w.hasFingerprint);
             if (validWorkers.length === 0) {
-                showToast('Acesso Negado! Nenhuma biometria configurada.', 'error');
-                speakText('Acesso negado. Biometria não configurada.');
+                showToast('Nenhum colaborador com biometria ativa.');
                 return;
             }
             const worker = validWorkers[Math.floor(Math.random() * validWorkers.length)];
             evaluateWorkerClockIn(worker, 'Biometria');
         }
 
-        // Avalia se o trabalhador está a abrir uma nova entrada e se deve perguntar se é Normal ou Extras
         function evaluateWorkerClockIn(worker, method) {
             const today = getTodayDateString();
-            const logs = getLogs();
+            const logs = window.getLogs();
             const activeLog = logs.find(l => l.workerId === worker.id && l.date === today && !l.checkOut);
 
             if (activeLog) {
-                // Se já tem turno aberto, a ação atual é SAÍDA (fecha o turno diretamente)
-                processAttendanceRecord(worker, method, 'saida', 'normal');
+                processAttendanceRecord(worker, method, 'saida', activeLog.intent);
             } else {
-                // Tentativa de ENTRADA: verificar se já cumpriu o turno normal hoje
                 const alreadyWorkedToday = logs.some(l => l.workerId === worker.id && l.date === today && l.checkOut);
-                
                 if (alreadyWorkedToday) {
-                    // Já fez o turno normal, logo qualquer nova entrada hoje é automaticamente HORAS EXTRAS
                     processAttendanceRecord(worker, method, 'entrada', 'extra');
                 } else {
-                    // Primeira entrada do dia: perguntar na tela se é Normal ou Extras
                     pendingWorkerToProcess = worker;
                     pendingMethodToProcess = method;
-                    document.getElementById('intent-worker-desc').textContent = `${worker.name}, deseja entrar no Turno Normal (07:30 - 15:30) ou em Horas Extras?`;
+                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name}, selecione a modalidade do seu registo:`;
                     document.getElementById('modal-intent').classList.remove('hidden');
                 }
             }
@@ -563,66 +686,71 @@
             pendingWorkerToProcess = null;
         }
 
-        // Motor principal de processamento de ponto com cálculo de atrasos (07:30)
-        function processAttendanceRecord(worker, method, actionType, intentType) {
+        async function processAttendanceRecord(worker, method, actionType, intentType) {
             const today = getTodayDateString();
             const now = new Date();
             const timeStr = now.toLocaleTimeString('pt-PT', {hour: '2-digit', minute:'2-digit'});
-            let logs = getLogs();
+            const logs = window.getLogs();
 
             if (actionType === 'saida') {
                 let activeLog = logs.find(l => l.workerId === worker.id && l.date === today && !l.checkOut);
                 if (activeLog) {
-                    activeLog.checkOut = timeStr;
-                    const calc = calculateSessionHours(activeLog.checkIn, timeStr, today, activeLog.intent);
-                    activeLog.normalHours = calc.normal.toFixed(1);
-                    activeLog.extraHours = calc.extra.toFixed(1);
-                    activeLog.totalHours = calc.total.toFixed(1);
+                    const updatedLog = { ...activeLog, checkOut: timeStr };
+                    const calc = calculateSessionHours(updatedLog.checkIn, timeStr, today, updatedLog.intent);
+                    updatedLog.normalHours = calc.normal.toFixed(1);
+                    updatedLog.extraHours = calc.extra.toFixed(1);
+                    updatedLog.totalHours = calc.total.toFixed(1);
 
-                    saveLogs(logs);
-                    renderTerminalRecentLogs();
-                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Total: ${calc.total}h`, `Até logo, ${worker.name}. Saída registada.`);
+                    await window.dbSaveLog(updatedLog);
+                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Duração: ${calc.total.toFixed(1)}h`, `Saída registada, ${worker.name}. Bom descanso.`);
                 }
             } else {
-                // ENTRADA
-                let delayMins = 0;
+                let rawDelayMins = 0;
+                let billableDelayMins = 0;
+
                 if (intentType === 'normal') {
-                    // Verificar atraso em relação às 07:30
                     const [currH, currM] = timeStr.split(':').map(Number);
-                    const officialMins = 7 * 60 + 30; // 07:30
                     const workerMins = currH * 60 + currM;
-                    if (workerMins > officialMins) {
-                        delayMins = workerMins - officialMins;
+                    if (workerMins > OFFICIAL_START_MINS) {
+                        rawDelayMins = workerMins - OFFICIAL_START_MINS;
+                        // Aplica tolerância justa de 10 minutos
+                        if (rawDelayMins > TOLERANCE_MINS) {
+                            billableDelayMins = rawDelayMins - TOLERANCE_MINS;
+                        }
                     }
                 }
 
-                logs.push({ 
-                    id: 'l_'+Date.now(), 
-                    workerId: worker.id, 
-                    date: today, 
-                    checkIn: timeStr, 
-                    checkOut: null, 
-                    method, 
-                    intent: intentType, // 'normal' ou 'extra'
-                    delayMins 
-                });
+                const newLog = {
+                    id: 'l_' + Date.now(),
+                    workerId: worker.id,
+                    date: today,
+                    checkIn: timeStr,
+                    checkOut: null,
+                    method,
+                    intent: intentType,
+                    rawDelayMins,
+                    delayMins: billableDelayMins
+                };
 
-                saveLogs(logs);
-                renderTerminalRecentLogs();
+                await window.dbSaveLog(newLog);
 
-                let infoText = intentType === 'extra' ? '⚡ Horas Extras' : (delayMins > 0 ? `⚠️ Atraso de ${delayMins} min` : '🟢 Turno Pontual (07:30)');
-                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, `Bem-vindo ao trabalho, ${worker.name}`);
+                let infoText = '🟢 Entrada Pontual';
+                if (intentType === 'extra') infoText = '⚡ Serviço Extraordinário';
+                else if (billableDelayMins > 0) infoText = `⚠️ Atraso de ${billableDelayMins} min (após tolerância)`;
+                else if (rawDelayMins > 0) infoText = `✓ Dentro da tolerância (${rawDelayMins} min)`;
+
+                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, `Bom trabalho, ${worker.name}.`);
             }
         }
 
         function calculateSessionHours(checkInStr, checkOutStr, dateStr, intent) {
-            if (!checkInStr || !checkOutStr) return { normal: 0, extra: 0, total: 0 };
+            if (!checkInStr || !checkOutStr) return { normal: 0, extra: 0, total: 0, isWeekend: false };
             const [inH, inM] = checkInStr.split(':').map(Number);
             const [outH, outM] = checkOutStr.split(':').map(Number);
             const totalMins = (outH * 60 + outM) - (inH * 60 + inM);
             const totalHours = Math.max(0, totalMins / 60);
 
-            const dayOfWeek = new Date(dateStr).getDay();
+            const dayOfWeek = new Date(dateStr + 'T12:00:00').getDay();
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
 
             let normal = 0;
@@ -634,7 +762,7 @@
                 normal = Math.min(8, totalHours);
                 extra = Math.max(0, totalHours - 8);
             }
-            return { normal, extra, total: totalHours };
+            return { normal, extra, total: totalHours, isWeekend };
         }
 
         function showWelcomeModal(worker, action, time, method, info, speech) {
@@ -646,7 +774,7 @@
             document.getElementById('welcome-extra-info').textContent = info;
             
             const badge = document.getElementById('welcome-badge');
-            badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA REGISTADA' : '🔴 SAÍDA REGISTADA';
+            badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA CONFIRMADA' : '🔴 SAÍDA CONFIRMADA';
 
             document.getElementById('modal-welcome').classList.remove('hidden');
             speakText(speech);
@@ -659,25 +787,25 @@
                 window.speechSynthesis.cancel();
                 const utter = new SpeechSynthesisUtterance(text);
                 utter.lang = 'pt-PT';
-                utter.rate = 1.0;
                 window.speechSynthesis.speak(utter);
             }
         }
 
-        function renderTerminalRecentLogs() {
+        window.renderTerminalRecentLogs = function() {
             const today = getTodayDateString();
-            const logs = getLogs().filter(l => l.date === today);
-            const workers = getWorkers();
+            const logs = window.getLogs().filter(l => l.date === today);
+            const workers = window.getWorkers();
             const container = document.getElementById('terminal-recent-logs');
+            if (!container) return;
 
             if (logs.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-400">Nenhum movimento hoje ainda.</div>`;
+                container.innerHTML = `<div class="col-span-full text-center py-4 text-xs text-slate-400">Nenhum movimento registado hoje.</div>`;
                 return;
             }
 
             container.innerHTML = logs.map(l => {
-                const w = workers.find(item => item.id === l.workerId) || { name: 'Trabalhador', photo: '' };
-                const label = l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Normal');
+                const w = workers.find(item => item.id === l.workerId) || { name: 'Colaborador', photo: '' };
+                const label = l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Pontual');
                 return `
                     <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
@@ -688,30 +816,37 @@
                     </div>
                 `;
             }).join('');
-        }
+        };
 
         function handleAdminAccessClick() {
             if (isAdminAuthenticated) switchToAdminView();
-            else document.getElementById('modal-admin-login').classList.remove('hidden');
+            else {
+                document.getElementById('admin-password-input').value = '';
+                document.getElementById('modal-admin-login').classList.remove('hidden');
+            }
+        }
+
+        function closeAdminLoginModal() {
+            document.getElementById('modal-admin-login').classList.add('hidden');
         }
 
         function verifyAdminLogin(e) {
             e.preventDefault();
             const pass = document.getElementById('admin-password-input').value.trim();
-            if (pass === 'mugabe') {
+            if (pass === ADMIN_SECRET) {
                 isAdminAuthenticated = true;
                 document.getElementById('modal-admin-login').classList.add('hidden');
                 switchToAdminView();
-                showToast('Painel do chefe desbloqueado.', 'info');
+                showToast('Sessão administrativa iniciada.');
             } else {
-                showToast('Senha de chefe incorreta!', 'error');
+                showToast('Credencial incorreta.');
             }
         }
 
         function switchToAdminView() {
             document.getElementById('view-terminal').classList.add('hidden');
             document.getElementById('view-admin').classList.remove('hidden');
-            document.getElementById('admin-btn-text').textContent = 'Painel Ativo';
+            document.getElementById('admin-btn-text').textContent = 'Gestão Ativa';
             setAdminTab('dashboard');
         }
 
@@ -723,7 +858,7 @@
 
         function logoutAdmin() {
             isAdminAuthenticated = false;
-            document.getElementById('admin-btn-text').textContent = 'Área do Chefe';
+            document.getElementById('admin-btn-text').textContent = 'Área Restrita';
             switchToTerminal();
         }
 
@@ -739,15 +874,20 @@
             if (tab === 'reports') { populateReportWorkerSelect(); renderAuditReports(); }
         }
 
-        function renderDashboard() {
-            const workers = getWorkers();
-            const dateVal = document.getElementById('filter-log-date').value || getTodayDateString();
-            const logs = getLogs().filter(l => l.date === dateVal);
+        window.renderDashboard = function() {
+            const workers = window.getWorkers();
+            const dateVal = document.getElementById('filter-log-date')?.value || getTodayDateString();
+            const logs = window.getLogs().filter(l => l.date === dateVal);
             
-            document.getElementById('stat-total-workers').textContent = workers.length;
+            const totalEl = document.getElementById('stat-total-workers');
+            if (!totalEl) return;
+
+            totalEl.textContent = workers.length;
             const presentIds = new Set(logs.map(l => l.workerId));
             document.getElementById('stat-present-today').textContent = presentIds.size;
             document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - presentIds.size);
+            const rate = workers.length > 0 ? Math.round((presentIds.size / workers.length) * 100) : 0;
+            document.getElementById('stat-avg-score').textContent = rate + '%';
             
             document.getElementById('dashboard-logs-table').innerHTML = workers.map(w => {
                 const workerLogs = logs.filter(l => l.workerId === w.id);
@@ -757,7 +897,7 @@
                     sumExt += Number(l.extraHours || 0);
                 });
 
-                const modeStr = workerLogs.map(l => l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Normal')).join(', ');
+                const modeStr = workerLogs.map(l => l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Pontual')).join(', ');
                 const timesStr = workerLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>');
 
                 return `
@@ -767,11 +907,11 @@
                         <td class="p-3 text-xs font-mono">${timesStr || '--'}</td>
                         <td class="p-3 font-mono font-semibold">${sumNorm.toFixed(1)}h</td>
                         <td class="p-3 font-mono font-semibold text-edm-600">${sumExt.toFixed(1)}h</td>
-                        <td class="p-3">${workerLogs.length > 0 ? 'Presente' : 'Ausente'}</td>
+                        <td class="p-3">${workerLogs.length > 0 ? '<span class="text-emerald-700 font-bold">Presente</span>' : '<span class="text-slate-400">Ausente</span>'}</td>
                     </tr>
                 `;
-            }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum trabalhador registado.</td></tr>';
-        }
+            }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum colaborador registado.</td></tr>';
+        };
 
         function handleWorkerPhotoUpload(e) {
             const file = e.target.files[0];
@@ -784,7 +924,7 @@
             reader.readAsDataURL(file);
         }
 
-        function saveWorker(e) {
+        async function saveWorker(e) {
             e.preventDefault();
             const id = document.getElementById('edit-worker-id').value;
             const name = document.getElementById('worker-name').value.trim();
@@ -792,38 +932,33 @@
             const salary = Number(document.getElementById('worker-salary').value) || 20000;
             const pin = document.getElementById('worker-pin').value.trim();
             const hasFingerprint = document.getElementById('worker-has-fingerprint').checked;
-            const workers = getWorkers();
+            const workers = window.getWorkers();
 
             if (workers.some(w => w.pin === pin && w.id !== id)) {
-                showToast('Esta senha já pertence a outro trabalhador!', 'error');
+                showToast('Este código PIN já está atribuído a outro colaborador.');
                 return;
             }
 
+            const existing = workers.find(w => w.id === id);
             const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=F26522&color=fff&size=256`;
 
-            if (id) {
-                const idx = workers.findIndex(w => w.id === id);
-                if (idx !== -1) {
-                    workers[idx].name = name; 
-                    workers[idx].role = role; 
-                    workers[idx].salary = salary;
-                    workers[idx].pin = pin;
-                    workers[idx].hasFingerprint = hasFingerprint;
-                    if (currentPhotoBase64) workers[idx].photo = currentPhotoBase64;
-                }
-                showToast('Trabalhador atualizado!', 'info');
-            } else {
-                workers.push({ id: 'w_'+Date.now(), name, role, salary, pin, hasFingerprint, photo: currentPhotoBase64 || avatar });
-                showToast('Trabalhador registado com sucesso!', 'info');
-            }
+            const workerObj = {
+                id: id || 'w_' + Date.now(),
+                name,
+                role,
+                salary,
+                pin,
+                hasFingerprint,
+                photo: currentPhotoBase64 || (existing ? existing.photo : avatar)
+            };
 
-            saveWorkers(workers);
+            await window.dbSaveWorker(workerObj);
             resetWorkerForm();
-            renderWorkersList();
+            showToast(id ? 'Dados atualizados na nuvem!' : 'Colaborador registado na nuvem!');
         }
 
         function editWorker(id) {
-            const w = getWorkers().find(item => item.id === id);
+            const w = window.getWorkers().find(item => item.id === id);
             if (!w) return;
             document.getElementById('edit-worker-id').value = w.id;
             document.getElementById('worker-name').value = w.name;
@@ -833,8 +968,8 @@
             document.getElementById('worker-has-fingerprint').checked = w.hasFingerprint;
             document.getElementById('worker-photo-preview').src = w.photo;
             currentPhotoBase64 = '';
-            document.getElementById('worker-form-title').textContent = 'Editar Trabalhador';
-            document.getElementById('worker-submit-text').textContent = 'Salvar Alterações';
+            document.getElementById('worker-form-title').textContent = 'Editar Colaborador';
+            document.getElementById('worker-submit-text').textContent = 'Atualizar Registo';
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
         }
 
@@ -847,57 +982,60 @@
             document.getElementById('worker-has-fingerprint').checked = true;
             currentPhotoBase64 = '';
             document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
-            document.getElementById('worker-form-title').textContent = 'Cadastrar Trabalhador & Salário';
-            document.getElementById('worker-submit-text').textContent = 'Guardar Trabalhador';
+            document.getElementById('worker-form-title').textContent = 'Registar Colaborador';
+            document.getElementById('worker-submit-text').textContent = 'Guardar na Base de Dados';
             document.getElementById('btn-cancel-edit').classList.add('hidden');
         }
 
-        function deleteWorker(id) {
-            if (!confirm('Deseja eliminar permanentemente este trabalhador?')) return;
-            const updated = getWorkers().filter(w => w.id !== id);
-            saveWorkers(updated);
-            renderWorkersList();
-            showToast('Trabalhador eliminado para sempre.', 'info');
+        async function deleteWorker(id) {
+            if (!confirm('Remover permanentemente este colaborador da base de dados?')) return;
+            await window.dbDeleteWorker(id);
+            showToast('Colaborador removido.');
         }
 
-        function renderWorkersList() {
-            const workers = getWorkers();
-            document.getElementById('workers-count-badge').textContent = workers.length;
-            document.getElementById('workers-list-container').innerHTML = workers.map(w => `
+        window.renderWorkersList = function() {
+            const workers = window.getWorkers();
+            const badge = document.getElementById('workers-count-badge');
+            const container = document.getElementById('workers-list-container');
+            if (!badge || !container) return;
+
+            badge.textContent = workers.length;
+            container.innerHTML = workers.map(w => `
                 <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
                     <div class="flex items-center gap-3">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
                         <div>
                             <p class="font-bold text-sm">${w.name}</p>
-                            <p class="text-xs text-slate-500">${w.role} • Salário: <strong>${w.salary || 20000} MT</strong></p>
+                            <p class="text-xs text-slate-500">${w.role} • Base: <strong>${Number(w.salary || 20000).toLocaleString('pt-PT')} MT</strong></p>
                         </div>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white text-edm-700 border text-xs font-bold rounded-lg">Editar</button>
-                        <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Eliminar</button>
+                        <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Remover</button>
                     </div>
                 </div>
-            `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum trabalhador cadastrado.</p>';
-        }
+            `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum colaborador registado.</p>';
+        };
 
         function populateWorkerSelects() {
-            const workers = getWorkers();
-            const opts = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem trabalhadores</option>';
+            const workers = window.getWorkers();
+            const opts = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem colaboradores</option>';
             document.getElementById('calendar-worker-select').innerHTML = opts;
             document.getElementById('just-worker-select').innerHTML = opts;
-            renderCalendarView();
         }
 
-        function renderCalendarView() {
-            const workerId = document.getElementById('calendar-worker-select').value;
-            const monthStr = document.getElementById('calendar-month-input').value;
-            if (!workerId || !monthStr) return;
+        window.renderCalendarView = function() {
+            const workerSelect = document.getElementById('calendar-worker-select');
+            const monthInput = document.getElementById('calendar-month-input');
+            if (!workerSelect || !monthInput || !workerSelect.value || !monthInput.value) return;
 
+            const workerId = workerSelect.value;
+            const monthStr = monthInput.value;
             const [y, m] = monthStr.split('-').map(Number);
             const daysCount = new Date(y, m, 0).getDate();
             const firstDay = new Date(y, m - 1, 1).getDay();
-            const logs = getLogs().filter(l => l.workerId === workerId && l.date.startsWith(monthStr));
-            const justs = getJustifications().filter(j => j.workerId === workerId && j.date.startsWith(monthStr));
+            const logs = window.getLogs().filter(l => l.workerId === workerId && l.date.startsWith(monthStr));
+            const justs = window.getJustifications().filter(j => j.workerId === workerId && j.date.startsWith(monthStr));
 
             let totalWorkedDays = 0;
             let justifiedCount = 0;
@@ -910,9 +1048,7 @@
                 const dayLogs = logs.filter(item => item.date === dStr);
                 const j = justs.find(item => item.date === dStr);
 
-                let dayHours = 0;
-                let dayExtras = 0;
-                let hasDelay = false;
+                let dayHours = 0, dayExtras = 0, hasDelay = false;
                 dayLogs.forEach(l => {
                     dayHours += Number(l.totalHours || 0);
                     dayExtras += Number(l.extraHours || 0);
@@ -920,7 +1056,7 @@
                 });
 
                 let bgClass = 'bg-rose-50 border-rose-200 text-rose-900';
-                let statusText = '✕ Falta';
+                let statusText = '✕ Ausência';
                 let gradBar = '';
 
                 if (dayLogs.length > 0) {
@@ -929,24 +1065,24 @@
                         bgClass = 'bg-orange-50 border-orange-300 text-orange-950';
                         statusText = `⚡ ${dayHours.toFixed(1)}h (Extra)`;
                         gradBar = `<div class="w-full bg-orange-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-edm-500 h-full" style="width: 100%"></div></div>`;
-                    } else if (hasDelay) {
+                    } else if (hasDelay && !j) {
                         bgClass = 'bg-yellow-50 border-yellow-300 text-yellow-950';
                         statusText = `⚠️ Atraso`;
                         gradBar = `<div class="w-full bg-yellow-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-amber-500 h-full" style="width: 100%"></div></div>`;
                     } else {
                         bgClass = 'bg-emerald-50 border-emerald-300 text-emerald-950';
-                        statusText = `✓ Pontual`;
+                        statusText = j ? `🛡️ Abonado` : `✓ Pontual`;
                         gradBar = `<div class="w-full bg-emerald-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-emerald-600 h-full" style="width: 100%"></div></div>`;
                     }
                 } else if (j) {
                     justifiedCount++;
                     bgClass = 'bg-amber-50 border-amber-300 text-amber-950';
-                    statusText = '🛡️ Abonado';
+                    statusText = '🛡️ Justificado';
                     gradBar = `<div class="w-full bg-amber-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-amber-600 h-full" style="width: 100%"></div></div>`;
                 }
 
                 html += `
-                    <div class="h-24 p-2 rounded-2xl border ${bgClass} flex flex-col justify-between shadow-sm transition hover:scale-105">
+                    <div class="h-24 p-2 rounded-2xl border ${bgClass} flex flex-col justify-between shadow-sm">
                         <div class="flex justify-between items-center"><span class="font-extrabold text-xs">${d}</span></div>
                         <div class="text-center"><span class="text-[11px] font-bold block truncate">${statusText}</span>${gradBar}</div>
                     </div>
@@ -955,11 +1091,11 @@
 
             document.getElementById('calendar-days-grid').innerHTML = html;
             document.getElementById('worker-performance-summary').innerHTML = `
-                <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><span class="text-[11px] text-emerald-700 font-bold uppercase">Presenças</span><div class="text-xl font-extrabold text-emerald-800">${totalWorkedDays} Dias</div></div>
-                <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200"><span class="text-[11px] text-amber-700 font-bold uppercase">Abonados</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount} Dias</div></div>
-                <div class="p-3 rounded-2xl bg-edm-50 border border-edm-200"><span class="text-[11px] text-edm-700 font-bold uppercase">Efetividade</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((totalWorkedDays + justifiedCount) / daysCount) * 100)}%</div></div>
+                <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><span class="text-[11px] text-emerald-700 font-bold uppercase">Dias Trabalhados</span><div class="text-xl font-extrabold text-emerald-800">${totalWorkedDays} Dias</div></div>
+                <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200"><span class="text-[11px] text-amber-700 font-bold uppercase">Dias Abonados</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount} Dias</div></div>
+                <div class="p-3 rounded-2xl bg-edm-50 border border-edm-200"><span class="text-[11px] text-edm-700 font-bold uppercase">Assiduidade</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((totalWorkedDays + justifiedCount) / daysCount) * 100)}%</div></div>
             `;
-        }
+        };
 
         function handleProofUpload(e) {
             const reader = new FileReader();
@@ -967,61 +1103,75 @@
             reader.readAsDataURL(e.target.files[0]);
         }
 
-        function saveJustification(e) {
+        async function saveJustification(e) {
             e.preventDefault();
             const workerId = document.getElementById('just-worker-select').value;
             const date = document.getElementById('just-date').value;
             const reason = document.getElementById('just-reason').value.trim();
-            if (!currentProofBase64) { showToast('Carregue o comprovativo!', 'error'); return; }
+            if (!currentProofBase64) { showToast('Anexe o documento comprovativo.'); return; }
 
-            const list = getJustifications();
-            const filtered = list.filter(j => !(j.workerId === workerId && j.date === date));
-            filtered.push({ id: 'j_'+Date.now(), workerId, date, reason, proofImage: currentProofBase64 });
-            saveJustifications(filtered);
+            await window.dbSaveJustification({
+                id: 'j_' + workerId + '_' + date,
+                workerId,
+                date,
+                reason,
+                proofImage: currentProofBase64
+            });
             
             e.target.reset();
             currentProofBase64 = '';
-            renderCalendarView();
-            showToast('Justificação aprovada! Falta abonada.', 'info');
+            showToast('Justificação registada e dia abonado!');
         }
 
         function populateReportWorkerSelect() {
-            const workers = getWorkers();
-            document.getElementById('report-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem trabalhadores</option>';
-            renderAuditReports();
+            const workers = window.getWorkers();
+            document.getElementById('report-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem colaboradores</option>';
         }
 
-        // Relatórios com cálculo de desconto por atraso e bónus por horas extras
-        function renderAuditReports() {
-            const workerId = document.getElementById('report-worker-select').value;
-            if (!workerId) return;
+        // CÁLCULO SALARIAL JUSTO E EQUILIBRADO
+        window.renderAuditReports = function() {
+            const selectEl = document.getElementById('report-worker-select');
+            if (!selectEl || !selectEl.value) return;
 
-            const workers = getWorkers();
+            const workerId = selectEl.value;
+            const workers = window.getWorkers();
             const worker = workers.find(w => w.id === workerId) || { salary: 20000 };
             const baseSalary = Number(worker.salary || 20000);
             
-            const hourlyRate = baseSalary / 176; // 176h mensais (22 dias * 8h)
-            const extraRate = hourlyRate * 1.5;     // +50% extras
-            const weekendRate = hourlyRate * 2.0;   // +100% fins de semana
-            const minuteRate = hourlyRate / 60;     // Desconto por minuto de atraso
+            // Base de 176 horas mensais (22 dias úteis x 8h)
+            const hourlyRate = baseSalary / 176;
+            const extraRateWeekday = hourlyRate * EXTRA_MULTIPLIER_WEEKDAY; // +100% (2x)
+            const extraRateWeekend = hourlyRate * EXTRA_MULTIPLIER_WEEKEND; // +150% (2.5x)
+            const minuteRate = hourlyRate / 60;
 
-            const logs = getLogs().filter(l => l.workerId === workerId);
+            const logs = window.getLogs().filter(l => l.workerId === workerId);
+            const justs = window.getJustifications().filter(j => j.workerId === workerId);
+
             let totalBonus = 0;
             let totalDelayDeduction = 0;
 
             const tableRows = logs.map(l => {
                 const calc = calculateSessionHours(l.checkIn, l.checkOut, l.date, l.intent);
+                const isJustified = justs.some(j => j.date === l.date);
                 let dayImpact = 0;
-                let modeLabel = l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal (07:30 - 15:30)';
+                let modeLabel = l.intent === 'extra' ? 'Horas Extras (+100%)' : 'Turno Normal (07:30 - 15:30)';
 
-                if (l.intent === 'extra') {
-                    dayImpact = (calc.extra || calc.total) * (calc.isWeekend ? weekendRate : extraRate);
+                if (l.intent === 'extra' || calc.extra > 0) {
+                    const extraHrs = l.intent === 'extra' ? (calc.extra || calc.total) : calc.extra;
+                    const rate = calc.isWeekend ? extraRateWeekend : extraRateWeekday;
+                    dayImpact = extraHrs * rate;
                     totalBonus += dayImpact;
-                } else {
-                    if (l.delayMins > 0) {
-                        const delayCost = l.delayMins * minuteRate;
-                        totalDelayDeduction += delayCost;
-                        dayImpact = -delayCost;
+                }
+
+                if (l.intent === 'normal' && l.delayMins > 0) {
+                    if (isJustified) {
+                        modeLabel += ' (Abonado)';
+                    } else {
+                        // Desconto justo: proporcional aos minutos após tolerância, com teto máximo de 300 MT/dia
+                        const rawCost = l.delayMins * minuteRate;
+                        const cappedCost = Math.min(MAX_DAILY_DELAY_DEDUCTION, rawCost);
+                        totalDelayDeduction += cappedCost;
+                        dayImpact -= cappedCost;
                         modeLabel += ` (Atraso ${l.delayMins}m)`;
                     }
                 }
@@ -1031,36 +1181,36 @@
                         <td class="p-3 font-semibold">${l.date}</td>
                         <td class="p-3"><span class="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold">${modeLabel}</span></td>
                         <td class="p-3 font-mono text-xs">${l.checkIn} → ${l.checkOut || 'Em Curso'}</td>
-                        <td class="p-3 font-mono text-rose-600 font-semibold">${l.delayMins > 0 ? '-' + l.delayMins + ' min' : '--'}</td>
-                        <td class="p-3 font-mono font-extrabold ${dayImpact >= 0 ? 'text-emerald-700' : 'text-rose-700'}">${dayImpact >= 0 ? '+' + dayImpact.toFixed(0) : dayImpact.toFixed(0)} MT</td>
+                        <td class="p-3 font-mono text-rose-600 font-semibold">${(l.delayMins > 0 && !isJustified) ? l.delayMins + ' min' : '--'}</td>
+                        <td class="p-3 font-mono font-extrabold ${dayImpact >= 0 ? 'text-emerald-700' : 'text-rose-700'}">${dayImpact >= 0 ? '+' + Math.round(dayImpact) : Math.round(dayImpact)} MT</td>
                     </tr>
                 `;
-            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo de horas.</td></tr>';
+            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo de ponto para este colaborador.</td></tr>';
 
             const netSalary = Math.max(0, baseSalary - totalDelayDeduction + totalBonus);
             const percent = Math.min(100, Math.round((logs.length / 22) * 100));
 
-            document.getElementById('report-net-salary').textContent = netSalary.toLocaleString('pt-PT') + ' MT';
-            document.getElementById('report-progress-text').textContent = `${logs.length} Dias Registados`;
+            document.getElementById('report-net-salary').textContent = Math.round(netSalary).toLocaleString('pt-PT') + ' MT';
+            document.getElementById('report-progress-text').textContent = `${logs.length} Turnos Registados`;
             document.getElementById('report-progress-bar').style.width = percent + '%';
 
             document.getElementById('audit-report-stats').innerHTML = `
                 <div class="p-4 rounded-2xl bg-slate-50 border"><span class="text-xs font-semibold text-slate-500 uppercase">Salário Base</span><div class="text-2xl font-bold text-slate-900 mt-1">${baseSalary.toLocaleString('pt-PT')} MT</div></div>
-                <div class="p-4 rounded-2xl bg-rose-50 border"><span class="text-xs font-semibold text-rose-700 uppercase">Descontos por Atraso</span><div class="text-2xl font-bold text-rose-600 mt-1">-${totalDelayDeduction.toFixed(0)} MT</div></div>
-                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs font-semibold text-emerald-700 uppercase">Bónus Horas Extras</span><div class="text-2xl font-bold text-emerald-800 mt-1">+${totalBonus.toFixed(0)} MT</div></div>
+                <div class="p-4 rounded-2xl bg-rose-50 border"><span class="text-xs font-semibold text-rose-700 uppercase">Descontos (Máx 300 MT/dia)</span><div class="text-2xl font-bold text-rose-600 mt-1">-${Math.round(totalDelayDeduction)} MT</div></div>
+                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs font-semibold text-emerald-700 uppercase">Acréscimo Horas Extras</span><div class="text-2xl font-bold text-emerald-800 mt-1">+${Math.round(totalBonus)} MT</div></div>
             `;
 
             document.getElementById('audit-report-table').innerHTML = tableRows;
-        }
+        };
 
         function exportToCSV() {
-            const workers = getWorkers();
-            let csv = '\uFEFFNome;Cargo;Salário Base;PIN\n';
-            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.salary || 20000}";"${w.pin}"\n`);
+            const workers = window.getWorkers();
+            let csv = '\uFEFFNome;Cargo;Salário Base (MT)\n';
+            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.salary || 20000}"\n`);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Salarios_RH.csv'; a.click();
-            showToast('Relatório exportado com sucesso!', 'info');
+            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Folha_Assiduidade_RH.csv'; a.click();
+            showToast('Ficheiro CSV exportado!');
         }
 
         window.onload = initSystem;
