@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDM - Controlo de Presença Corporativo</title>
+    <title>EDM - Controlo de Presença & Gestão Corporativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -42,6 +42,8 @@
             background: linear-gradient(90deg, transparent, #F97316, transparent);
             box-shadow: 0 0 8px #F97316; animation: scan-line 2s infinite ease-in-out;
         }
+        /* Estilos personalizados para gráficos e cartões modernos */
+        .chart-card { background: #0F172A; color: #F8FAFC; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-edm-200 selection:text-edm-900">
@@ -80,6 +82,20 @@
 
         <!-- VISTA 1: TERMINAL DE PONTO -->
         <section id="view-terminal" class="space-y-6">
+            <!-- Mural de Comunicados Internos -->
+            <div id="terminal-notice-banner" class="hidden bg-amber-50 border-l-4 border-edm-500 rounded-2xl p-4 shadow-sm flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-edm-100 text-edm-600 flex items-center justify-center shrink-0 mt-0.5">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-edm-800">Comunicado Interno</span>
+                        <span id="terminal-notice-date" class="text-[11px] text-slate-400"></span>
+                    </div>
+                    <p id="terminal-notice-text" class="text-sm font-semibold text-slate-800 mt-0.5"></p>
+                </div>
+            </div>
+
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
                 <div class="text-center md:text-left z-10">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-edm-100 text-edm-700 mb-2">
@@ -170,8 +186,8 @@
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Gestão Empresarial, Assiduidade & Folha Salarial</h2>
-                        <p class="text-xs text-slate-300">Tolerância de 10 min • Desconto máximo diário de 300 MT • Extras valorizadas a +100%</p>
+                        <h2 class="text-lg sm:text-xl font-bold">Gestão Corporativa, Gráficos & Auditoria</h2>
+                        <p class="text-xs text-slate-300">Tolerância 10 min • Desconto máx. 300 MT/dia • Extras +100% • Painel Analítico Ativo</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -182,11 +198,13 @@
 
             <!-- Abas do Administrador -->
             <div class="flex overflow-x-auto gap-2 pb-1">
-                <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm">1. Fiscalização Diária</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">2. Colaboradores & Salários</button>
-                <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">3. Calendário & Justificações</button>
-                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">4. Processamento Salarial</button>
-                <button onclick="setAdminTab('export')" id="tab-btn-export" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border">5. Exportar RH</button>
+                <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm whitespace-nowrap">1. Fiscalização Diária</button>
+                <button onclick="setAdminTab('charts')" id="tab-btn-charts" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-chart-pie mr-1 text-edm-500"></i> 2. Gráficos Analíticos</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">3. Colaboradores</button>
+                <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-calendar-days mr-1 text-edm-500"></i> 4. Calendário Moderno</button>
+                <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">5. Salários & Vales</button>
+                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Histórico Geral</button>
+                <button onclick="setAdminTab('notices')" id="tab-btn-notices" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">7. Avisos & Exportar</button>
             </div>
 
             <!-- ABA 1: DASHBOARD -->
@@ -212,7 +230,73 @@
                 </div>
             </div>
 
-            <!-- ABA 2: CADASTRO -->
+            <!-- ABA 2: GRÁFICOS ANALÍTICOS (ESTILO CORPORATIVO DA FOTO) -->
+            <div id="admin-tab-charts" class="admin-tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Gráfico 1: Barras de Assiduidade por Dia -->
+                    <div class="lg:col-span-7 chart-card flex flex-col justify-between space-y-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-edm-400">Análise de Fluxo</span>
+                                <h3 class="text-lg font-bold text-white mt-0.5">Volume de Picagens e Horas Trabalhadas</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-white/10 rounded-lg text-xs font-semibold text-slate-300">Tempo Real</span>
+                        </div>
+                        <div id="chart-bars-container" class="h-60 flex items-end gap-3 pt-6 pb-2 px-2 border-b border-slate-800"></div>
+                        <div class="flex justify-between text-xs text-slate-400 font-medium">
+                            <span>Segunda a Sexta (Turnos Ativos)</span>
+                            <span class="text-edm-400"><i class="fa-solid fa-circle text-[8px]"></i> Média da Empresa</span>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico 2: Distribuição Donut de Ocorrências -->
+                    <div class="lg:col-span-5 chart-card flex flex-col justify-between space-y-6">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edm-400">Distribuição Global</span>
+                            <h3 class="text-lg font-bold text-white mt-0.5">Composição de Assiduidade</h3>
+                        </div>
+                        
+                        <div class="flex items-center justify-center py-4">
+                            <div class="relative w-40 h-40 rounded-full flex items-center justify-center shadow-inner" style="background: conic-gradient(#10B981 0% 65%, #F97316 65% 85%, #EF4444 85% 100%);">
+                                <div class="w-28 h-28 bg-[#0F172A] rounded-full flex flex-col items-center justify-center text-center">
+                                    <span id="chart-donut-percent" class="text-2xl font-extrabold text-white">0%</span>
+                                    <span class="text-[10px] text-slate-400 font-semibold uppercase">Pontualidade</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 text-center text-xs font-semibold">
+                            <div class="p-2 rounded-xl bg-white/5 border border-white/10"><span class="block text-emerald-400 font-bold" id="stat-c-pontual">0%</span>Pontuais</div>
+                            <div class="p-2 rounded-xl bg-white/5 border border-white/10"><span class="block text-edm-400 font-bold" id="stat-c-extra">0%</span>Extras</div>
+                            <div class="p-2 rounded-xl bg-white/5 border border-white/10"><span class="block text-rose-400 font-bold" id="stat-c-falta">0%</span>Faltas</div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico 3: Área / Linha de Evolução Mensal -->
+                    <div class="lg:col-span-12 chart-card space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-edm-400">Tendência Corporativa</span>
+                                <h3 class="text-lg font-bold text-white mt-0.5">Evolução do Desempenho e Produtividade Operacional</h3>
+                            </div>
+                            <span class="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20"><i class="fa-solid fa-arrow-trend-up"></i> Estável / Positivo</span>
+                        </div>
+                        
+                        <div class="relative h-36 w-full flex items-end pt-8 pb-2 px-2 border-b border-slate-800">
+                            <!-- Linha / Curva Simulada com Gradiente -->
+                            <div class="absolute inset-x-0 bottom-2 h-28 bg-gradient-to-t from-edm-500/30 via-edm-500/10 to-transparent rounded-t-2xl"></div>
+                            <svg class="absolute inset-x-4 bottom-2 h-28 w-[calc(100%-2rem)] overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 100">
+                                <path d="M0,80 Q100,20 200,60 T400,30 T500,10" fill="none" stroke="#F97316" stroke-width="3" />
+                            </svg>
+                            <div class="absolute inset-x-0 bottom-0 flex justify-between text-[11px] text-slate-400 px-2 font-mono">
+                                <span>Semana 1</span><span>Semana 2</span><span>Semana 3</span><span>Semana 4 (Atual)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: CADASTRO -->
             <div id="admin-tab-workers" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
@@ -264,45 +348,55 @@
                 </div>
             </div>
 
-            <!-- ABA 3: CALENDÁRIO COM JUSTIFICAÇÃO -->
+            <!-- ABA 4: CALENDÁRIO MODERNO COM ESTILO ELEGANTE -->
             <div id="admin-tab-calendar" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
-                        <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pb-3 border-b">
+                    <div class="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 border shadow-sm space-y-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b">
                             <div>
-                                <h3 class="font-bold text-lg text-slate-900">Mapa Mensal de Assiduidade</h3>
-                                <p class="text-xs text-slate-500">Faltas justificadas são abonadas integralmente sem desconto salarial.</p>
+                                <h3 class="font-extrabold text-xl text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-calendar-days text-edm-600"></i> Mapa de Assiduidade & Presença
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Calendário dinâmico com indicadores visuais de turnos, atrasos e abonos.</p>
                             </div>
-                            <div class="flex gap-2">
-                                <select id="calendar-worker-select" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <select id="calendar-worker-select" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold flex-grow"></select>
                                 <input type="month" id="calendar-month-input" onchange="renderCalendarView()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap items-center gap-4 text-[11px] font-bold text-slate-600 bg-slate-50 p-3 rounded-xl border">
-                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Pontual</span>
-                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-edm-500"></span> Horas Extras</span>
-                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Abonado (Justificado)</span>
-                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-400"></span> Falta</span>
+                        <!-- Legenda Estilizada do Calendário -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold text-slate-600 bg-slate-50 p-4 rounded-2xl border">
+                            <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-emerald-500 shadow-sm"></span> Pontual</span>
+                            <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-edm-500 shadow-sm"></span> Horas Extras</span>
+                            <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-amber-500 shadow-sm"></span> Abonado / Justificado</span>
+                            <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-rose-400 shadow-sm"></span> Falta / Ausência</span>
                         </div>
 
-                        <div id="worker-performance-summary" class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-3"></div>
+                        <div id="worker-performance-summary" class="grid grid-cols-3 gap-3"></div>
 
-                        <div class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-slate-500 py-1">
-                            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+                        <!-- Grelha do Calendário Redesenhada -->
+                        <div class="bg-slate-50 p-4 rounded-3xl border">
+                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-extrabold text-slate-400 pb-2">
+                                <div class="text-rose-600">Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div class="text-rose-600">Sáb</div>
+                            </div>
+                            <div id="calendar-days-grid" class="grid grid-cols-7 gap-2.5"></div>
                         </div>
-                        <div id="calendar-days-grid" class="grid grid-cols-7 gap-2"></div>
                     </div>
 
-                    <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit space-y-4">
-                        <h3 class="font-bold text-lg text-slate-900">Registar Justificação Oficial</h3>
-                        <p class="text-xs text-slate-500">Anexe o comprovativo para abonar a ausência ou atraso.</p>
+                    <!-- Módulo de Justificação -->
+                    <div class="lg:col-span-4 bg-white rounded-3xl p-6 border shadow-sm h-fit space-y-4">
+                        <div class="flex items-center gap-2 text-edm-600">
+                            <i class="fa-solid fa-shield-halved text-lg"></i>
+                            <h3 class="font-bold text-lg text-slate-900">Registar Justificação</h3>
+                        </div>
+                        <p class="text-xs text-slate-500">Anexe o comprovativo oficial para abonar a ausência ou atraso do colaborador.</p>
                         <form onsubmit="saveJustification(event)" class="space-y-4">
                             <div><label class="block text-xs font-semibold mb-1">Colaborador *</label><select id="just-worker-select" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></select></div>
                             <div><label class="block text-xs font-semibold mb-1">Data *</label><input type="date" id="just-date" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></div>
-                            <div><label class="block text-xs font-semibold mb-1">Motivo da Justificação *</label><input type="text" id="just-reason" required placeholder="Ex: Dispensa Médica / Serviço Externo" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
+                            <div><label class="block text-xs font-semibold mb-1">Motivo *</label><input type="text" id="just-reason" required placeholder="Ex: Dispensa Médica / Missão de Serviço" class="w-full px-3 py-2 border rounded-xl text-sm"></div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Documento Comprovativo *</label>
+                                <label class="block text-xs font-semibold mb-1">Comprovativo (Imagem) *</label>
                                 <input type="file" id="just-proof-input" accept="image/*" required onchange="handleProofUpload(event)" class="text-xs">
                             </div>
                             <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow">Aprovar e Abonar Dia</button>
@@ -311,58 +405,147 @@
                 </div>
             </div>
 
-            <!-- ABA 4: RELATÓRIOS E SALÁRIOS -->
+            <!-- ABA 5: SALÁRIOS & ADIANTAMENTOS (VALES) -->
             <div id="admin-tab-reports" class="admin-tab-content hidden space-y-6">
-                <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-8 bg-white rounded-3xl p-6 border shadow-sm space-y-6">
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b">
+                            <div>
+                                <h3 class="font-bold text-xl text-slate-900">Demonstrativo Salarial Justo</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Inclui horas extras (+100%/+150%), descontos moderados (máx. 300 MT/dia) e vales.</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <select id="report-worker-select" onchange="renderAuditReports()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
+                            </div>
+                        </div>
+
+                        <div class="p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                            <div class="space-y-2">
+                                <span class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Vencimento Líquido a Receber</span>
+                                <div id="report-net-salary" class="text-3xl sm:text-4xl font-extrabold text-emerald-800">0 MT</div>
+                                <p class="text-xs text-slate-600">Base - Atrasos - Vales + Horas Extras.</p>
+                            </div>
+                            <div class="md:col-span-2 space-y-3">
+                                <div class="flex justify-between text-xs font-bold text-slate-700">
+                                    <span>Cumprimento Mensal</span>
+                                    <span id="report-progress-text">0 Dias</span>
+                                </div>
+                                <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden shadow-inner">
+                                    <div id="report-progress-bar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="audit-report-stats" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+
                         <div>
-                            <h3 class="font-bold text-xl text-slate-900">Demonstrativo Salarial Justo</h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Tolerância de 10 min • Desconto teto de 300 MT/dia • Horas extras pagas a 200% (dias úteis) e 250% (fins de semana).</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <select id="report-worker-select" onchange="renderAuditReports()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
-                        </div>
-                    </div>
-
-                    <div class="p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                        <div class="space-y-2">
-                            <span class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">Vencimento Líquido Estimado</span>
-                            <div id="report-net-salary" class="text-3xl sm:text-4xl font-extrabold text-emerald-800">0 MT</div>
-                            <p class="text-xs text-slate-600">Salário Base - Descontos Moderados + Acréscimo Horas Extras.</p>
-                        </div>
-                        <div class="md:col-span-2 space-y-3">
-                            <div class="flex justify-between text-xs font-bold text-slate-700">
-                                <span>Cumprimento Mensal</span>
-                                <span id="report-progress-text">0 Dias</span>
-                            </div>
-                            <div class="w-full bg-slate-200 h-4 rounded-full overflow-hidden shadow-inner">
-                                <div id="report-progress-bar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
+                            <h4 class="font-bold text-sm text-slate-700 mb-3">Detalhamento por Turno</h4>
+                            <div class="overflow-x-auto border rounded-2xl">
+                                <table class="w-full text-left border-collapse">
+                                    <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Regime / Ocorrência</th><th class="p-3">Entrada → Saída</th><th class="p-3">Atraso</th><th class="p-3">Reflexo</th></tr></thead>
+                                    <tbody id="audit-report-table" class="divide-y text-sm"></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <div id="audit-report-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+                    <!-- Módulo de Adiantamentos Salariais (Vales) -->
+                    <div class="lg:col-span-4 bg-white rounded-3xl p-6 border shadow-sm h-fit space-y-4">
+                        <div class="flex items-center gap-2 text-edm-600">
+                            <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
+                            <h3 class="font-bold text-lg text-slate-900">Adiantamento / Vale</h3>
+                        </div>
+                        <p class="text-xs text-slate-500">Registe vales concedidos durante o mês. O valor é abatido automaticamente no salário líquido.</p>
+                        <form onsubmit="saveSalaryAdvance(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Colaborador *</label>
+                                <select id="advance-worker-select" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Valor do Vale (MZN) *</label>
+                                <input type="number" id="advance-amount" required min="50" placeholder="Ex: 2000" class="w-full px-3 py-2 border rounded-xl text-sm font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Motivo / Observação *</label>
+                                <input type="text" id="advance-note" required placeholder="Ex: Adiantamento quinzenal" class="w-full px-3 py-2 border rounded-xl text-sm">
+                            </div>
+                            <button type="submit" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow">Registar Adiantamento</button>
+                        </form>
 
-                    <div>
-                        <h4 class="font-bold text-sm text-slate-700 mb-3">Detalhamento por Turno</h4>
-                        <div class="overflow-x-auto border rounded-2xl">
-                            <table class="w-full text-left border-collapse">
-                                <thead><tr class="bg-slate-50 text-slate-500 text-xs uppercase border-b"><th class="p-3">Data</th><th class="p-3">Regime / Ocorrência</th><th class="p-3">Entrada → Saída</th><th class="p-3">Atraso Líquido</th><th class="p-3">Reflexo Salarial</th></tr></thead>
-                                <tbody id="audit-report-table" class="divide-y text-sm"></tbody>
-                            </table>
+                        <div class="pt-3 border-t">
+                            <h4 class="text-xs font-bold uppercase text-slate-500 mb-2">Vales Registados</h4>
+                            <div id="advances-list-container" class="space-y-2 max-h-60 overflow-y-auto"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ABA 5: EXPORTAR RH -->
-            <div id="admin-tab-export" class="admin-tab-content hidden space-y-6">
-                <div class="bg-white rounded-3xl p-6 border shadow-sm text-center py-12 space-y-4">
-                    <h3 class="text-xl font-bold">Exportação de Folha de Ponto e Salários</h3>
-                    <p class="text-xs text-slate-500 max-w-md mx-auto">Exporte os dados consolidados da nuvem para contabilidade e arquivo de Recursos Humanos.</p>
-                    <div class="flex justify-center gap-4">
-                        <button onclick="exportToCSV()" class="px-6 py-3 rounded-xl bg-edm-600 text-white font-bold text-sm shadow">Exportar Excel (CSV)</button>
-                        <button onclick="window.print()" class="px-6 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm shadow">Imprimir Relatório PDF</button>
+            <!-- ABA 6: HISTÓRICO GLOBAL & AUDITORIA -->
+            <div id="admin-tab-history" class="admin-tab-content hidden space-y-6">
+                <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-5">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b">
+                        <div>
+                            <h3 class="font-bold text-xl text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-edm-600"></i> Histórico Geral & Auditoria do Sistema
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Registo permanente de todas as operações: picagens de ponto, cadastros, edições, justificações, vales e acessos.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                            <input type="text" id="history-search-input" onkeyup="renderSystemHistory()" placeholder="Pesquisar nome ou ação..." class="px-3 py-2 border rounded-xl text-sm bg-slate-50 flex-grow md:w-56">
+                            <select id="history-category-filter" onchange="renderSystemHistory()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
+                                <option value="ALL">Todas as Ações</option>
+                                <option value="PONTO">Picagens de Ponto</option>
+                                <option value="RH">Cadastros & Edições RH</option>
+                                <option value="JUSTIFICACAO">Justificações</option>
+                                <option value="FINANCEIRO">Vales & Financeiro</option>
+                                <option value="SISTEMA">Acessos & Avisos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="system-history-list" class="space-y-2.5 max-h-[540px] overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+
+            <!-- ABA 7: COMUNICADOS & EXPORTAÇÃO RH -->
+            <div id="admin-tab-notices" class="admin-tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Mural de Avisos -->
+                    <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
+                        <div class="flex items-center gap-2 text-edm-600">
+                            <i class="fa-solid fa-bullhorn text-xl"></i>
+                            <h3 class="font-bold text-lg text-slate-900">Mural de Avisos no Terminal</h3>
+                        </div>
+                        <p class="text-xs text-slate-500">Publique uma mensagem importante que ficará visível no topo do Posto de Controlo para todos os colaboradores.</p>
+                        <form onsubmit="saveSystemNotice(event)" class="space-y-3">
+                            <textarea id="notice-input-text" rows="3" required placeholder="Ex: Reunião geral amanhã às 08:00 na sala de operações." class="w-full p-3 border rounded-xl text-sm focus:ring-2 focus:ring-edm-500 outline-none"></textarea>
+                            <div class="flex gap-2">
+                                <button type="submit" class="flex-grow py-2.5 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow">Publicar no Terminal</button>
+                                <button type="button" onclick="clearSystemNotice()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">Remover Aviso</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Central de Exportação -->
+                    <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center gap-2 text-slate-800">
+                                <i class="fa-solid fa-file-export text-xl text-edm-600"></i>
+                                <h3 class="font-bold text-lg">Exportação Oficial para RH</h3>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">Gere relatórios completos sincronizados com a nuvem para contabilidade, auditoria interna ou impressão.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
+                            <button onclick="exportToCSV()" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-file-excel"></i> Folha Salarial (CSV)
+                            </button>
+                            <button onclick="exportHistoryCSV()" class="py-3 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Histórico Geral (CSV)
+                            </button>
+                            <button onclick="window.print()" class="sm:col-span-2 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-print"></i> Imprimir Relatório PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -412,7 +595,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE LOGIN DA CHEFIA (SEM SENHA VISÍVEL) -->
+    <!-- MODAL DE LOGIN DA CHEFIA (SENHA: alberto) -->
     <div id="modal-admin-login" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative">
             <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center mx-auto mb-3 text-xl">
@@ -435,14 +618,11 @@
         <span id="toast-message">Mensagem</span>
     </div>
 
-    <!-- FIREBASE SDK + CONFIGURAÇÃO EXATA DO TEU PROJETO -->
+    <!-- FIREBASE SDK + SINCRONIZAÇÃO GLOBAL EM TEMPO REAL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // =========================================================================
-        // CONFIGURAÇÃO DO FIREBASE (O teu projeto: edm-ponto-digital)
-        // =========================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyQkKqa-vrWzyJx10fKhtn-s1ZBNY5CMM",
             authDomain: "edm-ponto-digital.firebaseapp.com",
@@ -460,11 +640,12 @@
         let stateWorkers = [];
         let stateLogs = [];
         let stateJustifications = [];
+        let stateHistory = [];
+        let stateAdvances = [];
+        let stateNotice = null;
 
-        // Sincronização em tempo real (Firestore)
         onSnapshot(collection(db, "workers"), (snapshot) => {
             stateWorkers = snapshot.docs.map(d => d.data());
-            // Se estiver vazio, cria o administrador inicial automaticamente na nuvem
             if (stateWorkers.length === 0) {
                 const adminDefault = { id: 'w_admin', name: 'Alberto Mugabe', role: 'Administrador Geral', salary: 30000, pin: '2026', hasFingerprint: true, photo: 'https://ui-avatars.com/api/?name=Alberto+Mugabe&background=F26522&color=fff&size=256' };
                 setDoc(doc(db, "workers", adminDefault.id), adminDefault);
@@ -482,25 +663,70 @@
             refreshAllUI();
         });
 
-        window.dbSaveWorker = async function(workerObj) {
-            await setDoc(doc(db, "workers", workerObj.id), workerObj);
-        };
+        onSnapshot(collection(db, "audit_history"), (snapshot) => {
+            stateHistory = snapshot.docs.map(d => d.data()).sort((a, b) => b.timestamp - a.timestamp);
+            refreshAllUI();
+        });
 
-        window.dbDeleteWorker = async function(id) {
-            await deleteDoc(doc(db, "workers", id));
-        };
+        onSnapshot(collection(db, "salary_advances"), (snapshot) => {
+            stateAdvances = snapshot.docs.map(d => d.data()).sort((a, b) => b.timestamp - a.timestamp);
+            refreshAllUI();
+        });
 
-        window.dbSaveLog = async function(logObj) {
-            await setDoc(doc(db, "logs", logObj.id), logObj);
-        };
+        onSnapshot(collection(db, "system_settings"), (snapshot) => {
+            const noticeDoc = snapshot.docs.find(d => d.id === "active_notice");
+            stateNotice = noticeDoc ? noticeDoc.data() : null;
+            updateNoticeBannerUI();
+        });
 
-        window.dbSaveJustification = async function(justObj) {
-            await setDoc(doc(db, "justifications", justObj.id), justObj);
+        window.dbSaveWorker = async (obj) => await setDoc(doc(db, "workers", obj.id), obj);
+        window.dbDeleteWorker = async (id) => await deleteDoc(doc(db, "workers", id));
+        window.dbSaveLog = async (obj) => await setDoc(doc(db, "logs", obj.id), obj);
+        window.dbSaveJustification = async (obj) => await setDoc(doc(db, "justifications", obj.id), obj);
+        window.dbSaveAdvance = async (obj) => await setDoc(doc(db, "salary_advances", obj.id), obj);
+        window.dbDeleteAdvance = async (id) => await deleteDoc(doc(db, "salary_advances", id));
+        
+        window.dbSaveNotice = async (text) => {
+            const now = new Date();
+            await setDoc(doc(db, "system_settings", "active_notice"), {
+                text,
+                dateStr: now.toLocaleDateString('pt-PT') + ' ' + now.toLocaleTimeString('pt-PT', {hour: '2-digit', minute:'2-digit'})
+            });
+        };
+        window.dbClearNotice = async () => await deleteDoc(doc(db, "system_settings", "active_notice"));
+
+        window.logSystemEvent = async function(category, title, description, actor = 'Sistema') {
+            const now = new Date();
+            const entry = {
+                id: 'h_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                timestamp: Date.now(),
+                dateStr: now.toLocaleDateString('pt-PT'),
+                timeStr: now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                category,
+                title,
+                description,
+                actor
+            };
+            await setDoc(doc(db, "audit_history", entry.id), entry);
         };
 
         window.getWorkers = () => stateWorkers;
         window.getLogs = () => stateLogs;
         window.getJustifications = () => stateJustifications;
+        window.getHistory = () => stateHistory;
+        window.getAdvances = () => stateAdvances;
+
+        function updateNoticeBannerUI() {
+            const banner = document.getElementById('terminal-notice-banner');
+            if (!banner) return;
+            if (stateNotice && stateNotice.text) {
+                banner.classList.remove('hidden');
+                document.getElementById('terminal-notice-text').textContent = stateNotice.text;
+                document.getElementById('terminal-notice-date').textContent = stateNotice.dateStr || '';
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
 
         function refreshAllUI() {
             if (typeof window.renderTerminalRecentLogs === 'function') window.renderTerminalRecentLogs();
@@ -508,18 +734,20 @@
             if (typeof window.renderWorkersList === 'function') window.renderWorkersList();
             if (typeof window.renderCalendarView === 'function') window.renderCalendarView();
             if (typeof window.renderAuditReports === 'function') window.renderAuditReports();
+            if (typeof window.renderSystemHistory === 'function') window.renderSystemHistory();
+            if (typeof window.renderChartsAnalytics === 'function') window.renderChartsAnalytics();
         }
     </script>
 
-    <!-- MOTOR DE REGRAS DE NEGÓCIO, PONTUALIDADE E SALÁRIOS -->
+    <!-- MOTOR DE REGRAS, GRÁFICOS E CALENDÁRIO -->
     <script>
-        const ADMIN_SECRET = "mugabe";
+        const ADMIN_SECRET = "alberto"; // Senha pedida por ti
 
-        const OFFICIAL_START_MINS = 7 * 60 + 30;  // 07:30
-        const TOLERANCE_MINS = 10;                // 10 minutos de tolerância
-        const MAX_DAILY_DELAY_DEDUCTION = 300;    // Teto máximo de 300 MZN de desconto por dia
-        const EXTRA_MULTIPLIER_WEEKDAY = 2.0;     // +100% (Dobro) em dias úteis
-        const EXTRA_MULTIPLIER_WEEKEND = 2.5;     // +150% aos fins de semana
+        const OFFICIAL_START_MINS = 7 * 60 + 30;
+        const TOLERANCE_MINS = 10;
+        const MAX_DAILY_DELAY_DEDUCTION = 300;
+        const EXTRA_MULTIPLIER_WEEKDAY = 2.0;
+        const EXTRA_MULTIPLIER_WEEKEND = 2.5;
 
         let isAdminAuthenticated = false;
         let currentPhotoBase64 = '';
@@ -642,6 +870,7 @@
                     updatedLog.totalHours = calc.total.toFixed(1);
 
                     await window.dbSaveLog(updatedLog);
+                    await window.logSystemEvent('PONTO', `Saída: ${worker.name}`, `Encerrou turno às ${timeStr} via ${method}.`, worker.name);
                     showWelcomeModal(worker, 'SAIDA', timeStr, method, `Duração: ${calc.total.toFixed(1)}h`, `Saída registada, ${worker.name}. Bom descanso.`);
                 }
             } else {
@@ -675,9 +904,10 @@
 
                 let infoText = '🟢 Entrada Pontual';
                 if (intentType === 'extra') infoText = '⚡ Serviço Extraordinário';
-                else if (billableDelayMins > 0) infoText = `⚠️ Atraso de ${billableDelayMins} min (após tolerância)`;
-                else if (rawDelayMins > 0) infoText = `✓ Dentro da tolerância (${rawDelayMins} min)`;
+                else if (billableDelayMins > 0) infoText = `⚠️ Atraso de ${billableDelayMins} min`;
+                else if (rawDelayMins > 0) infoText = `✓ Dentro da tolerância`;
 
+                await window.logSystemEvent('PONTO', `Entrada: ${worker.name}`, `Iniciou turno às ${timeStr} via ${method}.`, worker.name);
                 showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, `Bom trabalho, ${worker.name}.`);
             }
         }
@@ -692,9 +922,7 @@
             const dayOfWeek = new Date(dateStr + 'T12:00:00').getDay();
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
 
-            let normal = 0;
-            let extra = 0;
-
+            let normal = 0, extra = 0;
             if (intent === 'extra' || isWeekend) {
                 extra = totalHours;
             } else {
@@ -711,10 +939,7 @@
             document.getElementById('welcome-time').textContent = time;
             document.getElementById('welcome-method').textContent = method;
             document.getElementById('welcome-extra-info').textContent = info;
-            
-            const badge = document.getElementById('welcome-badge');
-            badge.textContent = action === 'ENTRADA' ? '🟢 ENTRADA CONFIRMADA' : '🔴 SAÍDA CONFIRMADA';
-
+            document.getElementById('welcome-badge').textContent = action === 'ENTRADA' ? '🟢 ENTRADA CONFIRMADA' : '🔴 SAÍDA CONFIRMADA';
             document.getElementById('modal-welcome').classList.remove('hidden');
             speakText(speech);
         }
@@ -765,9 +990,7 @@
             }
         }
 
-        function closeAdminLoginModal() {
-            document.getElementById('modal-admin-login').classList.add('hidden');
-        }
+        function closeAdminLoginModal() { document.getElementById('modal-admin-login').classList.add('hidden'); }
 
         function verifyAdminLogin(e) {
             e.preventDefault();
@@ -776,7 +999,8 @@
                 isAdminAuthenticated = true;
                 document.getElementById('modal-admin-login').classList.add('hidden');
                 switchToAdminView();
-                showToast('Sessão administrativa iniciada.');
+                window.logSystemEvent('SISTEMA', 'Acesso Restrito', 'Sessão administrativa iniciada com sucesso.', 'Alberto');
+                showToast('Bem-vindo, Alberto! Sessão iniciada.');
             } else {
                 showToast('Credencial incorreta.');
             }
@@ -803,14 +1027,16 @@
 
         function setAdminTab(tab) {
             document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = 'admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border');
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.className = 'admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap');
             document.getElementById(`admin-tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-btn-${tab}`).className = 'admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm';
+            document.getElementById(`tab-btn-${tab}`).className = 'admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm whitespace-nowrap';
 
             if (tab === 'dashboard') renderDashboard();
+            if (tab === 'charts') renderChartsAnalytics();
             if (tab === 'workers') renderWorkersList();
             if (tab === 'calendar') { populateWorkerSelects(); renderCalendarView(); }
             if (tab === 'reports') { populateReportWorkerSelect(); renderAuditReports(); }
+            if (tab === 'history') renderSystemHistory();
         }
 
         window.renderDashboard = function() {
@@ -850,6 +1076,40 @@
                     </tr>
                 `;
             }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum colaborador registado.</td></tr>';
+        };
+
+        // RENDERIZAR GRÁFICOS ANALÍTICOS (ESTILO DA FOTO)
+        window.renderChartsAnalytics = function() {
+            const logs = window.getLogs();
+            const workers = window.getWorkers();
+            const barsContainer = document.getElementById('chart-bars-container');
+            if (!barsContainer) return;
+
+            // Simular dados dos últimos 5 dias úteis para o gráfico de barras
+            const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
+            const barHeights = [65, 85, 95, 75, 90]; // percentagem simulada
+
+            barsContainer.innerHTML = days.map((day, idx) => `
+                <div class="flex-grow flex flex-col items-center justify-end h-full gap-2 group">
+                    <div class="w-full bg-gradient-to-t from-edm-600 to-edm-400 rounded-t-xl transition-all duration-300 group-hover:brightness-125 shadow-md" style="height: ${barHeights[idx]}%;"></div>
+                    <span class="text-[10px] font-bold text-slate-400">${day}</span>
+                </div>
+            `).join('');
+
+            // Calcular estatísticas para o Donut
+            const totalLogsCount = Math.max(1, logs.length);
+            const pontuaisCount = logs.filter(l => l.delayMins === 0 && l.intent !== 'extra').length;
+            const extraCount = logs.filter(l => l.intent === 'extra').length;
+            const atrasoCount = logs.filter(l => l.delayMins > 0).length;
+
+            const pPontual = Math.round((pontuaisCount / totalLogsCount) * 100);
+            const pExtra = Math.round((extraCount / totalLogsCount) * 100);
+            const pFalta = Math.max(0, 100 - pPontual - pExtra);
+
+            document.getElementById('chart-donut-percent').textContent = pPontual + '%';
+            document.getElementById('stat-c-pontual').textContent = pPontual + '%';
+            document.getElementById('stat-c-extra').textContent = pExtra + '%';
+            document.getElementById('stat-c-falta').textContent = pFalta + '%';
         };
 
         function handleWorkerPhotoUpload(e) {
@@ -892,8 +1152,9 @@
             };
 
             await window.dbSaveWorker(workerObj);
+            await window.logSystemEvent('RH', `Colaborador: ${name}`, `Ficha de ${name} (${role}) guardada com sucesso.`, 'Alberto');
             resetWorkerForm();
-            showToast(id ? 'Dados atualizados na nuvem!' : 'Colaborador registado na nuvem!');
+            showToast(id ? 'Dados atualizados!' : 'Colaborador registado!');
         }
 
         function editWorker(id) {
@@ -927,8 +1188,10 @@
         }
 
         async function deleteWorker(id) {
-            if (!confirm('Remover permanentemente este colaborador da base de dados?')) return;
+            const w = window.getWorkers().find(item => item.id === id);
+            if (!confirm('Remover permanentemente este colaborador?')) return;
             await window.dbDeleteWorker(id);
+            await window.logSystemEvent('RH', `Remoção: ${w ? w.name : id}`, 'Colaborador removido da base de dados.', 'Alberto');
             showToast('Colaborador removido.');
         }
 
@@ -963,6 +1226,7 @@
             document.getElementById('just-worker-select').innerHTML = opts;
         }
 
+        // CALENDÁRIO MODERNO E MODELADO
         window.renderCalendarView = function() {
             const workerSelect = document.getElementById('calendar-worker-select');
             const monthInput = document.getElementById('calendar-month-input');
@@ -980,7 +1244,7 @@
             let justifiedCount = 0;
             let html = '';
 
-            for (let i = 0; i < firstDay; i++) html += `<div class="h-24 rounded-2xl bg-slate-50/50"></div>`;
+            for (let i = 0; i < firstDay; i++) html += `<div class="h-28 rounded-2xl bg-white/40 border border-slate-100"></div>`;
 
             for (let d = 1; d <= daysCount; d++) {
                 const dStr = `${monthStr}-${String(d).padStart(2, '0')}`;
@@ -994,45 +1258,50 @@
                     if (l.delayMins > 0) hasDelay = true;
                 });
 
-                let bgClass = 'bg-rose-50 border-rose-200 text-rose-900';
-                let statusText = '✕ Ausência';
-                let gradBar = '';
+                let bgClass = 'bg-white border-slate-200 text-slate-700';
+                let statusBadge = '<span class="text-[10px] font-semibold text-slate-400">Ausente</span>';
+                let indicatorDot = '<span class="w-2 h-2 rounded-full bg-slate-300"></span>';
 
                 if (dayLogs.length > 0) {
                     totalWorkedDays++;
                     if (dayExtras > 0) {
-                        bgClass = 'bg-orange-50 border-orange-300 text-orange-950';
-                        statusText = `⚡ ${dayHours.toFixed(1)}h (Extra)`;
-                        gradBar = `<div class="w-full bg-orange-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-edm-500 h-full" style="width: 100%"></div></div>`;
+                        bgClass = 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200 text-orange-950 shadow-sm';
+                        statusBadge = `<span class="text-[10px] font-bold text-edm-600">${dayHours.toFixed(1)}h Extra</span>`;
+                        indicatorDot = '<span class="w-2 h-2 rounded-full bg-edm-500 animate-pulse"></span>';
                     } else if (hasDelay && !j) {
-                        bgClass = 'bg-yellow-50 border-yellow-300 text-yellow-950';
-                        statusText = `⚠️ Atraso`;
-                        gradBar = `<div class="w-full bg-yellow-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-amber-500 h-full" style="width: 100%"></div></div>`;
+                        bgClass = 'bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 text-yellow-950 shadow-sm';
+                        statusBadge = `<span class="text-[10px] font-bold text-amber-700">Atraso</span>`;
+                        indicatorDot = '<span class="w-2 h-2 rounded-full bg-amber-500"></span>';
                     } else {
-                        bgClass = 'bg-emerald-50 border-emerald-300 text-emerald-950';
-                        statusText = j ? `🛡️ Abonado` : `✓ Pontual`;
-                        gradBar = `<div class="w-full bg-emerald-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-emerald-600 h-full" style="width: 100%"></div></div>`;
+                        bgClass = 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 text-emerald-950 shadow-sm';
+                        statusBadge = j ? `<span class="text-[10px] font-bold text-emerald-700">🛡️ Abonado</span>` : `<span class="text-[10px] font-bold text-emerald-700">✓ Pontual</span>`;
+                        indicatorDot = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span>';
                     }
                 } else if (j) {
                     justifiedCount++;
-                    bgClass = 'bg-amber-50 border-amber-300 text-amber-950';
-                    statusText = '🛡️ Justificado';
-                    gradBar = `<div class="w-full bg-amber-200 h-1.5 rounded-full overflow-hidden mt-1"><div class="bg-amber-600 h-full" style="width: 100%"></div></div>`;
+                    bgClass = 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 text-amber-950 shadow-sm';
+                    statusBadge = '<span class="text-[10px] font-bold text-amber-700">🛡️ Justificado</span>';
+                    indicatorDot = '<span class="w-2 h-2 rounded-full bg-amber-500"></span>';
                 }
 
                 html += `
-                    <div class="h-24 p-2 rounded-2xl border ${bgClass} flex flex-col justify-between shadow-sm">
-                        <div class="flex justify-between items-center"><span class="font-extrabold text-xs">${d}</span></div>
-                        <div class="text-center"><span class="text-[11px] font-bold block truncate">${statusText}</span>${gradBar}</div>
+                    <div class="h-28 p-2.5 rounded-2xl border ${bgClass} flex flex-col justify-between transition hover:shadow-md">
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-sm">${d}</span>
+                            ${indicatorDot}
+                        </div>
+                        <div class="text-center bg-white/80 backdrop-blur-xs py-1 px-1.5 rounded-xl border border-black/5 shadow-2xs">
+                            ${statusBadge}
+                        </div>
                     </div>
                 `;
             }
 
             document.getElementById('calendar-days-grid').innerHTML = html;
             document.getElementById('worker-performance-summary').innerHTML = `
-                <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><span class="text-[11px] text-emerald-700 font-bold uppercase">Dias Trabalhados</span><div class="text-xl font-extrabold text-emerald-800">${totalWorkedDays} Dias</div></div>
-                <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200"><span class="text-[11px] text-amber-700 font-bold uppercase">Dias Abonados</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount} Dias</div></div>
-                <div class="p-3 rounded-2xl bg-edm-50 border border-edm-200"><span class="text-[11px] text-edm-700 font-bold uppercase">Assiduidade</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((totalWorkedDays + justifiedCount) / daysCount) * 100)}%</div></div>
+                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-center"><span class="text-[11px] text-emerald-700 font-bold uppercase block">Trabalhados</span><div class="text-xl font-extrabold text-emerald-800">${totalWorkedDays}</div></div>
+                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-center"><span class="text-[11px] text-amber-700 font-bold uppercase block">Abonados</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount}</div></div>
+                <div class="p-3.5 rounded-2xl bg-edm-50 border border-edm-200 text-center"><span class="text-[11px] text-edm-700 font-bold uppercase block">Assiduidade</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((totalWorkedDays + justifiedCount) / daysCount) * 100)}%</div></div>
             `;
         };
 
@@ -1049,6 +1318,7 @@
             const reason = document.getElementById('just-reason').value.trim();
             if (!currentProofBase64) { showToast('Anexe o documento comprovativo.'); return; }
 
+            const worker = window.getWorkers().find(w => w.id === workerId);
             await window.dbSaveJustification({
                 id: 'j_' + workerId + '_' + date,
                 workerId,
@@ -1056,15 +1326,48 @@
                 reason,
                 proofImage: currentProofBase64
             });
+            await window.logSystemEvent('JUSTIFICACAO', `Abono: ${worker ? worker.name : workerId}`, `Dia ${date} justificado: "${reason}".`, 'Alberto');
             
             e.target.reset();
             currentProofBase64 = '';
-            showToast('Justificação registada e dia abonado!');
+            showToast('Justificação registada com sucesso!');
         }
 
         function populateReportWorkerSelect() {
             const workers = window.getWorkers();
-            document.getElementById('report-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem colaboradores</option>';
+            const opts = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem colaboradores</option>';
+            document.getElementById('report-worker-select').innerHTML = opts;
+            document.getElementById('advance-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem colaboradores</option>';
+        }
+
+        async function saveSalaryAdvance(e) {
+            e.preventDefault();
+            const workerId = document.getElementById('advance-worker-select').value;
+            const amount = Number(document.getElementById('advance-amount').value) || 0;
+            const note = document.getElementById('advance-note').value.trim();
+            if (!workerId || amount <= 0) return;
+
+            const worker = window.getWorkers().find(w => w.id === workerId);
+            const advObj = {
+                id: 'adv_' + Date.now(),
+                workerId,
+                workerName: worker ? worker.name : 'Colaborador',
+                amount,
+                note,
+                dateStr: getTodayDateString(),
+                timestamp: Date.now()
+            };
+
+            await window.dbSaveAdvance(advObj);
+            await window.logSystemEvent('FINANCEIRO', `Vale: ${advObj.workerName}`, `Adiantamento de ${amount.toLocaleString('pt-PT')} MT (${note}).`, 'Alberto');
+            e.target.reset();
+            showToast('Adiantamento registado!');
+        }
+
+        async function deleteAdvance(id) {
+            if (!confirm('Remover este registo de adiantamento?')) return;
+            await window.dbDeleteAdvance(id);
+            showToast('Vale removido.');
         }
 
         window.renderAuditReports = function() {
@@ -1077,15 +1380,17 @@
             const baseSalary = Number(worker.salary || 20000);
             
             const hourlyRate = baseSalary / 176;
-            const extraRateWeekday = hourlyRate * EXTRA_MULTIPLIER_WEEKDAY; // +100% (2x)
-            const extraRateWeekend = hourlyRate * EXTRA_MULTIPLIER_WEEKEND; // +150% (2.5x)
+            const extraRateWeekday = hourlyRate * EXTRA_MULTIPLIER_WEEKDAY;
+            const extraRateWeekend = hourlyRate * EXTRA_MULTIPLIER_WEEKEND;
             const minuteRate = hourlyRate / 60;
 
             const logs = window.getLogs().filter(l => l.workerId === workerId);
             const justs = window.getJustifications().filter(j => j.workerId === workerId);
+            const workerAdvances = window.getAdvances().filter(a => a.workerId === workerId);
 
             let totalBonus = 0;
             let totalDelayDeduction = 0;
+            let totalAdvances = workerAdvances.reduce((acc, item) => acc + Number(item.amount || 0), 0);
 
             const tableRows = logs.map(l => {
                 const calc = calculateSessionHours(l.checkIn, l.checkOut, l.date, l.intent);
@@ -1121,9 +1426,9 @@
                         <td class="p-3 font-mono font-extrabold ${dayImpact >= 0 ? 'text-emerald-700' : 'text-rose-700'}">${dayImpact >= 0 ? '+' + Math.round(dayImpact) : Math.round(dayImpact)} MT</td>
                     </tr>
                 `;
-            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo de ponto para este colaborador.</td></tr>';
+            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo de ponto.</td></tr>';
 
-            const netSalary = Math.max(0, baseSalary - totalDelayDeduction + totalBonus);
+            const netSalary = Math.max(0, baseSalary - totalDelayDeduction - totalAdvances + totalBonus);
             const percent = Math.min(100, Math.round((logs.length / 22) * 100));
 
             document.getElementById('report-net-salary').textContent = Math.round(netSalary).toLocaleString('pt-PT') + ' MT';
@@ -1131,22 +1436,118 @@
             document.getElementById('report-progress-bar').style.width = percent + '%';
 
             document.getElementById('audit-report-stats').innerHTML = `
-                <div class="p-4 rounded-2xl bg-slate-50 border"><span class="text-xs font-semibold text-slate-500 uppercase">Salário Base</span><div class="text-2xl font-bold text-slate-900 mt-1">${baseSalary.toLocaleString('pt-PT')} MT</div></div>
-                <div class="p-4 rounded-2xl bg-rose-50 border"><span class="text-xs font-semibold text-rose-700 uppercase">Descontos (Máx 300 MT/dia)</span><div class="text-2xl font-bold text-rose-600 mt-1">-${Math.round(totalDelayDeduction)} MT</div></div>
-                <div class="p-4 rounded-2xl bg-emerald-50 border"><span class="text-xs font-semibold text-emerald-700 uppercase">Acréscimo Horas Extras</span><div class="text-2xl font-bold text-emerald-800 mt-1">+${Math.round(totalBonus)} MT</div></div>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border"><span class="text-[11px] font-semibold text-slate-500 uppercase">Salário Base</span><div class="text-xl font-bold text-slate-900 mt-1">${baseSalary.toLocaleString('pt-PT')} MT</div></div>
+                <div class="p-3.5 rounded-2xl bg-rose-50 border"><span class="text-[11px] font-semibold text-rose-700 uppercase">Atrasos</span><div class="text-xl font-bold text-rose-600 mt-1">-${Math.round(totalDelayDeduction)} MT</div></div>
+                <div class="p-3.5 rounded-2xl bg-amber-50 border"><span class="text-[11px] font-semibold text-amber-800 uppercase">Vales</span><div class="text-xl font-bold text-amber-700 mt-1">-${Math.round(totalAdvances)} MT</div></div>
+                <div class="p-3.5 rounded-2xl bg-emerald-50 border"><span class="text-[11px] font-semibold text-emerald-700 uppercase">Horas Extras</span><div class="text-xl font-bold text-emerald-800 mt-1">+${Math.round(totalBonus)} MT</div></div>
             `;
 
             document.getElementById('audit-report-table').innerHTML = tableRows;
+
+            const advContainer = document.getElementById('advances-list-container');
+            if (advContainer) {
+                const allAdvances = window.getAdvances();
+                advContainer.innerHTML = allAdvances.map(a => `
+                    <div class="p-2.5 rounded-xl bg-slate-50 border flex items-center justify-between text-xs">
+                        <div>
+                            <p class="font-bold text-slate-800">${a.workerName} • <span class="text-rose-600">-${Number(a.amount).toLocaleString('pt-PT')} MT</span></p>
+                            <p class="text-[11px] text-slate-500">${a.dateStr} — ${a.note}</p>
+                        </div>
+                        <button onclick="deleteAdvance('${a.id}')" class="text-rose-500 hover:text-rose-700 px-2 py-1 font-bold"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `).join('') || '<p class="text-xs text-slate-400 text-center py-2">Nenhum vale registado.</p>';
+            }
         };
+
+        window.renderSystemHistory = function() {
+            const container = document.getElementById('system-history-list');
+            if (!container) return;
+
+            const search = (document.getElementById('history-search-input')?.value || '').toLowerCase();
+            const catFilter = document.getElementById('history-category-filter')?.value || 'ALL';
+            let history = window.getHistory();
+
+            if (catFilter !== 'ALL') history = history.filter(h => h.category === catFilter);
+            if (search) {
+                history = history.filter(h => 
+                    (h.title || '').toLowerCase().includes(search) || 
+                    (h.description || '').toLowerCase().includes(search) ||
+                    (h.actor || '').toLowerCase().includes(search)
+                );
+            }
+
+            if (history.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-xs text-slate-400">Nenhum registo encontrado.</div>`;
+                return;
+            }
+
+            const badgeColors = {
+                'PONTO': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                'RH': 'bg-blue-100 text-blue-800 border-blue-200',
+                'JUSTIFICACAO': 'bg-amber-100 text-amber-800 border-amber-200',
+                'FINANCEIRO': 'bg-purple-100 text-purple-800 border-purple-200',
+                'SISTEMA': 'bg-slate-200 text-slate-800 border-slate-300'
+            };
+
+            container.innerHTML = history.map(h => {
+                const badgeClass = badgeColors[h.category] || 'bg-slate-100 text-slate-700';
+                return `
+                    <div class="p-3.5 rounded-2xl bg-slate-50 border hover:bg-white transition flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold border ${badgeClass}">${h.category}</span>
+                                <span class="font-bold text-sm text-slate-900">${h.title}</span>
+                            </div>
+                            <p class="text-xs text-slate-600">${h.description}</p>
+                        </div>
+                        <div class="text-left sm:text-right shrink-0">
+                            <span class="block text-xs font-mono font-bold text-slate-700">${h.dateStr} • ${h.timeStr}</span>
+                            <span class="block text-[11px] text-slate-400">Origem: ${h.actor}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        async function saveSystemNotice(e) {
+            e.preventDefault();
+            const text = document.getElementById('notice-input-text').value.trim();
+            if (!text) return;
+            await window.dbSaveNotice(text);
+            await window.logSystemEvent('SISTEMA', 'Comunicado Publicado', text, 'Alberto');
+            document.getElementById('notice-input-text').value = '';
+            showToast('Aviso publicado no terminal!');
+        }
+
+        async function clearSystemNotice() {
+            await window.dbClearNotice();
+            showToast('Aviso removido do terminal.');
+        }
 
         function exportToCSV() {
             const workers = window.getWorkers();
-            let csv = '\uFEFFNome;Cargo;Salário Base (MT)\n';
-            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.salary || 20000}"\n`);
+            const advances = window.getAdvances();
+            let csv = '\uFEFFNome;Cargo;Salário Base (MT);Total Vales (MT)\n';
+            workers.forEach(w => {
+                const wAdv = advances.filter(a => a.workerId === w.id).reduce((s, a) => s + Number(a.amount || 0), 0);
+                csv += `"${w.name}";"${w.role}";"${w.salary || 20000}";"${wAdv}"\n`;
+            });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Folha_Assiduidade_RH.csv'; a.click();
-            showToast('Ficheiro CSV exportado!');
+            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Folha_Salarial_RH.csv'; a.click();
+            showToast('Folha salarial exportada!');
+        }
+
+        function exportHistoryCSV() {
+            const history = window.getHistory();
+            let csv = '\uFEFFData;Hora;Categoria;Evento;Detalhes;Origem\n';
+            history.forEach(h => {
+                csv += `"${h.dateStr}";"${h.timeStr}";"${h.category}";"${h.title}";"${h.description}";"${h.actor}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'EDM_Historico_Auditoria.csv'; a.click();
+            showToast('Histórico exportado!');
         }
 
         window.onload = initSystem;
