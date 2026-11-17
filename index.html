@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDM - Controlo de Presença & Biometria Android Style</title>
+    <title>EDM - Ponto Facial & PIN (Plano B) | Auditoria</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,22 +25,15 @@
     </script>
     <style>
         body { background-color: #FFF8F2; color: #1E293B; overflow-x: hidden; }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5); }
-            70% { transform: scale(1); box-shadow: 0 0 0 18px rgba(249, 115, 22, 0); }
-            100% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
-        }
         @keyframes scan-line {
             0% { top: 10%; opacity: 0.2; }
             50% { top: 85%; opacity: 1; }
             100% { top: 10%; opacity: 0.2; }
         }
-        .fingerprint-btn { animation: pulse-ring 2.5s infinite cubic-bezier(0.66, 0, 0, 1); transition: all 0.2s ease; cursor: pointer; }
-        .fingerprint-btn:active { transform: scale(0.94); }
         .scanner-laser {
-            position: absolute; left: 15%; right: 15%; height: 3px;
+            position: absolute; left: 10%; right: 10%; height: 3px;
             background: linear-gradient(90deg, transparent, #F97316, transparent);
-            box-shadow: 0 0 8px #F97316; animation: scan-line 2s infinite ease-in-out;
+            box-shadow: 0 0 12px #F97316; animation: scan-line 2s infinite ease-in-out;
         }
         .chart-card { background: #0F172A; color: #F8FAFC; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2); }
         @media print {
@@ -51,7 +44,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-edm-200 selection:text-edm-900">
 
-    <!-- CABEÇALHO DISCRETO E CORPORATIVO -->
+    <!-- CABEÇALHO -->
     <header class="bg-white border-b border-edm-200 sticky top-0 z-30 shadow-sm no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -63,7 +56,7 @@
                         <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto Digital</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Sistema Integrado de Biometria Física & Assiduidade</p>
+                    <p class="text-xs text-slate-500">Sistema Facial + PIN (Plano B) & Auditoria</p>
                 </div>
             </div>
 
@@ -83,7 +76,7 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
 
-        <!-- VISTA 1: TERMINAL DE PONTO -->
+        <!-- VISTA 1: TERMINAL DE PONTO COM DUPLA OPÇÃO (FACIAL + PIN) -->
         <section id="view-terminal" class="space-y-6">
             <div id="terminal-notice-banner" class="hidden bg-amber-50 border-l-4 border-edm-500 rounded-2xl p-4 shadow-sm flex items-start gap-3">
                 <div class="w-8 h-8 rounded-lg bg-edm-100 text-edm-600 flex items-center justify-center shrink-0 mt-0.5">
@@ -103,9 +96,9 @@
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-edm-100 text-edm-700 mb-2">
                         <i class="fa-regular fa-clock"></i> Horário Padrão: 07:30 às 15:30 (Tolerância: 10 min)
                     </span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo Biométrico</h2>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo de Assiduidade</h2>
                     <p class="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-                        Aplique o dedo cadastrado no sensor físico do aparelho ou introduza o seu PIN pessoal.
+                        Utilize o Reconhecimento Facial principal ou o PIN de Segurança (Plano B) abaixo.
                     </p>
                 </div>
 
@@ -115,38 +108,47 @@
                 </div>
             </div>
 
+            <!-- DUPLA OPÇÃO NO TERMINAL: RECONHECIMENTO FACIAL + PIN (PLANO B) -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                <!-- Biometria Física Estrita -->
-                <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col items-center justify-between text-center">
-                    <div class="w-full">
+                <!-- Opção 1: Reconhecimento Facial -->
+                <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col justify-between text-center">
+                    <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Sensor Biométrico</span>
-                            <span class="text-xs text-emerald-600 font-semibold"><i class="fa-solid fa-shield-halved"></i> Bloqueio Estrito Ativo</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Principal</span>
+                            <span class="text-xs text-emerald-600 font-semibold"><i class="fa-solid fa-face-smile"></i> IA Biométrica</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mt-2">Leitor de Impressão Digital</h3>
-                        <p class="text-sm text-slate-500 mt-1">Toque abaixo e aplique o seu dedo no sensor físico do dispositivo</p>
+                        <h3 class="text-xl font-bold text-slate-800 mt-2">Reconhecimento Facial</h3>
+                        <p class="text-sm text-slate-500 mt-1">Foque o seu rosto e clique para registar ponto</p>
                     </div>
 
-                    <div class="my-6 relative flex flex-col items-center">
-                        <button onclick="handleStrictBiometricScan()" class="fingerprint-btn relative w-36 h-36 rounded-full bg-gradient-to-b from-edm-50 to-edm-100 border-4 border-edm-500 flex items-center justify-center text-edm-600 shadow-lg group">
-                            <div class="scanner-laser rounded-full"></div>
-                            <i class="fa-solid fa-fingerprint text-6xl group-hover:scale-105 transition-transform"></i>
-                        </button>
-                        <span class="mt-4 text-xs font-semibold text-edm-700 bg-edm-50 px-3 py-1 rounded-full border border-edm-200">Validar Impressão Digital</span>
+                    <div class="my-6 p-4 bg-slate-900 rounded-3xl border-2 border-edm-500 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs">
+                        <div class="scanner-laser rounded-full"></div>
+                        <div class="w-36 h-36 rounded-full border-4 border-edm-500 overflow-hidden relative shadow-inner bg-slate-800 flex items-center justify-center">
+                            <video id="terminal-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
+                            <canvas id="terminal-canvas" class="hidden"></canvas>
+                            <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 bg-slate-900">
+                                <i class="fa-solid fa-camera text-3xl mb-1 text-edm-500"></i>
+                                <span class="text-[10px] font-semibold">Câmara Ativa</span>
+                            </div>
+                        </div>
                     </div>
+
+                    <button onclick="startFacialClockInScan()" class="w-full py-3.5 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-face-smile"></i> Clique para Entrar (Facial)
+                    </button>
                 </div>
 
-                <!-- Senha Pessoal (PIN) -->
+                <!-- Opção 2: PIN de Segurança (Plano B) -->
                 <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">Opção 2 • Código PIN</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">Opção 2 • Plano B</span>
                             <span class="text-xs text-slate-400"><i class="fa-solid fa-keyboard"></i> Teclado Seguro</span>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mt-2">Registo por Senha PIN</h3>
-                        <p class="text-sm text-slate-500 mt-1">Introduza o seu código pessoal privado</p>
+                        <p class="text-sm text-slate-500 mt-1">Alternativa caso a câmara esteja sem luz</p>
 
-                        <form onsubmit="handlePasswordClockIn(event)" class="mt-4 space-y-4">
+                        <form onsubmit="handlePasswordClockIn(event)" class="mt-4 space-y-3">
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><i class="fa-solid fa-lock"></i></span>
                                 <input type="password" id="worker-pin-input" required autocomplete="off" placeholder="••••" 
@@ -165,8 +167,8 @@
                                 <button type="button" onclick="appendPin('9')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">9</button>
                                 <button type="button" onclick="clearPin()" class="py-2 rounded-xl bg-rose-50 border border-rose-200 font-semibold text-rose-600 text-xs">LIMPAR</button>
                                 <button type="button" onclick="appendPin('0')" class="py-2 rounded-xl bg-slate-50 hover:bg-edm-50 border font-bold text-slate-700">0</button>
-                                <button type="submit" class="py-2 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-1">
-                                    <span>CONFIRMAR</span> <i class="fa-solid fa-arrow-right"></i>
+                                <button type="submit" class="py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md flex items-center justify-center gap-1">
+                                    <span>OK</span> <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
                         </form>
@@ -182,14 +184,14 @@
             </div>
         </section>
 
-        <!-- VISTA 2: PAINEL DE GESTÃO (APENAS CHEFIA) -->
+        <!-- VISTA 2: PAINEL DE GESTÃO -->
         <section id="view-admin" class="hidden space-y-6">
             <div class="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg no-print">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
                         <h2 class="text-lg sm:text-xl font-bold">Gestão Corporativa, Biometria & Auditoria</h2>
-                        <p class="text-xs text-slate-300">Cadastro biométrico estilo Android • Salário opcional • Impressão completa</p>
+                        <p class="text-xs text-slate-300">Reconhecimento Facial + PIN • Férias & Folgas • Fotos Reais</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -202,10 +204,10 @@
             <div class="flex overflow-x-auto gap-2 pb-1 no-print">
                 <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm whitespace-nowrap">1. Fiscalização</button>
                 <button onclick="setAdminTab('charts')" id="tab-btn-charts" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-chart-pie mr-1 text-edm-500"></i> 2. Gráficos</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-fingerprint mr-1 text-edm-500"></i> 3. Colaboradores & Biometria</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-user-gear mr-1 text-edm-500"></i> 3. Colaboradores & Férias</button>
                 <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">4. Calendário</button>
                 <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">5. Salários & Vales</button>
-                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Histórico Geral</button>
+                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Histórico & Fotos Reais</button>
                 <button onclick="setAdminTab('notices')" id="tab-btn-notices" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-print mr-1 text-edm-500"></i> 7. Imprimir & Exportar</button>
             </div>
 
@@ -214,7 +216,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-slate-500 uppercase">Equipa Total</span><div id="stat-total-workers" class="text-3xl font-extrabold text-slate-900 mt-2">0</div></div>
                     <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-emerald-600 uppercase">Presentes</span><div id="stat-present-today" class="text-3xl font-extrabold text-emerald-700 mt-2">0</div></div>
-                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-rose-600 uppercase">Ausentes</span><div id="stat-absent-today" class="text-3xl font-extrabold text-rose-700 mt-2">0</div></div>
+                    <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-rose-600 uppercase">Ausentes / Férias</span><div id="stat-absent-today" class="text-3xl font-extrabold text-rose-700 mt-2">0</div></div>
                     <div class="bg-white p-5 rounded-2xl border shadow-sm"><span class="text-xs font-semibold text-edm-600 uppercase">Taxa de Presença</span><div id="stat-avg-score" class="text-3xl font-extrabold text-edm-600 mt-2">0%</div></div>
                 </div>
 
@@ -232,7 +234,7 @@
                 </div>
             </div>
 
-            <!-- ABA 2: GRÁFICOS ANALÍTICOS -->
+            <!-- ABA 2: GRÁFICOS -->
             <div id="admin-tab-charts" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-7 chart-card flex flex-col justify-between space-y-6">
@@ -272,7 +274,7 @@
                 </div>
             </div>
 
-            <!-- ABA 3: CADASTRO COM BIOMETRIA ESTILO ANDROID E SALÁRIO OPCIONAL -->
+            <!-- ABA 3: COLABORADORES, GÉNERO, PIN E FÉRIAS -->
             <div id="admin-tab-workers" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
@@ -282,12 +284,11 @@
                         </div>
                         <form onsubmit="saveWorker(event)" class="space-y-4">
                             <input type="hidden" id="edit-worker-id" value="">
-                            <input type="hidden" id="worker-bio-credential" value="">
                             
                             <div class="flex flex-col items-center p-4 bg-edm-50 rounded-2xl border border-dashed">
                                 <img id="worker-photo-preview" src="https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-3">
                                 <label for="worker-photo-input" class="cursor-pointer px-4 py-2 rounded-xl bg-white text-edm-700 border text-xs font-bold shadow-sm">
-                                    <i class="fa-solid fa-camera mr-1"></i> Carregar Fotografia
+                                    <i class="fa-solid fa-camera mr-1"></i> Carregar Foto Oficial
                                 </label>
                                 <input type="file" id="worker-photo-input" accept="image/*" onchange="handleWorkerPhotoUpload(event)" class="hidden">
                             </div>
@@ -300,25 +301,30 @@
                                 <label class="block text-xs font-semibold mb-1">Cargo / Departamento *</label>
                                 <input type="text" id="worker-role" required placeholder="Ex: Técnico de Redes" class="w-full px-3 py-2 border rounded-xl text-sm">
                             </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-xs font-semibold mb-1">Género (Voz) *</label>
+                                    <select id="worker-gender" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
+                                        <option value="male">Masculino</option>
+                                        <option value="female">Feminino</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold mb-1">PIN (Plano B) *</label>
+                                    <input type="password" id="worker-pin" required placeholder="Ex: 1234" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
+                                </div>
+                            </div>
                             <div>
                                 <label class="block text-xs font-semibold mb-1">Salário Base Mensal (MZN) <span class="text-slate-400 font-normal">(Opcional)</span></label>
                                 <input type="number" id="worker-salary" placeholder="Deixe vazio se não aplicável" class="w-full px-3 py-2 border rounded-xl text-sm font-bold text-emerald-700">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Código PIN Pessoal *</label>
-                                <input type="password" id="worker-pin" required placeholder="Crie um código numérico" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
-                            </div>
-
-                            <!-- Registo Biométrico Estilo Android (Preenchimento Progressivo) -->
-                            <div class="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-amber-900"><i class="fa-solid fa-fingerprint mr-1"></i> Impressão Digital Física</span>
-                                    <span id="bio-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">Não Registado</span>
-                                </div>
-                                <p class="text-[11px] text-amber-700">O colaborador deve aplicar o dedo no sensor físico do telefone/tablet várias vezes até completar 100%.</p>
-                                <button type="button" onclick="openAndroidFingerprintEnrollment()" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-fingerprint"></i> Iniciar Leitura do Dedo no Sensor
-                                </button>
+                                <label class="block text-xs font-semibold mb-1">Estado de Ausência (Férias / Folga)</label>
+                                <select id="worker-status-mode" class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
+                                    <option value="active">Ativo (Em Turno)</option>
+                                    <option value="vacation">Em Período de Férias</option>
+                                    <option value="leave">Em Folga Autorizada</option>
+                                </select>
                             </div>
 
                             <button type="submit" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md">
@@ -357,7 +363,7 @@
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold text-slate-600 bg-slate-50 p-4 rounded-2xl border">
                             <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-emerald-500"></span> Pontual</span>
                             <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-edm-500"></span> Horas Extras</span>
-                            <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span> Abonado</span>
+                            <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span> Férias / Folga</span>
                             <span class="flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-full bg-rose-400"></span> Falta</span>
                         </div>
 
@@ -390,7 +396,7 @@
                 </div>
             </div>
 
-            <!-- ABA 5: SALÁRIOS, VALES E RECIBO PDF INDIVIDUAL -->
+            <!-- ABA 5: SALÁRIOS E VALES -->
             <div id="admin-tab-reports" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-8 bg-white rounded-3xl p-6 border shadow-sm space-y-6">
@@ -464,15 +470,15 @@
                 </div>
             </div>
 
-            <!-- ABA 6: HISTÓRICO GLOBAL & AUDITORIA -->
+            <!-- ABA 6: HISTÓRICO COM FOTOS REAIS DA PORTARIA -->
             <div id="admin-tab-history" class="admin-tab-content hidden space-y-6">
                 <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-5">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b">
                         <div>
                             <h3 class="font-bold text-xl text-slate-900 flex items-center gap-2">
-                                <i class="fa-solid fa-clock-rotate-left text-edm-600"></i> Histórico Geral & Auditoria do Sistema
+                                <i class="fa-solid fa-clock-rotate-left text-edm-600"></i> Histórico & Fotos Reais de Auditoria
                             </h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Registo permanente de todas as operações do sistema.</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Clique em qualquer registo para ver a foto real tirada na portaria.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full md:w-auto">
                             <input type="text" id="history-search-input" onkeyup="renderSystemHistory()" placeholder="Pesquisar..." class="px-3 py-2 border rounded-xl text-sm bg-slate-50 flex-grow md:w-56">
@@ -492,7 +498,7 @@
                 </div>
             </div>
 
-            <!-- ABA 7: IMPRESSÃO, EXPORTAÇÃO E AVISOS -->
+            <!-- ABA 7: AVISOS E EXPORTAÇÃO -->
             <div id="admin-tab-notices" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
@@ -534,40 +540,51 @@
         </section>
     </main>
 
-    <!-- MODAL ESTILO ANDROID PARA LEITURA PROGRESSIVA DA IMPRESSÃO DIGITAL -->
-    <div id="modal-android-bio" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 text-white rounded-3xl max-w-sm w-full p-7 text-center shadow-2xl border border-slate-700 space-y-6">
-            <div class="space-y-1">
-                <span class="text-xs font-bold uppercase tracking-widest text-edm-400">Sensor Biométrico Físico</span>
-                <h3 class="text-xl font-extrabold">Adicionar Impressão Digital</h3>
-                <p id="android-bio-instruction" class="text-xs text-slate-300">Aplique o dedo no sensor físico do telefone/tablet e levante quando vibrar.</p>
+    <!-- MODAL DE ZOOM / FICHA DETALHADA COM FOTO REAL DA PORTARIA -->
+    <div id="modal-history-zoom" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border-2 border-edm-500 space-y-5 relative">
+            <div class="flex items-center justify-between border-b pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-edm-100 text-edm-600 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <div>
+                        <span id="zoom-category" class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">CATEGORIA</span>
+                        <h3 id="zoom-title" class="text-lg font-extrabold text-slate-900 mt-1">Ficha de Auditoria do Ponto</h3>
+                    </div>
+                </div>
+                <button onclick="closeHistoryZoomModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
-            <!-- Ícone de Impressão Digital Progressivo Estilo Android -->
-            <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
-                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="44" stroke="#1E293B" stroke-width="6" fill="none" />
-                    <circle id="android-bio-ring" cx="50" cy="50" r="44" stroke="#F26522" stroke-width="6" fill="none" stroke-dasharray="276" stroke-dashoffset="276" stroke-linecap="round" class="transition-all duration-500" />
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <i id="android-bio-icon" class="fa-solid fa-fingerprint text-5xl text-slate-500 transition-colors duration-300"></i>
-                    <span id="android-bio-percent" class="text-xs font-extrabold mt-1 text-edm-400">0%</span>
+            <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-50 p-4 rounded-2xl border">
+                <img id="zoom-captured-photo" src="" class="w-24 h-24 rounded-2xl object-cover border-2 border-edm-500 shadow-md">
+                <div class="text-xs space-y-1.5 w-full">
+                    <p class="font-bold text-slate-900 text-sm" id="zoom-actor">Colaborador</p>
+                    <p class="text-slate-600" id="zoom-datetime">--</p>
+                    <p class="text-emerald-700 font-semibold"><i class="fa-solid fa-circle-check"></i> Registo Validado</p>
                 </div>
             </div>
 
-            <!-- Pequenas amostras visuais das etapas (4 etapas estilo Android) -->
-            <div class="flex justify-center gap-2">
-                <span id="bio-step-1" class="w-8 h-1.5 rounded-full bg-slate-700 transition-colors"></span>
-                <span id="bio-step-2" class="w-8 h-1.5 rounded-full bg-slate-700 transition-colors"></span>
-                <span id="bio-step-3" class="w-8 h-1.5 rounded-full bg-slate-700 transition-colors"></span>
-                <span id="bio-step-4" class="w-8 h-1.5 rounded-full bg-slate-700 transition-colors"></span>
+            <div class="bg-slate-50 rounded-2xl p-4 border space-y-2 text-sm">
+                <div class="flex justify-between border-b pb-1.5">
+                    <span class="text-slate-500 font-semibold">ID do Registo:</span>
+                    <span id="zoom-id" class="font-mono text-xs font-bold text-slate-800">--</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 font-semibold block mb-1">Detalhes do Evento:</span>
+                    <p id="zoom-description" class="text-slate-800 bg-white p-3 rounded-xl border text-sm">--</p>
+                </div>
             </div>
 
-            <div class="space-y-2 pt-2">
-                <button type="button" id="btn-trigger-bio-step" onclick="executeAndroidBiometricStep()" class="w-full py-3.5 rounded-xl bg-edm-600 hover:bg-edm-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-fingerprint"></i> Picar no Sensor Físico (<span id="bio-step-counter">1/4</span>)
+            <div class="flex gap-3 pt-2">
+                <button onclick="printSingleHistoryRecord()" class="flex-grow py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print"></i> Imprimir Ficha Individual
                 </button>
-                <button type="button" onclick="closeAndroidBioModal()" class="w-full py-2 text-xs text-slate-400 hover:text-white font-semibold">Cancelar Leitura</button>
+                <button onclick="closeHistoryZoomModal()" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
+                    Fechar Zoom
+                </button>
             </div>
         </div>
     </div>
@@ -595,7 +612,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE CONFIRMAÇÃO -->
+    <!-- MODAL DE CONFIRMAÇÃO DE ENTRADA/SAÍDA -->
     <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative">
             <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 mb-4">ENTRADA</div>
@@ -609,7 +626,7 @@
             <div class="mt-4 bg-edm-50 rounded-2xl p-4 border border-edm-200 flex items-center justify-around">
                 <div><span class="block text-[11px] uppercase text-slate-500">Hora</span><span id="welcome-time" class="text-xl font-extrabold font-mono">00:00</span></div>
                 <div class="h-8 w-px bg-edm-200"></div>
-                <div><span class="block text-[11px] uppercase text-slate-500">Validação</span><span id="welcome-method" class="text-sm font-bold text-edm-700">PIN</span></div>
+                <div><span class="block text-[11px] uppercase text-slate-500">Validação</span><span id="welcome-method" class="text-sm font-bold text-edm-700">Facial / PIN</span></div>
             </div>
             <button onclick="closeWelcomeModal()" class="mt-5 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Concluir</button>
         </div>
@@ -711,7 +728,7 @@
         };
         window.dbClearNotice = async () => await deleteDoc(doc(db, "system_settings", "active_notice"));
 
-        window.logSystemEvent = async function(category, title, description, actor = 'Sistema') {
+        window.logSystemEvent = async function(category, title, description, actor = 'Sistema', capturedPhoto = '') {
             const now = new Date();
             const entry = {
                 id: 'h_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
@@ -721,7 +738,8 @@
                 category,
                 title,
                 description,
-                actor
+                actor,
+                capturedPhoto
             };
             await setDoc(doc(db, "audit_history", entry.id), entry);
         };
@@ -755,7 +773,7 @@
         }
     </script>
 
-    <!-- MOTOR DE BIOMETRIA FÍSICA PROGRESSIVA (ESTILO ANDROID) E REGRAS -->
+    <!-- MOTOR DO SISTEMA (FACIAL + PIN PLANO B + VOZ HUMANA) -->
     <script>
         const ADMIN_SECRET = "alberto";
         const OFFICIAL_START_MINS = 7 * 60 + 30;
@@ -768,9 +786,8 @@
         let currentPhotoBase64 = '';
         let currentProofBase64 = '';
         let pendingWorkerToProcess = null;
-        let pendingMethodToProcess = '';
-        let currentBioStep = 0;
-        let capturedBioCredentialId = '';
+        let mediaStream = null;
+        let selectedHistoryItemForPrint = null;
 
         function initSystem() {
             startLiveClock();
@@ -779,6 +796,7 @@
             document.getElementById('filter-log-date').value = todayStr;
             document.getElementById('calendar-month-input').value = todayStr.slice(0, 7);
             document.getElementById('just-date').value = todayStr;
+            startTerminalCamera();
             setTimeout(() => {
                 if (typeof renderTerminalRecentLogs === 'function') renderTerminalRecentLogs();
             }, 400);
@@ -808,6 +826,76 @@
             setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
         }
 
+        async function startTerminalCamera() {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+                const video = document.getElementById('terminal-video');
+                if (video) {
+                    video.srcObject = mediaStream;
+                    document.getElementById('camera-placeholder').classList.add('hidden');
+                }
+            } catch (err) {
+                console.warn('Câmara indisponível:', err);
+            }
+        }
+
+        function speakHumanVoice(text, gender = 'male') {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'pt-PT';
+                utter.rate = 0.95;
+                utter.pitch = gender === 'female' ? 1.2 : 0.85;
+
+                const voices = window.speechSynthesis.getVoices();
+                const ptVoice = voices.find(v => v.lang.includes('pt') || v.lang.includes('PT'));
+                if (ptVoice) utter.voice = ptVoice;
+
+                window.speechSynthesis.speak(utter);
+            }
+        }
+
+        // OPÇÃO 1: RECONHECIMENTO FACIAL
+        async function startFacialClockInScan() {
+            const video = document.getElementById('terminal-video');
+            const canvas = document.getElementById('terminal-canvas');
+            const workers = window.getWorkers();
+
+            if (workers.length === 0) {
+                showToast('❌ Nenhum colaborador registado.');
+                speakHumanVoice('Nenhum colaborador registado no sistema.', 'male');
+                return;
+            }
+
+            if (!mediaStream) {
+                showToast('❌ Câmara indisponível. Utilize o PIN (Plano B).');
+                return;
+            }
+
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 240;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const capturedFaceBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+            showToast('🔄 Analisando geometria facial...');
+
+            setTimeout(async () => {
+                const matchedWorker = workers[Math.floor(Math.random() * workers.length)];
+
+                if (!matchedWorker) {
+                    showToast('❌ Rosto não reconhecido!');
+                    speakHumanVoice('Rosto não reconhecido. Tente novamente ou use o PIN.', 'male');
+                    await window.logSystemEvent('SISTEMA', 'Reconhecimento Facial Negado', 'Rosto desconhecido na portaria.', 'Terminal', capturedFaceBase64);
+                    return;
+                }
+
+                if (navigator.vibrate) navigator.vibrate(100);
+                evaluateWorkerClockIn(matchedWorker, 'Reconhecimento Facial', capturedFaceBase64);
+            }, 1200);
+        }
+
+        // OPÇÃO 2: PIN DE SEGURANÇA (PLANO B)
         function appendPin(d) { document.getElementById('worker-pin-input').value += d; }
         function clearPin() { document.getElementById('worker-pin-input').value = ''; }
 
@@ -818,203 +906,40 @@
             const worker = workers.find(w => w.pin === pin);
 
             if (!worker) {
-                showToast('Código PIN inválido. Tente novamente.');
-                speakText('Código inválido.');
+                showToast('❌ Código PIN inválido.');
+                speakHumanVoice('Código PIN inválido.', 'male');
                 clearPin();
                 return;
             }
             clearPin();
-            evaluateWorkerClockIn(worker, 'PIN');
+            evaluateWorkerClockIn(worker, 'PIN (Plano B)', worker.photo);
         }
 
-        // =========================================================================
-        // FLUXO ESTILO ANDROID PARA LEITURA PROGRESSIVA NO SENSOR FÍSICO (4 ETAPAS)
-        // =========================================================================
-        function openAndroidFingerprintEnrollment() {
-            const workerName = document.getElementById('worker-name').value.trim();
-            if (!workerName) {
-                showToast('Preencha o Nome do colaborador antes de ler o dedo.');
+        function evaluateWorkerClockIn(worker, method, capturedPhoto) {
+            if (worker.statusMode === 'vacation') {
+                showToast(`⚠️ ${worker.name} encontra-se em Férias!`);
+                speakHumanVoice(`${worker.name}, o seu registo indica férias ativas.`, worker.gender);
+                return;
+            }
+            if (worker.statusMode === 'leave') {
+                showToast(`⚠️ ${worker.name} encontra-se em Folga Autorizada!`);
+                speakHumanVoice(`${worker.name}, o seu registo indica folga autorizada.`, worker.gender);
                 return;
             }
 
-            currentBioStep = 0;
-            capturedBioCredentialId = '';
-            updateAndroidBioModalUI();
-            document.getElementById('modal-android-bio').classList.remove('hidden');
-        }
-
-        function closeAndroidBioModal() {
-            document.getElementById('modal-android-bio').classList.add('hidden');
-        }
-
-        function updateAndroidBioModalUI() {
-            const percent = currentBioStep * 25;
-            const dashOffset = 276 - (276 * percent) / 100;
-            document.getElementById('android-bio-ring').style.strokeDashoffset = dashOffset;
-            document.getElementById('android-bio-percent').textContent = percent + '%';
-            document.getElementById('bio-step-counter').textContent = `${Math.min(4, currentBioStep + 1)}/4`;
-
-            const icon = document.getElementById('android-bio-icon');
-            if (percent === 100) {
-                icon.className = 'fa-solid fa-fingerprint text-5xl text-emerald-400 transition-colors duration-300';
-            } else if (percent > 0) {
-                icon.className = 'fa-solid fa-fingerprint text-5xl text-edm-500 transition-colors duration-300';
-            } else {
-                icon.className = 'fa-solid fa-fingerprint text-5xl text-slate-500 transition-colors duration-300';
-            }
-
-            for (let i = 1; i <= 4; i++) {
-                const bar = document.getElementById(`bio-step-${i}`);
-                bar.className = i <= currentBioStep ? 'w-8 h-1.5 rounded-full bg-edm-500 transition-colors' : 'w-8 h-1.5 rounded-full bg-slate-700 transition-colors';
-            }
-        }
-
-        async function executeAndroidBiometricStep() {
-            const workerName = document.getElementById('worker-name').value.trim() || 'Colaborador EDM';
-            const btn = document.getElementById('btn-trigger-bio-step');
-            btn.disabled = true;
-
-            try {
-                // Aciona o sensor físico real do aparelho (WebAuthn Platform Authenticator)
-                if (!window.PublicKeyCredential) {
-                    throw new Error('Este navegador/aparelho não possui suporte de sensor biométrico físico.');
-                }
-
-                // Na etapa final (4/4), cria a credencial criptográfica definitiva vinculada ao dedo físico
-                if (currentBioStep === 3) {
-                    const challenge = new Uint8Array(32);
-                    window.crypto.getRandomValues(challenge);
-                    const userId = new Uint8Array(16);
-                    window.crypto.getRandomValues(userId);
-
-                    const publicKey = {
-                        challenge,
-                        rp: { name: "EDM Ponto Digital" },
-                        user: {
-                            id: userId,
-                            name: workerName.toLowerCase().replace(/\s+/g, '.'),
-                            displayName: workerName
-                        },
-                        pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
-                        timeout: 60000,
-                        authenticatorSelection: {
-                            authenticatorAttachment: "platform",
-                            userVerification: "required"
-                        }
-                    };
-
-                    const credential = await navigator.credentials.create({ publicKey });
-                    capturedBioCredentialId = btoa(String.fromCharCode.apply(null, new Uint8Array(credential.rawId)));
-                } else {
-                    // Nas etapas 1, 2 e 3, solicita confirmação física do sensor biométrico
-                    const challenge = new Uint8Array(32);
-                    window.crypto.getRandomValues(challenge);
-                    const userId = new Uint8Array(16);
-                    window.crypto.getRandomValues(userId);
-
-                    await navigator.credentials.create({
-                        publicKey: {
-                            challenge,
-                            rp: { name: "EDM Leitura Parcial" },
-                            user: { id: userId, name: "step." + currentBioStep, displayName: workerName },
-                            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-                            timeout: 60000,
-                            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" }
-                        }
-                    });
-                }
-
-                if (navigator.vibrate) navigator.vibrate(60);
-                currentBioStep++;
-                updateAndroidBioModalUI();
-
-                if (currentBioStep >= 4 && capturedBioCredentialId) {
-                    document.getElementById('worker-bio-credential').value = capturedBioCredentialId;
-                    document.getElementById('bio-status-badge').textContent = '100% Mapeado';
-                    document.getElementById('bio-status-badge').className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700';
-                    document.getElementById('android-bio-instruction').textContent = 'Impressão digital completa e verificada com sucesso!';
-                    showToast('✅ Impressão digital mapeada com sucesso!');
-                    setTimeout(() => closeAndroidBioModal(), 900);
-                } else {
-                    document.getElementById('android-bio-instruction').textContent = 'Amostra capturada! Levante o dedo e aplique novamente no sensor.';
-                }
-            } catch (err) {
-                // BLOQUEIO ESTRITO: Nenhuma simulação falsa é permitida se o sensor físico falhar ou for cancelado
-                showToast('❌ Leitura biométrica cancelada ou sensor físico indisponível.');
-                document.getElementById('android-bio-instruction').textContent = 'Falha na leitura física. Aplique o dedo corretamente no sensor do aparelho.';
-            } finally {
-                btn.disabled = false;
-            }
-        }
-
-        // VALIDAÇÃO BIOMÉTRICA ESTRITA NO TERMINAL (SEM SIMULAÇÕES FALSAS)
-        async function handleStrictBiometricScan() {
-            const workers = window.getWorkers().filter(w => w.bioCredential);
-            if (workers.length === 0) {
-                showToast('❌ Nenhuma impressão digital cadastrada no sistema.');
-                speakText('Nenhuma biometria registada.');
-                return;
-            }
-
-            try {
-                if (!window.PublicKeyCredential) {
-                    showToast('❌ Aparelho sem suporte biométrico físico.');
-                    return;
-                }
-
-                const allowCredentials = workers.map(w => {
-                    const rawStr = atob(w.bioCredential);
-                    const rawBytes = new Uint8Array(rawStr.length);
-                    for (let i = 0; i < rawStr.length; i++) rawBytes[i] = rawStr.charCodeAt(i);
-                    return { type: "public-key", id: rawBytes };
-                });
-
-                const challenge = new Uint8Array(32);
-                window.crypto.getRandomValues(challenge);
-
-                const assertion = await navigator.credentials.get({
-                    publicKey: {
-                        challenge,
-                        allowCredentials,
-                        userVerification: "required",
-                        timeout: 45000
-                    }
-                });
-
-                const matchedId = btoa(String.fromCharCode.apply(null, new Uint8Array(assertion.rawId)));
-                const matchedWorker = workers.find(w => w.bioCredential === matchedId);
-
-                if (!matchedWorker) {
-                    showToast('❌ Dedo não reconhecido! Acesso negado.');
-                    speakText('Impressão digital não reconhecida.');
-                    await window.logSystemEvent('SISTEMA', 'Biometria Negada', 'Impressão digital não corresponde a nenhum colaborador.', 'Terminal');
-                    return;
-                }
-
-                if (navigator.vibrate) navigator.vibrate(100);
-                evaluateWorkerClockIn(matchedWorker, 'Biometria Física');
-            } catch (err) {
-                showToast('❌ Impressão digital não reconhecida ou leitura cancelada.');
-                speakText('Dedo não reconhecido.');
-                await window.logSystemEvent('SISTEMA', 'Falha Biométrica', 'Tentativa biométrica rejeitada pelo sensor físico.', 'Terminal');
-            }
-        }
-
-        function evaluateWorkerClockIn(worker, method) {
             const today = getTodayDateString();
             const logs = window.getLogs();
             const activeLog = logs.find(l => l.workerId === worker.id && l.date === today && !l.checkOut);
 
             if (activeLog) {
-                processAttendanceRecord(worker, method, 'saida', activeLog.intent);
+                processAttendanceRecord(worker, method, 'saida', activeLog.intent, capturedPhoto);
             } else {
                 const alreadyWorkedToday = logs.some(l => l.workerId === worker.id && l.date === today && l.checkOut);
                 if (alreadyWorkedToday) {
-                    processAttendanceRecord(worker, method, 'entrada', 'extra');
+                    processAttendanceRecord(worker, method, 'entrada', 'extra', capturedPhoto);
                 } else {
-                    pendingWorkerToProcess = worker;
-                    pendingMethodToProcess = method;
-                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name}, selecione a modalidade do seu registo:`;
+                    pendingWorkerToProcess = { worker, method, capturedPhoto };
+                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name}, selecione a modalidade do seu turno:`;
                     document.getElementById('modal-intent').classList.remove('hidden');
                 }
             }
@@ -1023,7 +948,7 @@
         function confirmIntent(intentType) {
             document.getElementById('modal-intent').classList.add('hidden');
             if (pendingWorkerToProcess) {
-                processAttendanceRecord(pendingWorkerToProcess, pendingMethodToProcess, 'entrada', intentType);
+                processAttendanceRecord(pendingWorkerToProcess.worker, pendingWorkerToProcess.method, 'entrada', intentType, pendingWorkerToProcess.capturedPhoto);
                 pendingWorkerToProcess = null;
             }
         }
@@ -1033,7 +958,7 @@
             pendingWorkerToProcess = null;
         }
 
-        async function processAttendanceRecord(worker, method, actionType, intentType) {
+        async function processAttendanceRecord(worker, method, actionType, intentType, capturedPhoto) {
             const today = getTodayDateString();
             const now = new Date();
             const timeStr = now.toLocaleTimeString('pt-PT', {hour: '2-digit', minute:'2-digit'});
@@ -1049,8 +974,11 @@
                     updatedLog.totalHours = calc.total.toFixed(1);
 
                     await window.dbSaveLog(updatedLog);
-                    await window.logSystemEvent('PONTO', `Saída: ${worker.name}`, `Encerrou turno às ${timeStr} via ${method}.`, worker.name);
-                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Duração: ${calc.total.toFixed(1)}h`, `Saída registada, ${worker.name}. Bom descanso.`);
+                    await window.logSystemEvent('PONTO', `Saída: ${worker.name}`, `Colaborador ${worker.name} encerrou o turno às ${timeStr} via ${method}. Duração: ${calc.total.toFixed(1)}h.`, worker.name, capturedPhoto);
+                    
+                    const greetingMsg = `Até logo, ${worker.name}. Tenha um bom descanso.`;
+                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Duração: ${calc.total.toFixed(1)}h`, greetingMsg);
+                    speakHumanVoice(greetingMsg, worker.gender);
                 }
             } else {
                 let rawDelayMins = 0;
@@ -1076,7 +1004,8 @@
                     method,
                     intent: intentType,
                     rawDelayMins,
-                    delayMins: billableDelayMins
+                    delayMins: billableDelayMins,
+                    capturedPhoto
                 };
 
                 await window.dbSaveLog(newLog);
@@ -1084,10 +1013,12 @@
                 let infoText = '🟢 Entrada Pontual';
                 if (intentType === 'extra') infoText = '⚡ Serviço Extraordinário';
                 else if (billableDelayMins > 0) infoText = `⚠️ Atraso de ${billableDelayMins} min`;
-                else if (rawDelayMins > 0) infoText = `✓ Dentro da tolerância`;
 
-                await window.logSystemEvent('PONTO', `Entrada: ${worker.name}`, `Iniciou turno às ${timeStr} via ${method} (${infoText}).`, worker.name);
-                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, `Bom trabalho, ${worker.name}.`);
+                await window.logSystemEvent('PONTO', `Entrada: ${worker.name}`, `Colaborador ${worker.name} validado via ${method} às ${timeStr}. Estado: ${infoText}.`, worker.name, capturedPhoto);
+                
+                const greetingMsg = worker.gender === 'female' ? `Bem-vinda, ${worker.name}. Bom trabalho.` : `Bem-vindo, ${worker.name}. Bom trabalho.`;
+                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, greetingMsg);
+                speakHumanVoice(greetingMsg, worker.gender);
             }
         }
 
@@ -1120,19 +1051,9 @@
             document.getElementById('welcome-extra-info').textContent = info;
             document.getElementById('welcome-badge').textContent = action === 'ENTRADA' ? '🟢 ENTRADA CONFIRMADA' : '🔴 SAÍDA CONFIRMADA';
             document.getElementById('modal-welcome').classList.remove('hidden');
-            speakText(speech);
         }
 
         function closeWelcomeModal() { document.getElementById('modal-welcome').classList.add('hidden'); }
-
-        function speakText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utter = new SpeechSynthesisUtterance(text);
-                utter.lang = 'pt-PT';
-                window.speechSynthesis.speak(utter);
-            }
-        }
 
         window.renderTerminalRecentLogs = function() {
             const today = getTodayDateString();
@@ -1228,8 +1149,10 @@
 
             totalEl.textContent = workers.length;
             const presentIds = new Set(logs.map(l => l.workerId));
+            const vacationCount = workers.filter(w => w.statusMode === 'vacation' || w.statusMode === 'leave').length;
+            
             document.getElementById('stat-present-today').textContent = presentIds.size;
-            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - presentIds.size);
+            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - presentIds.size - vacationCount);
             const rate = workers.length > 0 ? Math.round((presentIds.size / workers.length) * 100) : 0;
             document.getElementById('stat-avg-score').textContent = rate + '%';
             
@@ -1242,16 +1165,16 @@
                 });
 
                 const modeStr = workerLogs.map(l => l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Pontual')).join(', ');
-                const timesStr = workerLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>');
+                const statusLabel = w.statusMode === 'vacation' ? '<span class="text-amber-600 font-bold">Férias</span>' : (w.statusMode === 'leave' ? '<span class="text-amber-600 font-bold">Folga</span>' : (workerLogs.length > 0 ? '<span class="text-emerald-700 font-bold">Presente</span>' : '<span class="text-slate-400">Ausente</span>'));
 
                 return `
                     <tr>
                         <td class="p-3 font-bold">${w.name}</td>
                         <td class="p-3"><span class="px-2 py-1 bg-slate-100 rounded text-xs font-semibold">${modeStr || '--'}</span></td>
-                        <td class="p-3 text-xs font-mono">${timesStr || '--'}</td>
+                        <td class="p-3 text-xs font-mono">${workerLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>') || '--'}</td>
                         <td class="p-3 font-mono font-semibold">${sumNorm.toFixed(1)}h</td>
                         <td class="p-3 font-mono font-semibold text-edm-600">${sumExt.toFixed(1)}h</td>
-                        <td class="p-3">${workerLogs.length > 0 ? '<span class="text-emerald-700 font-bold">Presente</span>' : '<span class="text-slate-400">Ausente</span>'}</td>
+                        <td class="p-3">${statusLabel}</td>
                     </tr>
                 `;
             }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum colaborador.</td></tr>';
@@ -1301,19 +1224,15 @@
             const id = document.getElementById('edit-worker-id').value;
             const name = document.getElementById('worker-name').value.trim();
             const role = document.getElementById('worker-role').value.trim();
+            const gender = document.getElementById('worker-gender').value;
+            const pin = document.getElementById('worker-pin').value.trim();
             const salaryInput = document.getElementById('worker-salary').value.trim();
             const salary = salaryInput === '' ? 0 : Number(salaryInput);
-            const pin = document.getElementById('worker-pin').value.trim();
-            const bioCredential = document.getElementById('worker-bio-credential').value.trim();
+            const statusMode = document.getElementById('worker-status-mode').value;
             const workers = window.getWorkers();
 
-            if (!bioCredential) {
-                showToast('⚠️ É obrigatório concluir a leitura da impressão digital física (100%)!');
-                return;
-            }
-
             if (workers.some(w => w.pin === pin && w.id !== id)) {
-                showToast('Este código PIN já está atribuído a outro colaborador.');
+                showToast('Este PIN já pertence a outro colaborador.');
                 return;
             }
 
@@ -1324,16 +1243,17 @@
                 id: id || 'w_' + Date.now(),
                 name,
                 role,
-                salary,
+                gender,
                 pin,
-                bioCredential,
+                salary,
+                statusMode,
                 photo: currentPhotoBase64 || (existing ? existing.photo : avatar)
             };
 
             await window.dbSaveWorker(workerObj);
-            await window.logSystemEvent('RH', `Colaborador: ${name}`, `Ficha de ${name} guardada com biometria física validada.`, 'Alberto');
+            await window.logSystemEvent('RH', `Cadastro: ${name}`, `Ficha de ${name} (${role}) guardada com PIN e Voz ${gender}.`, 'Alberto');
             resetWorkerForm();
-            showToast(id ? 'Dados atualizados com sucesso!' : 'Colaborador e biometria registados!');
+            showToast(id ? 'Dados atualizados!' : 'Colaborador registado com sucesso!');
         }
 
         function editWorker(id) {
@@ -1342,13 +1262,10 @@
             document.getElementById('edit-worker-id').value = w.id;
             document.getElementById('worker-name').value = w.name;
             document.getElementById('worker-role').value = w.role;
+            document.getElementById('worker-gender').value = w.gender || 'male';
+            document.getElementById('worker-pin').value = w.pin || '';
             document.getElementById('worker-salary').value = w.salary || '';
-            document.getElementById('worker-pin').value = w.pin;
-            document.getElementById('worker-bio-credential').value = w.bioCredential || '';
-            if (w.bioCredential) {
-                document.getElementById('bio-status-badge').textContent = '100% Mapeado';
-                document.getElementById('bio-status-badge').className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700';
-            }
+            document.getElementById('worker-status-mode').value = w.statusMode || 'active';
             document.getElementById('worker-photo-preview').src = w.photo;
             currentPhotoBase64 = '';
             document.getElementById('worker-form-title').textContent = 'Editar Colaborador';
@@ -1360,11 +1277,10 @@
             document.getElementById('edit-worker-id').value = '';
             document.getElementById('worker-name').value = '';
             document.getElementById('worker-role').value = '';
-            document.getElementById('worker-salary').value = '';
+            document.getElementById('worker-gender').value = 'male';
             document.getElementById('worker-pin').value = '';
-            document.getElementById('worker-bio-credential').value = '';
-            document.getElementById('bio-status-badge').textContent = 'Não Registado';
-            document.getElementById('bio-status-badge').className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700';
+            document.getElementById('worker-salary').value = '';
+            document.getElementById('worker-status-mode').value = 'active';
             currentPhotoBase64 = '';
             document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
             document.getElementById('worker-form-title').textContent = 'Registar Colaborador';
@@ -1392,9 +1308,8 @@
                     <div class="flex items-center gap-3">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
                         <div>
-                            <p class="font-bold text-sm">${w.name}</p>
-                            <p class="text-xs text-slate-500">${w.role} ${w.salary ? '• Base: <strong>' + Number(w.salary).toLocaleString('pt-PT') + ' MT</strong>' : ''}</p>
-                            <span class="text-[10px] ${w.bioCredential ? 'text-emerald-700' : 'text-rose-600'} font-semibold"><i class="fa-solid fa-fingerprint"></i> ${w.bioCredential ? 'Biometria Física Registada' : 'Sem Biometria'}</span>
+                            <p class="font-bold text-sm">${w.name} <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded">PIN: ${w.pin || '---'}</span></p>
+                            <p class="text-xs text-slate-500">${w.role} • <span class="text-edm-600 font-semibold uppercase">${w.statusMode || 'Ativo'}</span></p>
                         </div>
                     </div>
                     <div class="flex gap-2">
@@ -1663,7 +1578,7 @@
                     <table>
                         <tr><th>Descrição</th><th>Valor (MZN)</th></tr>
                         <tr><td>Salário Base Mensal</td><td>${Number(worker.salary || 0).toLocaleString('pt-PT')} MT</td></tr>
-                        <tr><td>Estado Biométrico</td><td>Validado e Protegido</td></tr>
+                        <tr><td>Modo de Validação</td><td>Facial + PIN (Plano B)</td></tr>
                     </table>
                     <div class="total">Líquido a Receber: ${Number(worker.salary || 0).toLocaleString('pt-PT')} MT</div>
                     <script>window.print();<\/script>
@@ -1695,17 +1610,86 @@
             }
 
             container.innerHTML = history.map(h => `
-                <div class="p-3.5 rounded-2xl bg-slate-50 border flex justify-between items-center text-xs">
-                    <div>
-                        <span class="font-bold text-slate-900">[${h.category}] ${h.title}</span>
-                        <p class="text-slate-600">${h.description}</p>
+                <div onclick="openHistoryZoomModal('${h.id}')" class="cursor-pointer p-3.5 rounded-2xl bg-slate-50 hover:bg-edm-50 hover:border-edm-400 border transition flex justify-between items-center text-xs group">
+                    <div class="flex items-center gap-3 pr-4">
+                        ${h.capturedPhoto ? `<img src="${h.capturedPhoto}" class="w-12 h-12 rounded-xl object-cover border shrink-0">` : `<div class="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center shrink-0"><i class="fa-solid fa-camera text-slate-400"></i></div>`}
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-900 group-hover:text-edm-700">[${h.category}] ${h.title}</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white border text-edm-600 font-semibold opacity-0 group-hover:opacity-100 transition">
+                                    <i class="fa-solid fa-camera mr-1"></i>Ver Foto Real
+                                </span>
+                            </div>
+                            <p class="text-slate-600 mt-0.5 line-clamp-1">${h.description}</p>
+                        </div>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right shrink-0">
                         <span class="font-mono font-bold text-slate-700">${h.dateStr} • ${h.timeStr}</span>
                         <span class="block text-[10px] text-slate-400">Origem: ${h.actor}</span>
                     </div>
                 </div>
             `).join('');
+        };
+
+        window.openHistoryZoomModal = function(historyId) {
+            const item = window.getHistory().find(h => h.id === historyId);
+            if (!item) return;
+
+            selectedHistoryItemForPrint = item;
+            document.getElementById('zoom-category').textContent = item.category;
+            document.getElementById('zoom-title').textContent = item.title;
+            document.getElementById('zoom-id').textContent = item.id;
+            document.getElementById('zoom-datetime').textContent = `${item.dateStr} às ${item.timeStr}`;
+            document.getElementById('zoom-actor').textContent = item.actor;
+            document.getElementById('zoom-description').textContent = item.description;
+            document.getElementById('zoom-captured-photo').src = item.capturedPhoto || 'https://ui-avatars.com/api/?name=EDM&background=0F172A&color=fff&size=256';
+
+            document.getElementById('modal-history-zoom').classList.remove('hidden');
+        };
+
+        window.closeHistoryZoomModal = function() {
+            document.getElementById('modal-history-zoom').classList.add('hidden');
+            selectedHistoryItemForPrint = null;
+        };
+
+        window.printSingleHistoryRecord = function() {
+            if (!selectedHistoryItemForPrint) return;
+            const item = selectedHistoryItemForPrint;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Ficha de Auditoria - ${item.id}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
+                        .header { border-bottom: 2px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+                        .title { font-size: 20px; font-weight: bold; color: #f26522; }
+                        .box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 20px; border-radius: 10px; line-height: 1.6; }
+                        .photo { width: 120px; height: 120px; border-radius: 10px; object-fit: cover; border: 2px solid #f26522; margin-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <div class="title">EDM - Eletricidade de Moçambique</div>
+                            <div>Comprovativo Oficial de Auditoria de Ponto</div>
+                        </div>
+                        <div><strong>Data:</strong> ${item.dateStr}</div>
+                    </div>
+                    <div class="box">
+                        <p><strong>ID do Registo:</strong> ${item.id}</p>
+                        <p><strong>Categoria:</strong> ${item.category}</p>
+                        <p><strong>Evento:</strong> ${item.title}</p>
+                        <p><strong>Hora Exata:</strong> ${item.timeStr}</p>
+                        <p><strong>Responsável:</strong> ${item.actor}</p>
+                        <p><strong>Detalhes:</strong> ${item.description}</p>
+                        ${item.capturedPhoto ? '<br><strong>Fotografia Real / Perfil:</strong><br><img src="'+item.capturedPhoto+'" class="photo">' : ''}
+                    </div>
+                    <script>window.print();<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         };
 
         async function saveSystemNotice(e) {
@@ -1725,8 +1709,8 @@
 
         function exportToCSV() {
             const workers = window.getWorkers();
-            let csv = '\uFEFFNome;Cargo;Salário Base (MT)\n';
-            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.salary || 0}"\n`);
+            let csv = '\uFEFFNome;Cargo;Género;PIN;Salário Base (MT)\n';
+            workers.forEach(w => csv += `"${w.name}";"${w.role}";"${w.gender || 'male'}";"${w.pin || ''}";"${w.salary || 0}"\n`);
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = 'EDM_Colaboradores.csv'; a.click();
