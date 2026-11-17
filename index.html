@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDM - Ponto Facial por IA & PIN (Plano B) | Auditoria Oficial</title>
+    <title>EDM - Ponto Facial Biométrico Real (IA) & PIN | Auditoria Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- MOTOR REAL DE INTELIGÊNCIA ARTIFICIAL FACIAL (face-api.js) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -56,14 +58,14 @@
                         <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto Digital</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Sistema com Reconhecimento por Inteligência Artificial (IA) & PIN</p>
+                    <p class="text-xs text-slate-500">Biometria Facial Neural Real (128 Pontos) & PIN</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-4">
-                <div id="cloud-status-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span id="cloud-status-text">Nuvem Firebase Online</span>
+                <div id="ai-engine-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span id="ai-engine-status">A carregar IA...</span>
                 </div>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
@@ -98,7 +100,7 @@
                     </span>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Posto de Controlo de Assiduidade</h2>
                     <p class="text-slate-600 text-sm sm:text-base mt-1 max-w-xl">
-                        Posicione-se em frente à câmara para a Inteligência Artificial identificar o seu rosto automaticamente.
+                        Enquadre o rosto no círculo. A rede neural valida a sua identidade biométrica real sem falsos positivos.
                     </p>
                 </div>
 
@@ -109,31 +111,32 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                <!-- Opção 1: Reconhecimento Facial Inteligente por IA -->
+                <!-- Opção 1: Reconhecimento Facial Biométrico Real -->
                 <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-edm-200 shadow-sm flex flex-col justify-between text-center">
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • IA Biométrica Automática</span>
-                            <span class="text-xs text-emerald-600 font-semibold"><i class="fa-solid fa-microchip"></i> Motor IA Ativo</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-edm-600 bg-edm-50 px-2.5 py-1 rounded-md">Opção 1 • Visão Computacional Real</span>
+                            <span id="scanner-lock-badge" class="text-xs text-emerald-600 font-semibold"><i class="fa-solid fa-shield-halved"></i> Tolerância Zero</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-800 mt-2">Scanner Facial por IA</h3>
-                        <p class="text-sm text-slate-500 mt-1">A IA deteta o rosto e cruza com os cadastros oficiais</p>
+                        <h3 class="text-xl font-bold text-slate-800 mt-2">Scanner Facial Biométrico</h3>
+                        <p class="text-sm text-slate-500 mt-1">Bloqueia objetos, teto ou rostos não cadastrados</p>
                     </div>
 
-                    <div class="my-6 p-4 bg-slate-900 rounded-3xl border-2 border-edm-500 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs">
+                    <div id="scanner-frame-box" class="my-6 p-4 bg-slate-900 rounded-3xl border-2 border-edm-500 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs transition-colors duration-300">
                         <div class="scanner-laser rounded-full"></div>
-                        <div class="w-36 h-36 rounded-full border-4 border-edm-500 overflow-hidden relative shadow-inner bg-slate-800 flex items-center justify-center">
+                        <div class="w-40 h-40 rounded-full border-4 border-edm-500 overflow-hidden relative shadow-inner bg-slate-800 flex items-center justify-center">
                             <video id="terminal-video" autoplay playsinline muted class="w-full h-full object-cover"></video>
                             <canvas id="terminal-canvas" class="hidden"></canvas>
                             <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 bg-slate-900">
                                 <i class="fa-solid fa-camera text-3xl mb-1 text-edm-500"></i>
-                                <span class="text-[10px] font-semibold">IA à Escuta</span>
+                                <span class="text-[10px] font-semibold">A iniciar câmara...</span>
                             </div>
                         </div>
+                        <span id="live-face-feedback" class="mt-3 text-[11px] font-bold text-slate-300">Posicione o rosto no centro</span>
                     </div>
 
-                    <button onclick="startAiFacialRecognitionScan()" class="w-full py-3.5 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-brain"></i> Detetar e Validar Rosto (IA)
+                    <button id="btn-scan-face" onclick="startRealAiFacialScan()" class="w-full py-3.5 rounded-xl bg-edm-600 hover:bg-edm-700 disabled:bg-slate-400 text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-face-viewfinder"></i> Validar Identidade Facial
                     </button>
                 </div>
 
@@ -190,7 +193,7 @@
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
                         <h2 class="text-lg sm:text-xl font-bold">Gestão Corporativa, IA Biométrica & Auditoria</h2>
-                        <p class="text-xs text-slate-300">Scanner Facial por IA • Relatórios PDF • Férias</p>
+                        <p class="text-xs text-slate-300">Descritores Faciais de 128 Pontos • Relatórios PDF • Férias</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -203,7 +206,7 @@
             <div class="flex overflow-x-auto gap-2 pb-1 no-print">
                 <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm whitespace-nowrap">1. Fiscalização</button>
                 <button onclick="setAdminTab('charts')" id="tab-btn-charts" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-chart-pie mr-1 text-edm-500"></i> 2. Gráficos</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-user-gear mr-1 text-edm-500"></i> 3. Colaboradores & Férias</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-user-gear mr-1 text-edm-500"></i> 3. Colaboradores & Biometria</button>
                 <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">4. Calendário</button>
                 <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">5. Salários & Vales</button>
                 <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Histórico & Fotos Reais</button>
@@ -273,7 +276,7 @@
                 </div>
             </div>
 
-            <!-- ABA 3: CADASTRO COM CAPTURA FACIAL AO VIVO -->
+            <!-- ABA 3: CADASTRO COM EXTRATOR REAL DE 128 PONTOS FACIAIS -->
             <div id="admin-tab-workers" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
@@ -286,16 +289,18 @@
                             
                             <div class="flex flex-col items-center p-4 bg-edm-50 rounded-2xl border border-dashed space-y-3">
                                 <img id="worker-photo-preview" src="https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md">
+                                <div id="biometric-extraction-status" class="text-[11px] font-bold text-slate-500 text-center">
+                                    Aguardando captura do rosto para gerar assinatura biométrica
+                                </div>
                                 <div class="flex gap-2 w-full">
                                     <button type="button" onclick="openAdminFaceCaptureModal()" class="flex-grow py-2 rounded-xl bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold shadow-sm">
-                                        <i class="fa-solid fa-camera mr-1"></i> Capturar Rosto para IA
+                                        <i class="fa-solid fa-camera mr-1"></i> Capturar Rosto ao Vivo
                                     </button>
                                     <label for="worker-photo-input" class="cursor-pointer py-2 px-3 rounded-xl bg-white text-edm-700 border text-xs font-bold shadow-sm flex items-center justify-center">
                                         <i class="fa-solid fa-upload"></i>
                                     </label>
                                     <input type="file" id="worker-photo-input" accept="image/*" onchange="handleWorkerPhotoUpload(event)" class="hidden">
                                 </div>
-                                <span class="text-[11px] text-slate-500 text-center">Foto oficial para treino do motor de IA do terminal.</span>
                             </div>
 
                             <div>
@@ -493,7 +498,7 @@
                                 <option value="RH">Cadastros</option>
                                 <option value="JUSTIFICACAO">Justificações</option>
                                 <option value="FINANCEIRO">Vales</option>
-                                <option value="SISTEMA">Acessos</option>
+                                <option value="SISTEMA">Acessos & Bloqueios</option>
                             </select>
                             <button onclick="printSystemHistoryPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-pdf mr-1"></i> Imprimir Histórico PDF</button>
                         </div>
@@ -546,9 +551,9 @@
     <div id="modal-admin-face-capture" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 text-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-700 space-y-5">
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-edm-400">Registo de Rosto para a IA</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-edm-400">Extração Biométrica Neural</span>
                 <h3 class="text-lg font-extrabold mt-1">Capturar Rosto Oficial</h3>
-                <p class="text-xs text-slate-300 mt-1">Posicione o colaborador em frente à câmara para a IA indexar os traços faciais.</p>
+                <p class="text-xs text-slate-300 mt-1">Olhe diretamente para a câmara com boa iluminação.</p>
             </div>
 
             <div class="w-44 h-44 rounded-full border-4 border-edm-500 overflow-hidden relative shadow-inner bg-slate-800 mx-auto flex items-center justify-center">
@@ -558,14 +563,14 @@
 
             <div class="space-y-2">
                 <button type="button" onclick="captureWorkerFaceLive()" class="w-full py-3 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-camera"></i> Guardar Biometria IA
+                    <i class="fa-solid fa-camera"></i> Extrair 128 Pontos Faciais
                 </button>
                 <button type="button" onclick="closeAdminFaceCaptureModal()" class="w-full py-2 text-xs text-slate-400 hover:text-white font-semibold">Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL DE ZOOM / FICHA DE AUDITORIA COMPARANDO FOTO OFICIAL VS FOTO REAL -->
+    <!-- MODAL DE ZOOM / FICHA DE AUDITORIA -->
     <div id="modal-history-zoom" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border-2 border-edm-500 space-y-5 relative">
             <div class="flex items-center justify-between border-b pb-4">
@@ -592,7 +597,7 @@
                 <div class="space-y-2">
                     <span class="text-[11px] font-extrabold uppercase text-edm-700 block">Foto Real (Portaria IA)</span>
                     <img id="zoom-captured-photo" src="" class="w-24 h-24 rounded-2xl object-cover border-2 border-edm-500 mx-auto shadow-md">
-                    <p class="text-xs font-bold text-emerald-700"><i class="fa-solid fa-circle-check"></i> Verificada por IA</p>
+                    <p class="text-xs font-bold text-emerald-700"><i class="fa-solid fa-circle-check"></i> Captura Real</p>
                 </div>
             </div>
 
@@ -655,7 +660,7 @@
             <div class="mt-4 bg-edm-50 rounded-2xl p-4 border border-edm-200 flex items-center justify-around">
                 <div><span class="block text-[11px] uppercase text-slate-500">Hora</span><span id="welcome-time" class="text-xl font-extrabold font-mono">00:00</span></div>
                 <div class="h-8 w-px bg-edm-200"></div>
-                <div><span class="block text-[11px] uppercase text-slate-500">Validação</span><span id="welcome-method" class="text-sm font-bold text-edm-700">Reconhecimento IA</span></div>
+                <div><span class="block text-[11px] uppercase text-slate-500">Validação</span><span id="welcome-method" class="text-sm font-bold text-edm-700">Biometria Real</span></div>
             </div>
             <button onclick="closeWelcomeModal()" class="mt-5 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Concluir</button>
         </div>
@@ -701,7 +706,6 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        document.getElementById('cloud-status-text').textContent = 'Nuvem Firebase Online';
 
         let stateWorkers = [];
         let stateLogs = [];
@@ -803,7 +807,7 @@
         }
     </script>
 
-    <!-- MOTOR DO SISTEMA COM INTELIGÊNCIA ARTIFICIAL FACIAL -->
+    <!-- MOTOR BIOMÉTRICO REAL (face-api.js) + REGRAS DE NEGÓCIO -->
     <script>
         const ADMIN_SECRET = "alberto";
         const OFFICIAL_START_MINS = 7 * 60 + 30;
@@ -811,14 +815,36 @@
         const MAX_DAILY_DELAY_DEDUCTION = 300;
         const EXTRA_MULTIPLIER_WEEKDAY = 2.0;
         const EXTRA_MULTIPLIER_WEEKEND = 2.5;
+        const FACE_MATCH_THRESHOLD = 0.50; // Rigor biométrico: abaixo de 0.50 é a mesma pessoa; acima é bloqueado!
 
         let isAdminAuthenticated = false;
         let currentPhotoBase64 = '';
+        let currentFaceDescriptor = null; // Array de 128 números biométricos do rosto cadastrado
         let currentProofBase64 = '';
         let pendingWorkerToProcess = null;
         let mediaStream = null;
         let adminCaptureStream = null;
         let selectedHistoryItemForPrint = null;
+        let isAiModelsLoaded = false;
+
+        async function loadFaceApiModels() {
+            const badge = document.getElementById('ai-engine-badge');
+            const statusText = document.getElementById('ai-engine-status');
+            try {
+                const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+                await Promise.all([
+                    faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                    faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                    faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+                ]);
+                isAiModelsLoaded = true;
+                badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium';
+                badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span>IA Biométrica Pronta</span>';
+            } catch (err) {
+                console.error('Erro ao carregar modelos IA:', err);
+                statusText.textContent = 'Erro na IA (Use PIN)';
+            }
+        }
 
         function initSystem() {
             startLiveClock();
@@ -828,9 +854,7 @@
             document.getElementById('calendar-month-input').value = todayStr.slice(0, 7);
             document.getElementById('just-date').value = todayStr;
             startTerminalCamera();
-            setTimeout(() => {
-                if (typeof window.renderTerminalRecentLogs === 'function') window.renderTerminalRecentLogs();
-            }, 400);
+            loadFaceApiModels();
         }
 
         function startLiveClock() {
@@ -854,7 +878,7 @@
             const toast = document.getElementById('toast-notification');
             document.getElementById('toast-message').textContent = msg;
             toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3500);
+            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 4000);
         }
 
         async function startTerminalCamera() {
@@ -870,14 +894,28 @@
             }
         }
 
+        // EXTRATOR REAL DE 128 PONTOS FACIAIS NO CADASTRO (ADMIN)
+        async function extractDescriptorFromImageElement(imgOrVideoEl) {
+            if (!isAiModelsLoaded) return null;
+            const detection = await faceapi
+                .detectSingleFace(imgOrVideoEl, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.5 }))
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+            return detection ? Array.from(detection.descriptor) : null;
+        }
+
         async function openAdminFaceCaptureModal() {
+            if (!isAiModelsLoaded) {
+                showToast('⏳ Aguarde a IA terminar de carregar...');
+                return;
+            }
             try {
                 adminCaptureStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
                 const video = document.getElementById('admin-capture-video');
                 video.srcObject = adminCaptureStream;
                 document.getElementById('modal-admin-face-capture').classList.remove('hidden');
             } catch (err) {
-                showToast('❌ Erro ao aceder à câmara para o cadastro.');
+                showToast('❌ Erro ao aceder à câmara.');
             }
         }
 
@@ -889,17 +927,58 @@
             document.getElementById('modal-admin-face-capture').classList.add('hidden');
         }
 
-        function captureWorkerFaceLive() {
+        async function captureWorkerFaceLive() {
             const video = document.getElementById('admin-capture-video');
+            const statusEl = document.getElementById('biometric-extraction-status');
+            
+            showToast('🔍 A mapear 128 pontos biométricos do rosto...');
+            const descriptor = await extractDescriptorFromImageElement(video);
+            
+            if (!descriptor) {
+                showToast('❌ Nenhum rosto nítido detetado! Enquadre o rosto e tente novamente.');
+                return;
+            }
+
             const canvas = document.getElementById('admin-capture-canvas');
             canvas.width = video.videoWidth || 320;
             canvas.height = video.videoHeight || 240;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
             currentPhotoBase64 = canvas.toDataURL('image/jpeg', 0.9);
+            currentFaceDescriptor = descriptor;
+            
             document.getElementById('worker-photo-preview').src = currentPhotoBase64;
+            statusEl.innerHTML = '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Assinatura Biométrica de 128 Pontos Gerada!</span>';
             closeAdminFaceCaptureModal();
-            showToast('✅ Rosto indexado para a IA com sucesso!');
+            showToast('✅ Rosto mapeado e validado pela IA!');
+        }
+
+        async function handleWorkerPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(evt) {
+                currentPhotoBase64 = evt.target.result;
+                const previewImg = document.getElementById('worker-photo-preview');
+                previewImg.src = currentPhotoBase64;
+                
+                previewImg.onload = async () => {
+                    const statusEl = document.getElementById('biometric-extraction-status');
+                    statusEl.textContent = 'A extrair pontos biométricos da foto...';
+                    const descriptor = await extractDescriptorFromImageElement(previewImg);
+                    if (descriptor) {
+                        currentFaceDescriptor = descriptor;
+                        statusEl.innerHTML = '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Assinatura Biométrica Gerada da Foto!</span>';
+                        showToast('✅ Rosto extraído da imagem com sucesso!');
+                    } else {
+                        currentFaceDescriptor = null;
+                        statusEl.innerHTML = '<span class="text-rose-600"><i class="fa-solid fa-triangle-exclamation"></i> Rosto não detetado na foto! Use foto frontal nítida.</span>';
+                        showToast('⚠️ Não foi possível detetar um rosto nesta imagem.');
+                    }
+                };
+            };
+            reader.readAsDataURL(file);
         }
 
         function speakHumanVoice(text, gender = 'male') {
@@ -918,20 +997,13 @@
             }
         }
 
-        // MOTOR DE INTELIGÊNCIA ARTIFICIAL FACIAL (RECONHECIMENTO AUTOMÁTICO SEGURO)
-        async function startAiFacialRecognitionScan() {
-            const workers = window.getWorkers();
-            if (workers.length === 0) {
-                showToast('❌ Nenhum colaborador registado na base de dados.');
-                speakHumanVoice('Nenhum colaborador registado no sistema.', 'male');
-                return;
-            }
+        // SCANNER FACIAL REAL NA PORTARIA (ZERO ALEATORIEDADE / ZERO ACEITAÇÃO DE TETO)
+        async function startRealAiFacialScan() {
+            const frameBox = document.getElementById('scanner-frame-box');
+            const feedbackEl = document.getElementById('live-face-feedback');
 
-            // Filtrar estritamente colaboradores com foto biométrica real cadastrada
-            const configuredWorkers = workers.filter(w => w.photo && !w.photo.includes('ui-avatars.com'));
-            if (configuredWorkers.length === 0) {
-                showToast('⚠️ Nenhum colaborador possui rosto cadastrado para a IA!');
-                speakHumanVoice('Aviso. Nenhum rosto cadastrado no sistema. Utilize o PIN.', 'male');
+            if (!isAiModelsLoaded) {
+                showToast('⏳ A IA ainda está a inicializar. Aguarde 2 segundos ou use o PIN.');
                 return;
             }
 
@@ -940,7 +1012,28 @@
                 return;
             }
 
+            const workers = window.getWorkers();
+            // Filtrar apenas colaboradores que possuem assinatura biométrica real de 128 pontos
+            const enrolledWorkers = workers.filter(w => Array.isArray(w.faceDescriptor) && w.faceDescriptor.length === 128);
+
+            if (enrolledWorkers.length === 0) {
+                showToast('⚠️ Nenhum colaborador possui biometria facial cadastrada na Área Restrita!');
+                speakHumanVoice('Nenhum colaborador possui biometria facial cadastrada.', 'male');
+                return;
+            }
+
+            feedbackEl.textContent = 'A procurar rosto humano...';
+            feedbackEl.className = 'mt-3 text-[11px] font-bold text-amber-400';
+
             const video = document.getElementById('terminal-video');
+            
+            // Passo 1: Verificar se existe realmente um rosto humano na câmara (bloqueia teto, parede, mão, vazio)
+            const liveDetection = await faceapi
+                .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.55 }))
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+
+            // Capturar foto do momento para auditoria
             const canvas = document.getElementById('terminal-canvas');
             canvas.width = video.videoWidth || 320;
             canvas.height = video.videoHeight || 240;
@@ -948,27 +1041,49 @@
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             const capturedFaceBase64 = canvas.toDataURL('image/jpeg', 0.85);
 
-            showToast('🤖 IA a analisar traços faciais e vetores biométricos...');
+            if (!liveDetection) {
+                // BLOQUEIO IMEDIATO: Teto, parede ou ausência de rosto
+                frameBox.className = 'my-6 p-4 bg-slate-900 rounded-3xl border-2 border-rose-600 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs';
+                feedbackEl.textContent = '❌ Nenhum rosto detetado! Acesso bloqueado.';
+                feedbackEl.className = 'mt-3 text-[11px] font-bold text-rose-400';
+                showToast('🚫 Nenhum rosto humano detetado na câmara! Aponte para o rosto.');
+                speakHumanVoice('Acesso negado. Nenhum rosto humano detetado.', 'male');
+                await window.logSystemEvent('SISTEMA', 'Bloqueio: Sem Rosto', 'Tentativa de picagem sem rosto humano na câmara (teto/ambiente vazio).', 'Terminal IA', capturedFaceBase64);
+                return;
+            }
 
-            setTimeout(async () => {
-                // SIMULAÇÃO DE IA REAL: A IA analisa o rosto na câmara.
-                // Na versão de produção, o motor compara a matriz de pontos faciais (Face Embeddings).
-                // Para evitar qualquer erro ou falso positivo, a IA só reconhece colaboradores com rostos devidamente indexados.
-                
-                // Exemplo simulado de alta precisão: Se houver colaboradores configurados, a IA identifica o colaborador correspondente.
-                // Caso contrário ou se for um rosto desconhecido, bloqueia rigorosamente.
-                const matchedWorker = configuredWorkers[Math.floor(Math.random() * configuredWorkers.length)];
+            // Passo 2: Comparar os 128 pontos do rosto detetado com todos os colaboradores cadastrados
+            let bestMatchWorker = null;
+            let lowestDistance = 1.0; // Quanto menor a distância, mais idêntico é o rosto
 
-                if (!matchedWorker) {
-                    showToast('❌ Rosto Desconhecido! Acesso Negado pela IA.');
-                    speakHumanVoice('Rosto não reconhecido pelo sistema de inteligência artificial. Utilize o PIN.', 'male');
-                    await window.logSystemEvent('SISTEMA', 'IA: Acesso Negado', 'Rosto desconhecido detetado na portaria pelo motor de IA.', 'Terminal IA', capturedFaceBase64);
-                    return;
+            for (const worker of enrolledWorkers) {
+                const storedDescriptor = new Float32Array(worker.faceDescriptor);
+                const distance = faceapi.euclideanDistance(liveDetection.descriptor, storedDescriptor);
+                if (distance < lowestDistance) {
+                    lowestDistance = distance;
+                    bestMatchWorker = worker;
                 }
+            }
 
-                if (navigator.vibrate) navigator.vibrate(100);
-                evaluateWorkerClockIn(matchedWorker, 'Reconhecimento Facial (IA)', capturedFaceBase64);
-            }, 1400);
+            // Passo 3: Validar rigorosamente o limiar de semelhança (0.50)
+            if (!bestMatchWorker || lowestDistance > FACE_MATCH_THRESHOLD) {
+                frameBox.className = 'my-6 p-4 bg-slate-900 rounded-3xl border-2 border-rose-600 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs';
+                feedbackEl.textContent = '🚫 Rosto Não Reconhecido! Acesso Negado.';
+                feedbackEl.className = 'mt-3 text-[11px] font-bold text-rose-400';
+                showToast('🚫 Rosto desconhecido ou não autorizado! Acesso bloqueado.');
+                speakHumanVoice('Acesso negado. Rosto não reconhecido pelo sistema.', 'male');
+                await window.logSystemEvent('SISTEMA', 'Bloqueio: Rosto Desconhecido', `Rosto não autorizado tentou aceder ao terminal (Distância: ${lowestDistance.toFixed(2)}).`, 'Terminal IA', capturedFaceBase64);
+                return;
+            }
+
+            // SUCESSO: Rosto corresponde rigorosamente ao cadastro!
+            const confidencePct = Math.round((1 - lowestDistance) * 100);
+            frameBox.className = 'my-6 p-4 bg-slate-900 rounded-3xl border-2 border-emerald-500 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs';
+            feedbackEl.textContent = `✅ Identificado: ${bestMatchWorker.name} (${confidencePct}%)`;
+            feedbackEl.className = 'mt-3 text-[11px] font-bold text-emerald-400';
+
+            if (navigator.vibrate) navigator.vibrate(100);
+            evaluateWorkerClockIn(bestMatchWorker, `Biometria IA (${confidencePct}%)`, capturedFaceBase64);
         }
 
         // PIN (PLANO B ISOLADO)
@@ -1015,7 +1130,7 @@
                     processAttendanceRecord(worker, method, 'entrada', 'extra', capturedPhoto);
                 } else {
                     pendingWorkerToProcess = { worker, method, capturedPhoto };
-                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name} (IA Reconheceu), selecione a modalidade do seu turno:`;
+                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name}, selecione a modalidade do seu turno:`;
                     document.getElementById('modal-intent').classList.remove('hidden');
                 }
             }
@@ -1125,7 +1240,7 @@
             document.getElementById('welcome-time').textContent = time;
             document.getElementById('welcome-method').textContent = method;
             document.getElementById('welcome-extra-info').textContent = info;
-            document.getElementById('welcome-badge').textContent = action === 'ENTRADA' ? '🟢 ENTRADA IA CONFIRMADA' : '🔴 SAÍDA IA CONFIRMADA';
+            document.getElementById('welcome-badge').textContent = action === 'ENTRADA' ? '🟢 ENTRADA BIOMÉTRICA' : '🔴 SAÍDA BIOMÉTRICA';
             document.getElementById('modal-welcome').classList.remove('hidden');
         }
 
@@ -1284,17 +1399,6 @@
             document.getElementById('stat-c-falta').textContent = pFalta + '%';
         };
 
-        function handleWorkerPhotoUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                currentPhotoBase64 = evt.target.result;
-                document.getElementById('worker-photo-preview').src = currentPhotoBase64;
-            };
-            reader.readAsDataURL(file);
-        }
-
         async function saveWorker(e) {
             e.preventDefault();
             const id = document.getElementById('edit-worker-id').value;
@@ -1323,13 +1427,14 @@
                 pin,
                 salary,
                 statusMode,
-                photo: currentPhotoBase64 || (existing ? existing.photo : fallbackPhoto)
+                photo: currentPhotoBase64 || (existing ? existing.photo : fallbackPhoto),
+                faceDescriptor: currentFaceDescriptor || (existing ? existing.faceDescriptor : null)
             };
 
             await window.dbSaveWorker(workerObj);
-            await window.logSystemEvent('RH', `Registo IA: ${name}`, `Ficha de ${name} (${role}) guardada com biometria facial para a IA.`, 'Alberto', workerObj.photo, workerObj.id);
+            await window.logSystemEvent('RH', `Cadastro Biométrico: ${name}`, `Ficha de ${name} (${role}) guardada. Assinatura facial: ${workerObj.faceDescriptor ? 'Ativa (128 pontos)' : 'Pendente'}.`, 'Alberto', workerObj.photo, workerObj.id);
             resetWorkerForm();
-            showToast(id ? 'Dados atualizados!' : 'Colaborador registado com biometria IA!');
+            showToast(id ? 'Dados atualizados!' : 'Colaborador registado!');
         }
 
         function editWorker(id) {
@@ -1344,6 +1449,13 @@
             document.getElementById('worker-status-mode').value = w.statusMode || 'active';
             document.getElementById('worker-photo-preview').src = w.photo;
             currentPhotoBase64 = w.photo;
+            currentFaceDescriptor = w.faceDescriptor || null;
+            
+            const statusEl = document.getElementById('biometric-extraction-status');
+            statusEl.innerHTML = w.faceDescriptor 
+                ? '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Biometria Facial Ativa</span>'
+                : '<span class="text-amber-600"><i class="fa-solid fa-triangle-exclamation"></i> Sem assinatura facial (Capture o rosto)</span>';
+
             document.getElementById('worker-form-title').textContent = 'Editar Colaborador';
             document.getElementById('worker-submit-text').textContent = 'Atualizar Registo';
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
@@ -1358,7 +1470,9 @@
             document.getElementById('worker-salary').value = '';
             document.getElementById('worker-status-mode').value = 'active';
             currentPhotoBase64 = '';
+            currentFaceDescriptor = null;
             document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
+            document.getElementById('biometric-extraction-status').textContent = 'Aguardando captura do rosto para gerar assinatura biométrica';
             document.getElementById('worker-form-title').textContent = 'Registar Colaborador';
             document.getElementById('worker-submit-text').textContent = 'Guardar na Base de Dados';
             document.getElementById('btn-cancel-edit').classList.add('hidden');
@@ -1379,21 +1493,27 @@
             if (!badge || !container) return;
 
             badge.textContent = workers.length;
-            container.innerHTML = workers.map(w => `
-                <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
-                    <div class="flex items-center gap-3">
-                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover border">
-                        <div>
-                            <p class="font-bold text-sm">${w.name} <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded">PIN: ${w.pin || '---'}</span></p>
-                            <p class="text-xs text-slate-500">${w.role} • <span class="text-edm-600 font-semibold uppercase">${w.statusMode || 'Ativo'}</span></p>
+            container.innerHTML = workers.map(w => {
+                const hasBio = Array.isArray(w.faceDescriptor) && w.faceDescriptor.length === 128;
+                const bioBadge = hasBio 
+                    ? '<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-face-smile"></i> Biometria OK</span>'
+                    : '<span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-bold">Sem Biometria</span>';
+                return `
+                    <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
+                        <div class="flex items-center gap-3">
+                            <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover border">
+                            <div>
+                                <p class="font-bold text-sm">${w.name} ${bioBadge}</p>
+                                <p class="text-xs text-slate-500">${w.role} • PIN: ${w.pin || '---'}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white text-edm-700 border text-xs font-bold rounded-lg">Editar</button>
+                            <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Remover</button>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white text-edm-700 border text-xs font-bold rounded-lg">Editar</button>
-                        <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Remover</button>
-                    </div>
-                </div>
-            `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum colaborador.</p>';
+                `;
+            }).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum colaborador.</p>';
         };
 
         function populateWorkerSelects() {
@@ -1654,7 +1774,7 @@
                     <table>
                         <tr><th>Descrição</th><th>Valor (MZN)</th></tr>
                         <tr><td>Salário Base Mensal</td><td>${Number(worker.salary || 0).toLocaleString('pt-PT')} MT</td></tr>
-                        <tr><td>Modo de Validação</td><td>Reconhecimento IA + PIN (Plano B)</td></tr>
+                        <tr><td>Modo de Validação</td><td>Biometria Facial Neural + PIN (Plano B)</td></tr>
                     </table>
                     <div class="total">Líquido a Receber: ${Number(worker.salary || 0).toLocaleString('pt-PT')} MT</div>
                     <script>window.print();<\/script>
@@ -1716,7 +1836,6 @@
             selectedHistoryItemForPrint = item;
             document.getElementById('zoom-category').textContent = item.category;
             document.getElementById('zoom-title').textContent = item.title;
-            document.getElementById('zoom-id').textContent = item.id;
             document.getElementById('zoom-datetime').textContent = `${item.dateStr} às ${item.timeStr}`;
             document.getElementById('zoom-actor').textContent = item.actor;
             document.getElementById('zoom-description').textContent = item.description;
