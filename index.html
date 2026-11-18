@@ -197,7 +197,7 @@
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md font-extrabold">MG</div>
                     <div>
                         <h2 class="text-lg sm:text-xl font-bold">MAGUEZE (MG) & Parceria EDM — Gestão Corporativa</h2>
-                        <p class="text-xs text-slate-300">Descritores Faciais • Fichas 360º • Calendários Espetaculares • Limpeza Geral</p>
+                        <p class="text-xs text-slate-300">Descritores Faciais • Fichas 360º com Zoom • Relatórios em Ficha com Foto</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -213,8 +213,8 @@
                 <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">3. Colaboradores & Senhas</button>
                 <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">4. Calendário Espetacular</button>
                 <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">5. Salários & Vales</button>
-                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Ficha 360º</button>
-                <button onclick="setAdminTab('notices')" id="tab-btn-notices" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">7. Exportar Relatórios</button>
+                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Ficha 360º (Zoom)</button>
+                <button onclick="setAdminTab('notices')" id="tab-btn-notices" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">7. Relatórios em Ficha (Foto)</button>
                 <button onclick="setAdminTab('wipe')" id="tab-btn-wipe" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-rose-50 text-rose-700 border border-rose-200 whitespace-nowrap"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 8. Limpar Sistema (Zerar)</button>
             </div>
 
@@ -293,7 +293,7 @@
                             <input type="hidden" id="edit-worker-id" value="">
                             
                             <div class="flex flex-col items-center p-4 bg-edm-50 rounded-2xl border border-dashed space-y-3">
-                                <img id="worker-photo-preview" src="https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md">
+                                <img id="worker-photo-preview" src="https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md cursor-pointer" onclick="openZoomImage(this.src)">
                                 <div id="biometric-extraction-status" class="text-[11px] font-bold text-slate-500 text-center">
                                     Aguardando captura do rosto para gerar assinatura biométrica
                                 </div>
@@ -495,13 +495,13 @@
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b">
                         <div>
                             <h3 class="font-bold text-xl text-slate-900 flex items-center gap-2">
-                                <i class="fa-solid fa-address-card text-edm-600"></i> Ficha 360º Individual do Colaborador
+                                <i class="fa-solid fa-address-card text-edm-600"></i> Ficha 360º Individual do Colaborador (Auditoria com Zoom)
                             </h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Selecione o colaborador para auditar todo o seu histórico, picagens e comprovativos fotográficos.</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Selecione o colaborador para auditar todo o seu histórico, picagens e ver as fotos capturadas na portaria em tela cheia.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full md:w-auto">
                             <select id="admin-dossier-select" onchange="renderWorkerDossierFromAdmin()" class="px-3 py-2 border rounded-xl text-sm bg-edm-50 font-bold text-edm-800 flex-grow md:w-64"></select>
-                            <button onclick="printCurrentWorkerDossierPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-pdf mr-1"></i> Imprimir Ficha 360º</button>
+                            <button onclick="printCurrentWorkerDossierPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-pdf mr-1"></i> Imprimir Ficha</button>
                         </div>
                     </div>
 
@@ -512,10 +512,10 @@
                 </div>
             </div>
 
-            <!-- ABA 7: EXPORTAR E RELATÓRIOS (POR INTERVALO DE DATAS E COLABORADOR) -->
+            <!-- ABA 7: RELATÓRIOS EM FICHA CORPORATIVA COM FOTO (EXACTO AO VÍDEO) -->
             <div id="admin-tab-notices" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
+                    <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
                         <div class="flex items-center gap-2 text-edm-600">
                             <i class="fa-solid fa-bullhorn text-xl"></i>
                             <h3 class="font-bold text-lg text-slate-900">Mural de Avisos no Terminal</h3>
@@ -529,13 +529,13 @@
                         </form>
                     </div>
 
-                    <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm flex flex-col justify-between space-y-4">
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-6 border shadow-sm flex flex-col justify-between space-y-5">
                         <div>
                             <div class="flex items-center gap-2 text-slate-800">
-                                <i class="fa-solid fa-file-excel text-xl text-emerald-600"></i>
-                                <h3 class="font-bold text-lg">Central de Download Avançado</h3>
+                                <i class="fa-solid fa-id-card-clip text-xl text-edm-600"></i>
+                                <h3 class="font-bold text-lg">Relatório Executivo em Ficha com Foto (Estilo Dossier)</h3>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">Filtre por datas e por colaborador para descarregar relatórios limpos diretamente para o PC.</p>
+                            <p class="text-xs text-slate-500 mt-1">Gera um relatório profissional idêntico a um formulário corporativo em PDF, contendo a fotografia de identidade, dados do colaborador e tabela de assiduidade do período.</p>
                         </div>
 
                         <div class="space-y-3 pt-2">
@@ -550,19 +550,17 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Colaborador Alvo</label>
-                                <select id="export-worker-select" class="w-full px-3 py-2 border rounded-xl text-xs bg-slate-50 font-semibold">
-                                    <option value="all">🌐 Todos os Colaboradores (Geral)</option>
-                                </select>
+                                <label class="block text-[11px] font-bold text-slate-600 mb-1">Colaborador Alvo (Obrigatório para Ficha com Foto)</label>
+                                <select id="export-worker-select" class="w-full px-3 py-2 border rounded-xl text-xs bg-slate-50 font-semibold"></select>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t">
                             <button onclick="downloadCustomExcelCSV()" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-file-excel"></i> Baixar Excel / CSV
+                                <i class="fa-solid fa-file-excel"></i> Baixar Tabela CSV
                             </button>
-                            <button onclick="printCustomExecutivePDF()" class="py-3 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-xs shadow flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-file-pdf"></i> Baixar Relatório PDF
+                            <button onclick="downloadCorporatePhotoDossierPDF()" class="py-3 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-xs shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-file-pdf"></i> Baixar Ficha em PDF com Foto
                             </button>
                         </div>
                     </div>
@@ -578,12 +576,12 @@
                     <div>
                         <h3 class="text-2xl font-extrabold text-slate-900">Zerar & Reiniciar Sistema do Zero</h3>
                         <p class="text-sm text-slate-500 mt-2 max-w-md mx-auto">
-                            Esta operação irá eliminar permanentemente todos os registos de picagens, histórico de auditoria, adiantamentos e justificação de todos os colaboradores.
+                            Esta operação irá eliminar permanentemente todos os registos de picagens, fotos de portaria, adiantamentos e justificações.
                         </p>
                     </div>
                     
                     <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 text-xs font-semibold text-rose-800">
-                        ⚠️ Atenção: Os colaboradores cadastrados na base de dados serão mantidos, mas todo o histórico de assiduidade voltará a zero.
+                        ⚠️ Atenção: Os colaboradores cadastrados serão mantidos, mas todo o histórico e registos de fotos voltarão a zero.
                     </div>
 
                     <button onclick="executeSystemWipeStep1()" class="py-3.5 px-6 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-sm shadow-md inline-flex items-center gap-2">
@@ -593,6 +591,22 @@
             </div>
         </section>
     </main>
+
+    <!-- MODAL DE ZOOM DE IMAGEM / FOTOS EM TELA CHEIA -->
+    <div id="modal-image-zoom" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-2xl w-full p-6 text-center shadow-2xl space-y-4 relative">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg"><i class="fa-solid fa-magnifying-glass-plus text-edm-500 mr-2"></i> Inspeção de Imagem / Foto de Portaria</h3>
+                <button onclick="closeZoomModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="flex items-center justify-center py-2">
+                <img id="zoom-fullscreen-img" src="" class="max-h-[70vh] max-w-full rounded-2xl border-2 border-edm-500 object-contain bg-black shadow-2xl">
+            </div>
+            <p class="text-xs text-slate-400">Verificação biométrica e visual detalhada para controlo da chefia.</p>
+        </div>
+    </div>
 
     <!-- MODAL DE DUPLA CONFIRMAÇÃO DE LIMPEZA -->
     <div id="modal-wipe-confirm" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -651,7 +665,7 @@
             <div id="portal-dashboard-screen" class="hidden space-y-6">
                 <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border">
                     <div class="flex items-center gap-3">
-                        <img id="portal-worker-photo" src="" class="w-16 h-16 rounded-full object-cover border-2 border-edm-500 shadow">
+                        <img id="portal-worker-photo" src="" class="w-16 h-16 rounded-full object-cover border-2 border-edm-500 shadow cursor-pointer" onclick="openZoomImage(this.src)">
                         <div>
                             <h4 id="portal-worker-name" class="font-extrabold text-lg text-slate-900">Nome</h4>
                             <p id="portal-worker-role" class="text-xs text-slate-500">Cargo</p>
@@ -704,15 +718,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE ZOOM DE COMPROVATIVOS -->
-    <div id="modal-proof-zoom" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 space-y-4">
-            <h3 class="font-bold text-lg text-slate-900">Comprovativo de Justificação</h3>
-            <img id="zoom-proof-image" src="" class="w-full max-h-96 object-contain rounded-2xl border shadow-inner bg-slate-50 mx-auto">
-            <button onclick="document.getElementById('modal-proof-zoom').classList.add('hidden')" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs">Fechar</button>
-        </div>
-    </div>
-
     <!-- MODAL DE SELEÇÃO DE REGIME -->
     <div id="modal-intent" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative space-y-4">
@@ -740,7 +745,7 @@
     <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative">
             <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 mb-4">ENTRADA</div>
-            <div class="w-28 h-28 rounded-full mx-auto p-1 bg-gradient-to-tr from-edm-500 to-amber-300 shadow-lg mb-4">
+            <div class="w-28 h-28 rounded-full mx-auto p-1 bg-gradient-to-tr from-edm-500 to-amber-300 shadow-lg mb-4 cursor-pointer" onclick="openZoomImage(document.getElementById('welcome-photo').src)">
                 <img id="welcome-photo" src="" class="w-full h-full rounded-full object-cover bg-white">
             </div>
             <h3 id="welcome-greeting" class="text-2xl font-extrabold text-slate-900">Registo Confirmado</h3>
@@ -997,6 +1002,17 @@
             }
         }
 
+        // ZOOM DE IMAGENS EM TELA CHEIA
+        window.openZoomImage = function(src) {
+            if (!src) return;
+            document.getElementById('zoom-fullscreen-img').src = src;
+            document.getElementById('modal-image-zoom').classList.remove('hidden');
+        };
+
+        window.closeZoomModal = function() {
+            document.getElementById('modal-image-zoom').classList.add('hidden');
+        };
+
         // PORTAL DO TRABALHADOR
         function openWorkerLoginModal() {
             document.getElementById('portal-login-screen').classList.remove('hidden');
@@ -1065,9 +1081,12 @@
             const container = document.getElementById('portal-logs-container');
             container.innerHTML = logs.map(l => `
                 <div class="p-3 rounded-2xl bg-white border flex justify-between items-center text-xs">
-                    <div>
-                        <p class="font-bold text-slate-800">${l.date} • <span class="text-edm-600">${l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal'}</span></p>
-                        <p class="text-[11px] text-slate-500 font-mono">Entrada: ${l.checkIn} | Saída: ${l.checkOut || 'Em Curso'}</p>
+                    <div class="flex items-center gap-3">
+                        ${l.capturedPhoto ? `<img src="${l.capturedPhoto}" class="w-10 h-10 rounded-full object-cover border cursor-pointer" onclick="openZoomImage(this.src)" title="Ver foto da portaria">` : ''}
+                        <div>
+                            <p class="font-bold text-slate-800">${l.date} • <span class="text-edm-600">${l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal'}</span></p>
+                            <p class="text-[11px] text-slate-500 font-mono">Entrada: ${l.checkIn} | Saída: ${l.checkOut || 'Em Curso'}</p>
+                        </div>
                     </div>
                     <span class="px-2.5 py-1 rounded-lg font-bold ${l.delayMins > 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">
                         ${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}
@@ -1405,7 +1424,7 @@
                 const w = workers.find(item => item.id === l.workerId) || { name: 'Colaborador', photo: '' };
                 return `
                     <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border">
-                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
+                        ${l.capturedPhoto ? `<img src="${l.capturedPhoto}" class="w-10 h-10 rounded-full object-cover cursor-pointer border" onclick="openZoomImage(this.src)" title="Ver foto">` : `<img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">`}
                         <div class="min-w-0 flex-grow">
                             <p class="font-bold text-sm truncate">${w.name}</p>
                             <p class="text-xs text-emerald-700 font-semibold">${l.checkIn} ${l.checkOut ? '→ '+l.checkOut : '(Em Turno)'}</p>
@@ -1484,7 +1503,10 @@
                 const wLogs = logs.filter(l => l.workerId === w.id);
                 return `
                     <tr>
-                        <td class="p-3 font-bold">${w.name}</td>
+                        <td class="p-3 font-bold flex items-center gap-2">
+                            <img src="${w.photo}" class="w-8 h-8 rounded-full object-cover border cursor-pointer" onclick="openZoomImage(this.src)">
+                            <span>${w.name}</span>
+                        </td>
                         <td class="p-3">${wLogs.length > 0 ? 'Presente' : 'Ausente'}</td>
                         <td class="p-3 text-xs font-mono">${wLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>') || '--'}</td>
                         <td class="p-3 font-mono">${wLogs.reduce((a,b)=>a+Number(b.normalHours||0),0).toFixed(1)}h</td>
@@ -1579,7 +1601,7 @@
             document.getElementById('workers-list-container').innerHTML = workers.map(w => `
                 <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
                     <div class="flex items-center gap-3">
-                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
+                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover cursor-pointer border" onclick="openZoomImage(this.src)">
                         <div>
                             <p class="font-bold text-sm">${w.name}</p>
                             <p class="text-xs text-slate-500">${w.role} • PIN: ${w.pin} | Senha Portal: <span class="font-mono text-edm-600 font-bold">${w.portalPass || '----'}</span></p>
@@ -1656,8 +1678,11 @@
                             <span class="text-xs font-extrabold font-mono">${day}</span>
                             ${badgeHtml}
                         </div>
-                        <div class="text-[10px] truncate text-slate-500 font-medium">
-                            ${dayLog ? dayLog.checkIn + ' → ' + (dayLog.checkOut || 'Em Curso') : 'Sem registo'}
+                        <div class="flex items-center gap-2">
+                            ${dayLog && dayLog.capturedPhoto ? `<img src="${dayLog.capturedPhoto}" class="w-6 h-6 rounded-full object-cover border cursor-pointer" onclick="openZoomImage(this.src)" title="Foto da portaria">` : ''}
+                            <div class="text-[10px] truncate text-slate-500 font-medium">
+                                ${dayLog ? dayLog.checkIn + ' → ' + (dayLog.checkOut || 'Em Curso') : 'Sem registo'}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1734,7 +1759,7 @@
 
             container.innerHTML = `
                 <div class="flex flex-col sm:flex-row items-center gap-4 bg-white p-6 rounded-3xl border shadow-sm">
-                    <img src="${w.photo}" class="w-24 h-24 rounded-full object-cover border-4 border-edm-500 shadow-md">
+                    <img src="${w.photo}" class="w-24 h-24 rounded-full object-cover border-4 border-edm-500 shadow-md cursor-pointer" onclick="openZoomImage(this.src)" title="Ver foto oficial">
                     <div class="text-center sm:text-left flex-grow">
                         <h4 class="text-xl font-extrabold text-slate-900">${w.name}</h4>
                         <p class="text-xs text-slate-500">${w.role} • Salário: ${Number(w.salary||0).toLocaleString('pt-PT')} MT</p>
@@ -1744,25 +1769,31 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white p-5 rounded-3xl border shadow-sm space-y-3">
-                        <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-clock mr-1 text-edm-600"></i> Picagens Registadas</h5>
+                        <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-clock mr-1 text-edm-600"></i> Picagens Registadas & Fotos da Portaria</h5>
                         <div class="space-y-2 max-h-48 overflow-y-auto">
-                            ${logs.map(l => `<div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between"><span>${l.date} (${l.checkIn}→${l.checkOut||'Em Curso'})</span><span class="font-bold">${l.intent}</span></div>`).join('') || '<p class="text-xs text-slate-400">Nenhum registo.</p>'}
+                            ${logs.map(l => `
+                                <div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between items-center">
+                                    <div class="flex items-center gap-2">
+                                        ${l.capturedPhoto ? `<img src="${l.capturedPhoto}" class="w-10 h-10 rounded-full object-cover border cursor-pointer shadow" onclick="openZoomImage(this.src)" title="Ampliar foto da portaria">` : ''}
+                                        <div>
+                                            <p class="font-bold">${l.date} (${l.checkIn} → ${l.checkOut||'Em Curso'})</p>
+                                            <p class="text-[10px] text-slate-500">${l.intent}</p>
+                                        </div>
+                                    </div>
+                                    <span class="font-bold ${l.delayMins > 0 ? 'text-rose-600' : 'text-emerald-600'}">${l.delayMins > 0 ? 'Atraso '+l.delayMins+'m' : 'Pontual'}</span>
+                                </div>
+                            `).join('') || '<p class="text-xs text-slate-400">Nenhum registo.</p>'}
                         </div>
                     </div>
 
                     <div class="bg-white p-5 rounded-3xl border shadow-sm space-y-3">
                         <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-shield-halved mr-1 text-edm-600"></i> Justificações & Comprovativos</h5>
                         <div class="space-y-2 max-h-48 overflow-y-auto">
-                            ${justs.map(j => `<div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between items-center"><span>${j.date}: ${j.reason}</span>${j.proofImage ? '<button onclick="openProofModal(\''+j.proofImage+'\')" class="px-2 py-1 bg-edm-600 text-white rounded font-bold">Ver Foto</button>' : ''}</div>`).join('') || '<p class="text-xs text-slate-400">Nenhuma justificação.</p>'}
+                            ${justs.map(j => `<div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between items-center"><span>${j.date}: ${j.reason}</span>${j.proofImage ? '<button onclick="openZoomImage(\''+j.proofImage+'\')" class="px-2 py-1 bg-edm-600 text-white rounded font-bold">Ver Comprovativo</button>' : ''}</div>`).join('') || '<p class="text-xs text-slate-400">Nenhuma justificação.</p>'}
                         </div>
                     </div>
                 </div>
             `;
-        };
-
-        window.openProofModal = function(imgBase64) {
-            document.getElementById('zoom-proof-image').src = imgBase64;
-            document.getElementById('modal-proof-zoom').classList.remove('hidden');
         };
 
         window.printCurrentWorkerDossierPDF = function() { window.print(); };
@@ -1771,11 +1802,11 @@
         window.populateExportWorkerSelect = function() {
             const sel = document.getElementById('export-worker-select');
             if (!sel) return;
-            const opts = '<option value="all">🌐 Todos os Colaboradores (Geral)</option>' + window.getWorkers().map(w => `<option value="${w.id}">👤 ${w.name} (${w.role})</option>`).join('');
+            const opts = window.getWorkers().map(w => `<option value="${w.id}">👤 ${w.name} (${w.role})</option>`).join('');
             sel.innerHTML = opts;
         };
 
-        // DOWNLOAD EXCEL / CSV COM FILTRO DE DATAS E COLABORADOR
+        // DOWNLOAD CSV
         window.downloadCustomExcelCSV = function() {
             const startDate = document.getElementById('export-start-date').value;
             const endDate = document.getElementById('export-end-date').value;
@@ -1786,7 +1817,7 @@
             const filteredLogs = logs.filter(l => {
                 if (startDate && l.date < startDate) return false;
                 if (endDate && l.date > endDate) return false;
-                if (targetWorkerId !== 'all' && l.workerId !== targetWorkerId) return false;
+                if (targetWorkerId && l.workerId !== targetWorkerId) return false;
                 return true;
             });
 
@@ -1801,58 +1832,92 @@
             link.href = URL.createObjectURL(blob);
             link.download = `MAGUEZE_Relatorio_${startDate}_a_${endDate}.csv`;
             link.click();
-            showToast('Relatório Excel/CSV baixado com sucesso!');
+            showToast('Ficheiro CSV baixado com sucesso!');
         };
 
-        window.printCustomExecutivePDF = function() {
+        // DOWNLOAD DA FICHA CORPORATIVA EM PDF COM FOTO (EXACTO AO EXEMPLO DO VÍDEO)
+        window.downloadCorporatePhotoDossierPDF = function() {
+            const workerId = document.getElementById('export-worker-select').value;
             const startDate = document.getElementById('export-start-date').value;
             const endDate = document.getElementById('export-end-date').value;
-            const targetWorkerId = document.getElementById('export-worker-select').value;
-            const logs = window.getLogs();
             const workers = window.getWorkers();
+            const logs = window.getLogs();
 
-            const filteredLogs = logs.filter(l => {
+            const worker = workers.find(w => w.id === workerId);
+            if (!worker) { showToast('❌ Selecione um colaborador válido.'); return; }
+
+            const workerLogs = logs.filter(l => {
+                if (l.workerId !== workerId) return false;
                 if (startDate && l.date < startDate) return false;
                 if (endDate && l.date > endDate) return false;
-                if (targetWorkerId !== 'all' && l.workerId !== targetWorkerId) return false;
                 return true;
             });
 
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
+            const htmlContent = `
                 <html>
                 <head>
-                    <title>Relatório Executivo MAGUEZE & EDM</title>
+                    <title>Ficha e Relatório - ${worker.name}</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
-                        .header { border-bottom: 3px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-                        .title { font-size: 22px; font-weight: bold; color: #f26522; }
+                        body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; padding: 40px; color: #1e293b; background: #ffffff; }
+                        .header { border-bottom: 3px solid #f26522; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+                        .title { font-size: 24px; font-weight: bold; color: #f26522; }
+                        .subtitle { font-size: 13px; color: #64748b; }
+                        .card-profile { display: flex; align-items: center; gap: 20px; background: #fff8f2; border: 2px solid #fed7aa; padding: 20px; border-radius: 16px; margin-bottom: 25px; }
+                        .profile-img { width: 90px; height: 90px; border-radius: 50%; object-cover: cover; border: 3px solid #f26522; }
+                        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 14px; }
                         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
                         th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 13px; }
                         th { background: #f26522; color: white; }
-                        tr:nth-child(even) { background: #fff8f2; }
+                        tr:nth-child(even) { background: #f8fafc; }
                     </style>
                 </head>
                 <body>
                     <div class="header">
                         <div>
                             <div class="title">MAGUEZE (MG) & Parceria (EDM)</div>
-                            <div>Relatório Consolidado de Período: ${startDate || 'Início'} até ${endDate || 'Hoje'}</div>
+                            <div class="subtitle">Ficha de Identificação e Relatório de Assiduidade</div>
                         </div>
-                        <div><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-PT')}</div>
+                        <div style="text-align: right; font-size: 12px;">
+                            <strong>Emitido em:</strong> ${new Date().toLocaleDateString('pt-PT')}<br>
+                            <strong>Período:</strong> ${startDate || 'Início'} a ${endDate || 'Hoje'}
+                        </div>
                     </div>
+
+                    <div class="card-profile">
+                        <img src="${worker.photo}" class="profile-img">
+                        <div class="info-grid" style="width: 100%;">
+                            <div><strong>Nome Completo:</strong> ${worker.name}</div>
+                            <div><strong>Cargo / Função:</strong> ${worker.role}</div>
+                            <div><strong>Salário Base:</strong> ${Number(worker.salary||0).toLocaleString('pt-PT')} MZN</div>
+                            <div><strong>Estado Atual:</strong> ${worker.statusMode.toUpperCase()}</div>
+                        </div>
+                    </div>
+
+                    <h3>Histórico de Presenças e Portaria</h3>
                     <table>
-                        <tr><th>Data</th><th>Colaborador</th><th>Regime</th><th>Entrada</th><th>Saída</th><th>Normais</th><th>Extras</th></tr>
-                        ${filteredLogs.map(l => {
-                            const w = workers.find(item => item.id === l.workerId) || { name: 'Desconhecido' };
-                            return `<tr><td>${l.date}</td><td><b>${w.name}</b></td><td>${l.intent}</td><td>${l.checkIn}</td><td>${l.checkOut || 'Em Curso'}</td><td>${l.normalHours || 0}h</td><td>${l.extraHours || 0}h</td></tr>`;
-                        }).join('')}
+                        <tr><th>Data</th><th>Regime</th><th>Entrada</th><th>Saída</th><th>Horas Normais</th><th>Horas Extras</th><th>Estado</th></tr>
+                        ${workerLogs.map(l => `
+                            <tr>
+                                <td>${l.date}</td>
+                                <td>${l.intent}</td>
+                                <td>${l.checkIn}</td>
+                                <td>${l.checkOut || 'Em Curso'}</td>
+                                <td>${l.normalHours || 0}h</td>
+                                <td>${l.extraHours || 0}h</td>
+                                <td>${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}</td>
+                            </tr>
+                        `).join('') || '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">Nenhum registo no período selecionado.</td></tr>'}
                     </table>
-                    <script>window.print();<\/script>
                 </body>
                 </html>
-            `);
-            printWindow.document.close();
+            `;
+
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Ficha_Relatorio_${worker.name.replace(/\s+/g, '_')}.html`;
+            link.click();
+            showToast('Ficha e relatório em PDF com foto transferidos!');
         };
 
         async function saveSystemNotice(e) {
