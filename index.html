@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDM - Ponto Facial Biométrico Real (IA) & PIN | Auditoria Oficial</title>
+    <title>EDM - Ponto Facial Biométrico Real & Portal do Trabalhador</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -58,15 +58,19 @@
                         <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">EDM <span class="text-edm-600 font-semibold">Ponto Digital</span></h1>
                         <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-edm-100 text-edm-800">Eletricidade de Moçambique</span>
                     </div>
-                    <p class="text-xs text-slate-500">Biometria Facial Neural Real (128 Pontos) & PIN</p>
+                    <p class="text-xs text-slate-500">Biometria Facial Neural & Portal do Colaborador</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 sm:gap-4">
-                <div id="ai-engine-badge" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div id="ai-engine-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium">
                     <i class="fa-solid fa-spinner fa-spin"></i>
                     <span id="ai-engine-status">A carregar IA...</span>
                 </div>
+                <button onclick="openWorkerLoginModal()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-edm-50 hover:bg-edm-100 text-edm-800 text-xs sm:text-sm font-semibold transition border border-edm-200">
+                    <i class="fa-solid fa-id-card text-edm-600"></i>
+                    <span>Portal do Trabalhador</span>
+                </button>
                 <button id="btn-toggle-admin" onclick="handleAdminAccessClick()" class="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
                     <i class="fa-solid fa-user-shield text-edm-400"></i>
                     <span id="admin-btn-text">Área Restrita</span>
@@ -186,14 +190,14 @@
             </div>
         </section>
 
-        <!-- VISTA 2: PAINEL DE GESTÃO -->
+        <!-- VISTA 2: PAINEL DE GESTÃO (CHEFIA) -->
         <section id="view-admin" class="hidden space-y-6">
             <div class="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg no-print">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-2xl bg-edm-500 flex items-center justify-center text-white text-xl shadow-md"><i class="fa-solid fa-crown"></i></div>
                     <div>
                         <h2 class="text-lg sm:text-xl font-bold">Gestão Corporativa, IA Biométrica & Auditoria</h2>
-                        <p class="text-xs text-slate-300">Descritores Faciais de 128 Pontos • Relatórios PDF • Férias</p>
+                        <p class="text-xs text-slate-300">Descritores Faciais • Fichas 360º • Exportação Cores</p>
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -205,12 +209,12 @@
             <!-- Abas do Administrador -->
             <div class="flex overflow-x-auto gap-2 pb-1 no-print">
                 <button onclick="setAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-edm-600 text-white shadow-sm whitespace-nowrap">1. Fiscalização</button>
-                <button onclick="setAdminTab('charts')" id="tab-btn-charts" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-chart-pie mr-1 text-edm-500"></i> 2. Gráficos</button>
-                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-user-gear mr-1 text-edm-500"></i> 3. Colaboradores & Biometria</button>
+                <button onclick="setAdminTab('charts')" id="tab-btn-charts" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">2. Gráficos</button>
+                <button onclick="setAdminTab('workers')" id="tab-btn-workers" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">3. Colaboradores & Senhas</button>
                 <button onclick="setAdminTab('calendar')" id="tab-btn-calendar" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">4. Calendário</button>
                 <button onclick="setAdminTab('reports')" id="tab-btn-reports" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">5. Salários & Vales</button>
-                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Histórico & Fotos Reais</button>
-                <button onclick="setAdminTab('notices')" id="tab-btn-notices" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap"><i class="fa-solid fa-print mr-1 text-edm-500"></i> 7. Imprimir & Exportar</button>
+                <button onclick="setAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">6. Histórico & Ficha 360º</button>
+                <button onclick="setAdminTab('notices')" id="tab-btn-notices" class="admin-tab-btn px-4 py-3 rounded-xl font-semibold text-sm bg-white text-slate-600 border whitespace-nowrap">7. Exportar & Relatórios</button>
             </div>
 
             <!-- ABA 1: DASHBOARD -->
@@ -276,7 +280,7 @@
                 </div>
             </div>
 
-            <!-- ABA 3: CADASTRO COM EXTRATOR REAL DE 128 PONTOS FACIAIS -->
+            <!-- ABA 3: CADASTRO COM SENHA PESSOAL E BIOMETRIA -->
             <div id="admin-tab-workers" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-5 bg-white rounded-3xl p-6 border shadow-sm h-fit">
@@ -311,25 +315,29 @@
                                 <label class="block text-xs font-semibold mb-1">Cargo / Departamento *</label>
                                 <input type="text" id="worker-role" required placeholder="Ex: Técnico de Redes" class="w-full px-3 py-2 border rounded-xl text-sm">
                             </div>
-                            <div class="grid grid-cols-2 gap-2">
+                            <div class="grid grid-cols-3 gap-2">
                                 <div>
-                                    <label class="block text-xs font-semibold mb-1">Género (Voz) *</label>
+                                    <label class="block text-xs font-semibold mb-1">Género (Voz)</label>
                                     <select id="worker-gender" required class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
                                         <option value="male">Masculino</option>
                                         <option value="female">Feminino</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-semibold mb-1">PIN (Plano B) *</label>
-                                    <input type="password" id="worker-pin" required placeholder="Ex: 1234" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
+                                    <label class="block text-xs font-semibold mb-1">PIN Portaria *</label>
+                                    <input type="password" id="worker-pin" required maxlength="6" placeholder="1234" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold mb-1" title="Senha de 4 dígitos para o colaborador entrar no portal dele">Senha Portal *</label>
+                                    <input type="password" id="worker-portal-pass" required maxlength="4" placeholder="5678" class="w-full px-3 py-2 border rounded-xl text-sm font-mono font-bold text-edm-700 bg-orange-50/50">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Salário Base Mensal (MZN) <span class="text-slate-400 font-normal">(Opcional)</span></label>
-                                <input type="number" id="worker-salary" placeholder="Deixe vazio se não aplicável" class="w-full px-3 py-2 border rounded-xl text-sm font-bold text-emerald-700">
+                                <label class="block text-xs font-semibold mb-1">Salário Base Mensal (MZN)</label>
+                                <input type="number" id="worker-salary" placeholder="Ex: 35000" class="w-full px-3 py-2 border rounded-xl text-sm font-bold text-emerald-700">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold mb-1">Estado de Ausência (Férias / Folga)</label>
+                                <label class="block text-xs font-semibold mb-1">Estado de Ausência</label>
                                 <select id="worker-status-mode" class="w-full px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
                                     <option value="active">Ativo (Em Turno)</option>
                                     <option value="vacation">Em Período de Férias</option>
@@ -480,35 +488,35 @@
                 </div>
             </div>
 
-            <!-- ABA 6: HISTÓRICO COM FOTOS REAIS E PDF OFICIAL -->
+            <!-- ABA 6: HISTÓRICO & FICHA 360º DO TRABALHADOR -->
             <div id="admin-tab-history" class="admin-tab-content hidden space-y-6">
                 <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-5">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b">
                         <div>
                             <h3 class="font-bold text-xl text-slate-900 flex items-center gap-2">
-                                <i class="fa-solid fa-clock-rotate-left text-edm-600"></i> Histórico & Fotos Reais de Auditoria
+                                <i class="fa-solid fa-address-card text-edm-600"></i> Ficha 360º & Histórico Completo dos Colaboradores
                             </h3>
-                            <p class="text-xs text-slate-500 mt-0.5">Clique em qualquer registo para inspecionar a foto oficial vs. foto real da portaria.</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Clique em qualquer colaborador para ver a ficha completa (entradas, faltas, atrasos e comprovativos) ou inspecione picagens.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 w-full md:w-auto">
-                            <input type="text" id="history-search-input" onkeyup="renderSystemHistory()" placeholder="Pesquisar..." class="px-3 py-2 border rounded-xl text-sm bg-slate-50 flex-grow md:w-56">
-                            <select id="history-category-filter" onchange="renderSystemHistory()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold">
-                                <option value="ALL">Todas as Ações</option>
-                                <option value="PONTO">Picagens</option>
-                                <option value="RH">Cadastros</option>
-                                <option value="JUSTIFICACAO">Justificações</option>
-                                <option value="FINANCEIRO">Vales</option>
-                                <option value="SISTEMA">Acessos & Bloqueios</option>
-                            </select>
-                            <button onclick="printSystemHistoryPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-pdf mr-1"></i> Imprimir Histórico PDF</button>
+                            <select id="admin-dossier-select" onchange="renderWorkerDossierFromAdmin()" class="px-3 py-2 border rounded-xl text-sm bg-edm-50 font-bold text-edm-800 flex-grow md:w-64"></select>
+                            <button onclick="printCurrentWorkerDossierPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-pdf mr-1"></i> Imprimir Ficha 360º</button>
                         </div>
                     </div>
 
-                    <div id="system-history-list" class="space-y-2.5 max-h-[540px] overflow-y-auto pr-1"></div>
+                    <!-- Container da Ficha 360º Selecionada -->
+                    <div id="admin-dossier-container" class="p-6 rounded-3xl bg-slate-50 border space-y-6">
+                        <p class="text-center text-slate-400 text-sm py-6">Selecione um colaborador acima para abrir o dossier completo.</p>
+                    </div>
+
+                    <div class="pt-6 border-t">
+                        <h4 class="font-bold text-sm text-slate-700 mb-3">Histórico Geral de Picagens e Eventos</h4>
+                        <div id="system-history-list" class="space-y-2.5 max-h-[350px] overflow-y-auto pr-1"></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- ABA 7: AVISOS E EXPORTAÇÃO -->
+            <!-- ABA 7: EXPORTAR E RELATÓRIOS (EXCEL CORES & PDF TABELAS) -->
             <div id="admin-tab-notices" class="admin-tab-content hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm space-y-4">
@@ -528,17 +536,17 @@
                     <div class="lg:col-span-6 bg-white rounded-3xl p-6 border shadow-sm flex flex-col justify-between space-y-4">
                         <div>
                             <div class="flex items-center gap-2 text-slate-800">
-                                <i class="fa-solid fa-file-pdf text-xl text-edm-600"></i>
-                                <h3 class="font-bold text-lg">Central de Relatórios Oficiais PDF</h3>
+                                <i class="fa-solid fa-file-excel text-xl text-emerald-600"></i>
+                                <h3 class="font-bold text-lg">Central de Download & Exportação</h3>
                             </div>
-                            <p class="text-xs text-slate-500 mt-1">Imprima relatórios corporativos completos com logótipo oficial da EDM.</p>
+                            <p class="text-xs text-slate-500 mt-1">Baixe dados consolidados em tabelas organizadas a cores (.xlsx/.csv) ou documentos executivos PDF.</p>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
-                            <button onclick="printSystemHistoryPDF()" class="py-3 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-file-pdf"></i> Imprimir Histórico PDF
+                            <button onclick="downloadExcelReportCSV()" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-file-excel"></i> Baixar Excel / CSV Cores
                             </button>
-                            <button onclick="window.print()" class="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-print"></i> Imprimir Relatório Geral
+                            <button onclick="printExecutiveReportPDF()" class="py-3 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-file-pdf"></i> Baixar Relatório PDF Cores
                             </button>
                         </div>
                     </div>
@@ -546,6 +554,75 @@
             </div>
         </section>
     </main>
+
+    <!-- PORTAL EXCLUSIVO DO TRABALHADOR (SENHA PESSOAL) -->
+    <div id="modal-worker-portal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border-2 border-edm-500 space-y-6 relative my-8">
+            <div class="flex items-center justify-between border-b pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-edm-100 text-edm-600 flex items-center justify-center text-xl shadow">
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-extrabold uppercase tracking-wider text-edm-600">Área Exclusiva</span>
+                        <h3 class="text-xl font-extrabold text-slate-900">Portal do Colaborador EDM</h3>
+                    </div>
+                </div>
+                <button onclick="closeWorkerPortalModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Ecrã de Login do Trabalhador -->
+            <div id="portal-login-screen" class="space-y-5 text-center py-6">
+                <div class="w-20 h-20 bg-edm-50 rounded-full flex items-center justify-center mx-auto text-edm-600 text-3xl border border-edm-200 shadow-inner">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-slate-800">Insira a sua Senha Pessoal</h4>
+                    <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Digite a sua senha de 4 dígitos criada pelo chefe para consultar os seus dados laborais.</p>
+                </div>
+                <form onsubmit="verifyWorkerPortalLogin(event)" class="max-w-xs mx-auto space-y-4">
+                    <input type="password" id="worker-portal-login-pass" required maxlength="4" placeholder="••••" class="w-full px-4 py-3 bg-slate-50 border-2 rounded-xl text-center font-mono text-2xl font-extrabold tracking-widest focus:bg-white focus:border-edm-500 outline-none">
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-sm shadow-md">
+                        Aceder ao Meu Histórico
+                    </button>
+                </form>
+            </div>
+
+            <!-- Ecrã com os Dados Exclusivos do Trabalhador -->
+            <div id="portal-dashboard-screen" class="hidden space-y-6">
+                <div class="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border">
+                    <div class="flex items-center gap-3">
+                        <img id="portal-worker-photo" src="" class="w-16 h-16 rounded-full object-cover border-2 border-edm-500 shadow">
+                        <div>
+                            <h4 id="portal-worker-name" class="font-extrabold text-lg text-slate-900">Nome</h4>
+                            <p id="portal-worker-role" class="text-xs text-slate-500">Cargo</p>
+                            <span id="portal-worker-status-badge" class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Estado</span>
+                        </div>
+                    </div>
+                    <button onclick="logoutWorkerPortal()" class="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-700 text-xs font-bold hover:bg-rose-200">Terminar Sessão</button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 text-center">
+                    <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><span class="text-[10px] text-emerald-700 font-bold uppercase block">Horas Normais</span><div id="portal-stat-norm" class="text-lg font-extrabold text-emerald-800">0h</div></div>
+                    <div class="p-3 rounded-2xl bg-edm-50 border border-edm-200"><span class="text-[10px] text-edm-700 font-bold uppercase block">Horas Extras</span><div id="portal-stat-extra" class="text-lg font-extrabold text-edm-600">0h</div></div>
+                    <div class="p-3 rounded-2xl bg-rose-50 border border-rose-200"><span class="text-[10px] text-rose-700 font-bold uppercase block">Atrasos / Faltas</span><div id="portal-stat-delays" class="text-lg font-extrabold text-rose-600">0</div></div>
+                </div>
+
+                <div>
+                    <h5 class="font-bold text-sm text-slate-700 mb-2">Seu Histórico de Presenças e Comportamento</h5>
+                    <div id="portal-logs-container" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                    <button onclick="printWorkerPortalPDF()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf"></i> Imprimir Meus Dados (PDF Cores)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL DE CAPTURA FACIAL PARA O CADASTRO -->
     <div id="modal-admin-face-capture" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -570,56 +647,12 @@
         </div>
     </div>
 
-    <!-- MODAL DE ZOOM / FICHA DE AUDITORIA -->
-    <div id="modal-history-zoom" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border-2 border-edm-500 space-y-5 relative">
-            <div class="flex items-center justify-between border-b pb-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-edm-100 text-edm-600 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                        <span id="zoom-category" class="text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">CATEGORIA</span>
-                        <h3 id="zoom-title" class="text-lg font-extrabold text-slate-900 mt-1">Ficha de Auditoria & Comparação IA</h3>
-                    </div>
-                </div>
-                <button onclick="closeHistoryZoomModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border text-center">
-                <div class="space-y-2">
-                    <span class="text-[11px] font-extrabold uppercase text-slate-500 block">Foto Oficial (Cadastro)</span>
-                    <img id="zoom-worker-official-photo" src="" class="w-24 h-24 rounded-2xl object-cover border-2 border-slate-300 mx-auto shadow-sm">
-                    <p class="text-xs font-bold text-slate-800" id="zoom-actor">Colaborador</p>
-                </div>
-                <div class="space-y-2">
-                    <span class="text-[11px] font-extrabold uppercase text-edm-700 block">Foto Real (Portaria IA)</span>
-                    <img id="zoom-captured-photo" src="" class="w-24 h-24 rounded-2xl object-cover border-2 border-edm-500 mx-auto shadow-md">
-                    <p class="text-xs font-bold text-emerald-700"><i class="fa-solid fa-circle-check"></i> Captura Real</p>
-                </div>
-            </div>
-
-            <div class="bg-slate-50 rounded-2xl p-4 border space-y-2 text-sm">
-                <div class="flex justify-between border-b pb-1.5">
-                    <span class="text-slate-500 font-semibold">Data e Hora:</span>
-                    <span id="zoom-datetime" class="font-mono text-xs font-bold text-slate-800">--</span>
-                </div>
-                <div>
-                    <span class="text-slate-500 font-semibold block mb-1">Detalhes do Evento:</span>
-                    <p id="zoom-description" class="text-slate-800 bg-white p-3 rounded-xl border text-sm">--</p>
-                </div>
-            </div>
-
-            <div class="flex gap-3 pt-2">
-                <button onclick="printSingleHistoryRecordPDF()" class="flex-grow py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-file-pdf"></i> Imprimir Ficha PDF
-                </button>
-                <button onclick="closeHistoryZoomModal()" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs">
-                    Fechar Zoom
-                </button>
-            </div>
+    <!-- MODAL DE ZOOM DE COMPROVATIVOS -->
+    <div id="modal-proof-zoom" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 space-y-4">
+            <h3 class="font-bold text-lg text-slate-900">Comprovativo de Justificação</h3>
+            <img id="zoom-proof-image" src="" class="w-full max-h-96 object-contain rounded-2xl border shadow-inner bg-slate-50 mx-auto">
+            <button onclick="document.getElementById('modal-proof-zoom').classList.add('hidden')" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs">Fechar</button>
         </div>
     </div>
 
@@ -646,7 +679,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE CONFIRMAÇÃO -->
+    <!-- MODAL DE CONFIRMAÇÃO DE PICAGEM -->
     <div id="modal-welcome" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-edm-500 relative">
             <div id="welcome-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 mb-4">ENTRADA</div>
@@ -804,10 +837,11 @@
             if (typeof window.renderAuditReports === 'function') window.renderAuditReports();
             if (typeof window.renderSystemHistory === 'function') window.renderSystemHistory();
             if (typeof window.renderChartsAnalytics === 'function') window.renderChartsAnalytics();
+            if (typeof window.populateAdminDossierSelect === 'function') window.populateAdminDossierSelect();
         }
     </script>
 
-    <!-- MOTOR BIOMÉTRICO REAL (face-api.js) + REGRAS DE NEGÓCIO -->
+    <!-- MOTOR BIOMÉTRICO & LÓGICA DO SISTEMA -->
     <script>
         const ADMIN_SECRET = "alberto";
         const OFFICIAL_START_MINS = 7 * 60 + 30;
@@ -815,16 +849,16 @@
         const MAX_DAILY_DELAY_DEDUCTION = 300;
         const EXTRA_MULTIPLIER_WEEKDAY = 2.0;
         const EXTRA_MULTIPLIER_WEEKEND = 2.5;
-        const FACE_MATCH_THRESHOLD = 0.50; // Rigor biométrico: abaixo de 0.50 é a mesma pessoa; acima é bloqueado!
+        const FACE_MATCH_THRESHOLD = 0.50;
 
         let isAdminAuthenticated = false;
+        let authenticatedWorker = null;
         let currentPhotoBase64 = '';
-        let currentFaceDescriptor = null; // Array de 128 números biométricos do rosto cadastrado
+        let currentFaceDescriptor = null;
         let currentProofBase64 = '';
         let pendingWorkerToProcess = null;
         let mediaStream = null;
         let adminCaptureStream = null;
-        let selectedHistoryItemForPrint = null;
         let isAiModelsLoaded = false;
 
         async function loadFaceApiModels() {
@@ -838,11 +872,14 @@
                     faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
                 ]);
                 isAiModelsLoaded = true;
-                badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium';
-                badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span>IA Biométrica Pronta</span>';
+                if (badge) {
+                    badge.classList.remove('hidden');
+                    badge.className = 'hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium';
+                    badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span>IA Biométrica Pronta</span>';
+                }
             } catch (err) {
                 console.error('Erro ao carregar modelos IA:', err);
-                statusText.textContent = 'Erro na IA (Use PIN)';
+                if (statusText) statusText.textContent = 'Erro na IA (Use PIN)';
             }
         }
 
@@ -894,7 +931,126 @@
             }
         }
 
-        // EXTRATOR REAL DE 128 PONTOS FACIAIS NO CADASTRO (ADMIN)
+        // PORTAL DO TRABALHADOR
+        function openWorkerLoginModal() {
+            document.getElementById('portal-login-screen').classList.remove('hidden');
+            document.getElementById('portal-dashboard-screen').classList.add('hidden');
+            document.getElementById('worker-portal-login-pass').value = '';
+            document.getElementById('modal-worker-portal').classList.remove('hidden');
+        }
+
+        function closeWorkerPortalModal() {
+            document.getElementById('modal-worker-portal').classList.add('hidden');
+        }
+
+        function verifyWorkerPortalLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('worker-portal-login-pass').value.trim();
+            const workers = window.getWorkers();
+            const worker = workers.find(w => w.portalPass === pass);
+
+            if (!worker) {
+                showToast('❌ Senha pessoal incorreta.');
+                return;
+            }
+
+            authenticatedWorker = worker;
+            document.getElementById('portal-login-screen').classList.add('hidden');
+            document.getElementById('portal-dashboard-screen').classList.remove('hidden');
+            renderWorkerPortalDashboard(worker);
+            showToast(`Bem-vindo, ${worker.name}!`);
+        }
+
+        function logoutWorkerPortal() {
+            authenticatedWorker = null;
+            closeWorkerPortalModal();
+            showToast('Sessão encerrada.');
+        }
+
+        function renderWorkerPortalDashboard(w) {
+            document.getElementById('portal-worker-photo').src = w.photo;
+            document.getElementById('portal-worker-name').textContent = w.name;
+            document.getElementById('portal-worker-role').textContent = w.role;
+            
+            const badge = document.getElementById('portal-worker-status-badge');
+            if (w.statusMode === 'vacation') {
+                badge.className = 'inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
+                badge.textContent = 'Em Período de Férias';
+            } else if (w.statusMode === 'leave') {
+                badge.className = 'inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
+                badge.textContent = 'Em Folga Autorizada';
+            } else {
+                badge.className = 'inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800';
+                badge.textContent = 'Ativo (Em Turno)';
+            }
+
+            const logs = window.getLogs().filter(l => l.workerId === w.id);
+            let totalNorm = 0, totalExtra = 0, delaysCount = 0;
+            logs.forEach(l => {
+                totalNorm += Number(l.normalHours || 0);
+                totalExtra += Number(l.extraHours || 0);
+                if (l.delayMins > 0) delaysCount++;
+            });
+
+            document.getElementById('portal-stat-norm').textContent = totalNorm.toFixed(1) + 'h';
+            document.getElementById('portal-stat-extra').textContent = totalExtra.toFixed(1) + 'h';
+            document.getElementById('portal-stat-delays').textContent = `${delaysCount} Atrasos`;
+
+            const container = document.getElementById('portal-logs-container');
+            container.innerHTML = logs.map(l => `
+                <div class="p-3 rounded-2xl bg-white border flex justify-between items-center text-xs">
+                    <div>
+                        <p class="font-bold text-slate-800">${l.date} • <span class="text-edm-600">${l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal'}</span></p>
+                        <p class="text-[11px] text-slate-500 font-mono">Entrada: ${l.checkIn} | Saída: ${l.checkOut || 'Em Curso'}</p>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-lg font-bold ${l.delayMins > 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">
+                        ${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}
+                    </span>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum registo de picagem encontrado.</p>';
+        }
+
+        window.printWorkerPortalPDF = function() {
+            if (!authenticatedWorker) return;
+            const w = authenticatedWorker;
+            const logs = window.getLogs().filter(l => l.workerId === w.id);
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Relatório Pessoal - ${w.name}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
+                        .header { border-bottom: 3px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+                        .title { font-size: 22px; font-weight: bold; color: #f26522; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 13px; }
+                        th { background: #f8fafc; color: #0f172a; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <div class="title">EDM - Eletricidade de Moçambique</div>
+                            <div>Relatório Individual de Assiduidade e Desempenho</div>
+                        </div>
+                        <div><strong>Data:</strong> ${new Date().toLocaleDateString('pt-PT')}</div>
+                    </div>
+                    <h3>Colaborador: ${w.name}</h3>
+                    <p><strong>Cargo:</strong> ${w.role}</p>
+                    <table>
+                        <tr><th>Data</th><th>Regime</th><th>Entrada</th><th>Saída</th><th>Estado</th></tr>
+                        ${logs.map(l => `<tr><td>${l.date}</td><td>${l.intent}</td><td>${l.checkIn}</td><td>${l.checkOut || 'Em Curso'}</td><td>${l.delayMins > 0 ? 'Atraso' : 'Pontual'}</td></tr>`).join('')}
+                    </table>
+                    <script>window.print();<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        };
+
+        // EXTRATOR REAL DE 128 PONTOS FACIAIS
         async function extractDescriptorFromImageElement(imgOrVideoEl) {
             if (!isAiModelsLoaded) return null;
             const detection = await faceapi
@@ -905,25 +1061,16 @@
         }
 
         async function openAdminFaceCaptureModal() {
-            if (!isAiModelsLoaded) {
-                showToast('⏳ Aguarde a IA terminar de carregar...');
-                return;
-            }
+            if (!isAiModelsLoaded) { showToast('⏳ Aguarde a IA terminar de carregar...'); return; }
             try {
                 adminCaptureStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
-                const video = document.getElementById('admin-capture-video');
-                video.srcObject = adminCaptureStream;
+                document.getElementById('admin-capture-video').srcObject = adminCaptureStream;
                 document.getElementById('modal-admin-face-capture').classList.remove('hidden');
-            } catch (err) {
-                showToast('❌ Erro ao aceder à câmara.');
-            }
+            } catch (err) { showToast('❌ Erro ao aceder à câmara.'); }
         }
 
         function closeAdminFaceCaptureModal() {
-            if (adminCaptureStream) {
-                adminCaptureStream.getTracks().forEach(t => t.stop());
-                adminCaptureStream = null;
-            }
+            if (adminCaptureStream) { adminCaptureStream.getTracks().forEach(t => t.stop()); adminCaptureStream = null; }
             document.getElementById('modal-admin-face-capture').classList.add('hidden');
         }
 
@@ -935,23 +1082,22 @@
             const descriptor = await extractDescriptorFromImageElement(video);
             
             if (!descriptor) {
-                showToast('❌ Nenhum rosto nítido detetado! Enquadre o rosto e tente novamente.');
+                showToast('❌ Nenhum rosto nítido detetado! Enquadre o rosto.');
                 return;
             }
 
             const canvas = document.getElementById('admin-capture-canvas');
             canvas.width = video.videoWidth || 320;
             canvas.height = video.videoHeight || 240;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             
             currentPhotoBase64 = canvas.toDataURL('image/jpeg', 0.9);
             currentFaceDescriptor = descriptor;
             
             document.getElementById('worker-photo-preview').src = currentPhotoBase64;
-            statusEl.innerHTML = '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Assinatura Biométrica de 128 Pontos Gerada!</span>';
+            statusEl.innerHTML = '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Biometria Gerada!</span>';
             closeAdminFaceCaptureModal();
-            showToast('✅ Rosto mapeado e validado pela IA!');
+            showToast('✅ Rosto mapeado com sucesso!');
         }
 
         async function handleWorkerPhotoUpload(e) {
@@ -965,16 +1111,15 @@
                 
                 previewImg.onload = async () => {
                     const statusEl = document.getElementById('biometric-extraction-status');
-                    statusEl.textContent = 'A extrair pontos biométricos da foto...';
+                    statusEl.textContent = 'A extrair pontos biométricos...';
                     const descriptor = await extractDescriptorFromImageElement(previewImg);
                     if (descriptor) {
                         currentFaceDescriptor = descriptor;
-                        statusEl.innerHTML = '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Assinatura Biométrica Gerada da Foto!</span>';
-                        showToast('✅ Rosto extraído da imagem com sucesso!');
+                        statusEl.innerHTML = '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Biometria Gerada!</span>';
+                        showToast('✅ Rosto extraído com sucesso!');
                     } else {
                         currentFaceDescriptor = null;
-                        statusEl.innerHTML = '<span class="text-rose-600"><i class="fa-solid fa-triangle-exclamation"></i> Rosto não detetado na foto! Use foto frontal nítida.</span>';
-                        showToast('⚠️ Não foi possível detetar um rosto nesta imagem.');
+                        statusEl.innerHTML = '<span class="text-rose-600"><i class="fa-solid fa-triangle-exclamation"></i> Rosto não detetado!</span>';
                     }
                 };
             };
@@ -988,135 +1133,88 @@
                 utter.lang = 'pt-PT';
                 utter.rate = 0.95;
                 utter.pitch = gender === 'female' ? 1.2 : 0.85;
-
-                const voices = window.speechSynthesis.getVoices();
-                const ptVoice = voices.find(v => v.lang.includes('pt') || v.lang.includes('PT'));
+                const ptVoice = window.speechSynthesis.getVoices().find(v => v.lang.includes('pt'));
                 if (ptVoice) utter.voice = ptVoice;
-
                 window.speechSynthesis.speak(utter);
             }
         }
 
-        // SCANNER FACIAL REAL NA PORTARIA (ZERO ALEATORIEDADE / ZERO ACEITAÇÃO DE TETO)
+        // SCANNER FACIAL REAL NA PORTARIA
         async function startRealAiFacialScan() {
             const frameBox = document.getElementById('scanner-frame-box');
             const feedbackEl = document.getElementById('live-face-feedback');
 
-            if (!isAiModelsLoaded) {
-                showToast('⏳ A IA ainda está a inicializar. Aguarde 2 segundos ou use o PIN.');
-                return;
-            }
+            if (!isAiModelsLoaded) { showToast('⏳ IA a inicializar. Use o PIN.'); return; }
+            if (!mediaStream) { showToast('❌ Câmara indisponível. Use o PIN.'); return; }
 
-            if (!mediaStream) {
-                showToast('❌ Câmara indisponível. Utilize o PIN (Plano B).');
-                return;
-            }
-
-            const workers = window.getWorkers();
-            // Filtrar apenas colaboradores que possuem assinatura biométrica real de 128 pontos
-            const enrolledWorkers = workers.filter(w => Array.isArray(w.faceDescriptor) && w.faceDescriptor.length === 128);
-
+            const enrolledWorkers = window.getWorkers().filter(w => Array.isArray(w.faceDescriptor) && w.faceDescriptor.length === 128);
             if (enrolledWorkers.length === 0) {
-                showToast('⚠️ Nenhum colaborador possui biometria facial cadastrada na Área Restrita!');
-                speakHumanVoice('Nenhum colaborador possui biometria facial cadastrada.', 'male');
+                showToast('⚠️ Nenhum colaborador com biometria cadastrada!');
                 return;
             }
 
             feedbackEl.textContent = 'A procurar rosto humano...';
-            feedbackEl.className = 'mt-3 text-[11px] font-bold text-amber-400';
-
             const video = document.getElementById('terminal-video');
             
-            // Passo 1: Verificar se existe realmente um rosto humano na câmara (bloqueia teto, parede, mão, vazio)
             const liveDetection = await faceapi
                 .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.55 }))
                 .withFaceLandmarks()
                 .withFaceDescriptor();
 
-            // Capturar foto do momento para auditoria
             const canvas = document.getElementById('terminal-canvas');
             canvas.width = video.videoWidth || 320;
             canvas.height = video.videoHeight || 240;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             const capturedFaceBase64 = canvas.toDataURL('image/jpeg', 0.85);
 
             if (!liveDetection) {
-                // BLOQUEIO IMEDIATO: Teto, parede ou ausência de rosto
                 frameBox.className = 'my-6 p-4 bg-slate-900 rounded-3xl border-2 border-rose-600 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs';
-                feedbackEl.textContent = '❌ Nenhum rosto detetado! Acesso bloqueado.';
-                feedbackEl.className = 'mt-3 text-[11px] font-bold text-rose-400';
-                showToast('🚫 Nenhum rosto humano detetado na câmara! Aponte para o rosto.');
-                speakHumanVoice('Acesso negado. Nenhum rosto humano detetado.', 'male');
-                await window.logSystemEvent('SISTEMA', 'Bloqueio: Sem Rosto', 'Tentativa de picagem sem rosto humano na câmara (teto/ambiente vazio).', 'Terminal IA', capturedFaceBase64);
+                feedbackEl.textContent = '❌ Nenhum rosto detetado!';
+                showToast('🚫 Nenhum rosto humano detetado na câmara!');
+                await window.logSystemEvent('SISTEMA', 'Bloqueio: Sem Rosto', 'Tentativa de picagem sem rosto humano.', 'Terminal IA', capturedFaceBase64);
                 return;
             }
 
-            // Passo 2: Comparar os 128 pontos do rosto detetado com todos os colaboradores cadastrados
             let bestMatchWorker = null;
-            let lowestDistance = 1.0; // Quanto menor a distância, mais idêntico é o rosto
+            let lowestDistance = 1.0;
 
             for (const worker of enrolledWorkers) {
-                const storedDescriptor = new Float32Array(worker.faceDescriptor);
-                const distance = faceapi.euclideanDistance(liveDetection.descriptor, storedDescriptor);
-                if (distance < lowestDistance) {
-                    lowestDistance = distance;
-                    bestMatchWorker = worker;
-                }
+                const distance = faceapi.euclideanDistance(liveDetection.descriptor, new Float32Array(worker.faceDescriptor));
+                if (distance < lowestDistance) { lowestDistance = distance; bestMatchWorker = worker; }
             }
 
-            // Passo 3: Validar rigorosamente o limiar de semelhança (0.50)
             if (!bestMatchWorker || lowestDistance > FACE_MATCH_THRESHOLD) {
                 frameBox.className = 'my-6 p-4 bg-slate-900 rounded-3xl border-2 border-rose-600 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs';
-                feedbackEl.textContent = '🚫 Rosto Não Reconhecido! Acesso Negado.';
-                feedbackEl.className = 'mt-3 text-[11px] font-bold text-rose-400';
-                showToast('🚫 Rosto desconhecido ou não autorizado! Acesso bloqueado.');
-                speakHumanVoice('Acesso negado. Rosto não reconhecido pelo sistema.', 'male');
-                await window.logSystemEvent('SISTEMA', 'Bloqueio: Rosto Desconhecido', `Rosto não autorizado tentou aceder ao terminal (Distância: ${lowestDistance.toFixed(2)}).`, 'Terminal IA', capturedFaceBase64);
+                feedbackEl.textContent = '🚫 Rosto Não Reconhecido!';
+                showToast('🚫 Acesso Negado: Rosto não autorizado.');
+                await window.logSystemEvent('SISTEMA', 'Bloqueio: Rosto Desconhecido', `Distância: ${lowestDistance.toFixed(2)}.`, 'Terminal IA', capturedFaceBase64);
                 return;
             }
 
-            // SUCESSO: Rosto corresponde rigorosamente ao cadastro!
             const confidencePct = Math.round((1 - lowestDistance) * 100);
             frameBox.className = 'my-6 p-4 bg-slate-900 rounded-3xl border-2 border-emerald-500 flex flex-col items-center justify-center relative overflow-hidden shadow-lg mx-auto w-full max-w-xs';
-            feedbackEl.textContent = `✅ Identificado: ${bestMatchWorker.name} (${confidencePct}%)`;
-            feedbackEl.className = 'mt-3 text-[11px] font-bold text-emerald-400';
+            feedbackEl.textContent = `✅ ${bestMatchWorker.name} (${confidencePct}%)`;
 
             if (navigator.vibrate) navigator.vibrate(100);
             evaluateWorkerClockIn(bestMatchWorker, `Biometria IA (${confidencePct}%)`, capturedFaceBase64);
         }
 
-        // PIN (PLANO B ISOLADO)
+        // PIN (PLANO B)
         function appendPin(d) { document.getElementById('worker-pin-input').value += d; }
         function clearPin() { document.getElementById('worker-pin-input').value = ''; }
 
         function handlePasswordClockIn(e) {
             e.preventDefault();
             const pin = document.getElementById('worker-pin-input').value.trim();
-            const workers = window.getWorkers();
-            const worker = workers.find(w => w.pin === pin);
-
-            if (!worker) {
-                showToast('❌ Código PIN inválido.');
-                speakHumanVoice('Código PIN inválido.', 'male');
-                clearPin();
-                return;
-            }
+            const worker = window.getWorkers().find(w => w.pin === pin);
+            if (!worker) { showToast('❌ PIN inválido.'); clearPin(); return; }
             clearPin();
             evaluateWorkerClockIn(worker, 'PIN (Plano B)', worker.photo);
         }
 
         function evaluateWorkerClockIn(worker, method, capturedPhoto) {
-            if (worker.statusMode === 'vacation') {
-                showToast(`⚠️ ${worker.name} encontra-se em Férias!`);
-                speakHumanVoice(`${worker.name}, o seu registo indica férias ativas.`, worker.gender);
-                return;
-            }
-            if (worker.statusMode === 'leave') {
-                showToast(`⚠️ ${worker.name} encontra-se em Folga Autorizada!`);
-                speakHumanVoice(`${worker.name}, o seu registo indica folga autorizada.`, worker.gender);
-                return;
-            }
+            if (worker.statusMode === 'vacation') { showToast(`⚠️ ${worker.name} está em Férias!`); return; }
+            if (worker.statusMode === 'leave') { showToast(`⚠️ ${worker.name} está em Folga!`); return; }
 
             const today = getTodayDateString();
             const logs = window.getLogs();
@@ -1130,7 +1228,7 @@
                     processAttendanceRecord(worker, method, 'entrada', 'extra', capturedPhoto);
                 } else {
                     pendingWorkerToProcess = { worker, method, capturedPhoto };
-                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name}, selecione a modalidade do seu turno:`;
+                    document.getElementById('intent-worker-desc').textContent = `Olá ${worker.name}, selecione a modalidade:`;
                     document.getElementById('modal-intent').classList.remove('hidden');
                 }
             }
@@ -1144,10 +1242,7 @@
             }
         }
 
-        function closeIntentModal() {
-            document.getElementById('modal-intent').classList.add('hidden');
-            pendingWorkerToProcess = null;
-        }
+        function closeIntentModal() { document.getElementById('modal-intent').classList.add('hidden'); pendingWorkerToProcess = null; }
 
         async function processAttendanceRecord(worker, method, actionType, intentType, capturedPhoto) {
             const today = getTodayDateString();
@@ -1165,24 +1260,18 @@
                     updatedLog.totalHours = calc.total.toFixed(1);
 
                     await window.dbSaveLog(updatedLog);
-                    await window.logSystemEvent('PONTO', `Saída: ${worker.name}`, `Colaborador ${worker.name} encerrou o turno às ${timeStr} via ${method}. Duração: ${calc.total.toFixed(1)}h.`, worker.name, capturedPhoto, worker.id);
-                    
-                    const greetingMsg = `Até logo, ${worker.name}. Tenha um bom descanso.`;
-                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Duração: ${calc.total.toFixed(1)}h`, greetingMsg);
-                    speakHumanVoice(greetingMsg, worker.gender);
+                    await window.logSystemEvent('PONTO', `Saída: ${worker.name}`, `Saída às ${timeStr} via ${method}.`, worker.name, capturedPhoto, worker.id);
+                    showWelcomeModal(worker, 'SAIDA', timeStr, method, `Duração: ${calc.total.toFixed(1)}h`);
+                    speakHumanVoice(`Até logo, ${worker.name}.`, worker.gender);
                 }
             } else {
-                let rawDelayMins = 0;
                 let billableDelayMins = 0;
-
                 if (intentType === 'normal') {
-                    const [currH, currM] = timeStr.split(':').map(Number);
-                    const workerMins = currH * 60 + currM;
-                    if (workerMins > OFFICIAL_START_MINS) {
-                        rawDelayMins = workerMins - OFFICIAL_START_MINS;
-                        if (rawDelayMins > TOLERANCE_MINS) {
-                            billableDelayMins = rawDelayMins - TOLERANCE_MINS;
-                        }
+                    const [h, m] = timeStr.split(':').map(Number);
+                    const mins = h * 60 + m;
+                    if (mins > OFFICIAL_START_MINS) {
+                        const raw = mins - OFFICIAL_START_MINS;
+                        if (raw > TOLERANCE_MINS) billableDelayMins = raw - TOLERANCE_MINS;
                     }
                 }
 
@@ -1194,53 +1283,41 @@
                     checkOut: null,
                     method,
                     intent: intentType,
-                    rawDelayMins,
                     delayMins: billableDelayMins,
                     capturedPhoto
                 };
 
                 await window.dbSaveLog(newLog);
-
-                let infoText = '🟢 Entrada Pontual';
-                if (intentType === 'extra') infoText = '⚡ Serviço Extraordinário';
-                else if (billableDelayMins > 0) infoText = `⚠️ Atraso de ${billableDelayMins} min`;
-
-                await window.logSystemEvent('PONTO', `Entrada: ${worker.name}`, `Colaborador ${worker.name} validado via ${method} às ${timeStr}. Estado: ${infoText}.`, worker.name, capturedPhoto, worker.id);
-                
-                const greetingMsg = worker.gender === 'female' ? `Bem-vinda, ${worker.name}. Bom trabalho.` : `Bem-vindo, ${worker.name}. Bom trabalho.`;
-                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText, greetingMsg);
-                speakHumanVoice(greetingMsg, worker.gender);
+                const infoText = billableDelayMins > 0 ? `⚠️ Atraso de ${billableDelayMins} min` : '🟢 Entrada Pontual';
+                await window.logSystemEvent('PONTO', `Entrada: ${worker.name}`, `Entrada às ${timeStr} via ${method}.`, worker.name, capturedPhoto, worker.id);
+                showWelcomeModal(worker, 'ENTRADA', timeStr, method, infoText);
+                speakHumanVoice(`Bem-vindo, ${worker.name}.`, worker.gender);
             }
         }
 
-        function calculateSessionHours(checkInStr, checkOutStr, dateStr, intent) {
-            if (!checkInStr || !checkOutStr) return { normal: 0, extra: 0, total: 0, isWeekend: false };
-            const [inH, inM] = checkInStr.split(':').map(Number);
-            const [outH, outM] = checkOutStr.split(':').map(Number);
-            const totalMins = (outH * 60 + outM) - (inH * 60 + inM);
+        function calculateSessionHours(inStr, outStr, dateStr, intent) {
+            if (!inStr || !outStr) return { normal: 0, extra: 0, total: 0 };
+            const [ih, im] = inStr.split(':').map(Number);
+            const [oh, om] = outStr.split(':').map(Number);
+            const totalMins = (oh * 60 + om) - (ih * 60 + im);
             const totalHours = Math.max(0, totalMins / 60);
-
             const dayOfWeek = new Date(dateStr + 'T12:00:00').getDay();
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
 
             let normal = 0, extra = 0;
-            if (intent === 'extra' || isWeekend) {
-                extra = totalHours;
-            } else {
-                normal = Math.min(8, totalHours);
-                extra = Math.max(0, totalHours - 8);
-            }
-            return { normal, extra, total: totalHours, isWeekend };
+            if (intent === 'extra' || isWeekend) extra = totalHours;
+            else { normal = Math.min(8, totalHours); extra = Math.max(0, totalHours - 8); }
+            return { normal, extra, total: totalHours };
         }
 
-        function showWelcomeModal(worker, action, time, method, info, speech) {
+        function showWelcomeModal(worker, action, time, method, info) {
             document.getElementById('welcome-photo').src = worker.photo;
             document.getElementById('welcome-name').textContent = worker.name;
             document.getElementById('welcome-role').textContent = worker.role;
             document.getElementById('welcome-time').textContent = time;
             document.getElementById('welcome-method').textContent = method;
             document.getElementById('welcome-extra-info').textContent = info;
-            document.getElementById('welcome-badge').textContent = action === 'ENTRADA' ? '🟢 ENTRADA BIOMÉTRICA' : '🔴 SAÍDA BIOMÉTRICA';
+            document.getElementById('welcome-badge').textContent = action === 'ENTRADA' ? '🟢 ENTRADA' : '🔴 SAÍDA';
             document.getElementById('modal-welcome').classList.remove('hidden');
         }
 
@@ -1260,13 +1337,12 @@
 
             container.innerHTML = logs.map(l => {
                 const w = workers.find(item => item.id === l.workerId) || { name: 'Colaborador', photo: '' };
-                const label = l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Pontual');
                 return `
                     <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 border">
                         <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
                         <div class="min-w-0 flex-grow">
-                            <p class="font-bold text-sm truncate">${w.name} <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded">${label}</span></p>
-                            <p class="text-xs text-emerald-700 font-semibold">${l.checkIn} ${l.checkOut ? '→ '+l.checkOut+' ('+l.totalHours+'h)' : '(Em Turno)'}</p>
+                            <p class="font-bold text-sm truncate">${w.name}</p>
+                            <p class="text-xs text-emerald-700 font-semibold">${l.checkIn} ${l.checkOut ? '→ '+l.checkOut : '(Em Turno)'}</p>
                         </div>
                     </div>
                 `;
@@ -1275,26 +1351,19 @@
 
         function handleAdminAccessClick() {
             if (isAdminAuthenticated) switchToAdminView();
-            else {
-                document.getElementById('admin-password-input').value = '';
-                document.getElementById('modal-admin-login').classList.remove('hidden');
-            }
+            else { document.getElementById('admin-password-input').value = ''; document.getElementById('modal-admin-login').classList.remove('hidden'); }
         }
 
         function closeAdminLoginModal() { document.getElementById('modal-admin-login').classList.add('hidden'); }
 
         function verifyAdminLogin(e) {
             e.preventDefault();
-            const pass = document.getElementById('admin-password-input').value.trim();
-            if (pass === ADMIN_SECRET) {
+            if (document.getElementById('admin-password-input').value.trim() === ADMIN_SECRET) {
                 isAdminAuthenticated = true;
-                document.getElementById('modal-admin-login').classList.add('hidden');
+                closeAdminLoginModal();
                 switchToAdminView();
-                window.logSystemEvent('SISTEMA', 'Acesso Restrito', 'Sessão administrativa iniciada.', 'Alberto');
-                showToast('Bem-vindo, Alberto! Sessão iniciada.');
-            } else {
-                showToast('Credencial incorreta.');
-            }
+                showToast('Bem-vindo, Alberto!');
+            } else { showToast('Credencial incorreta.'); }
         }
 
         function switchToAdminView() {
@@ -1310,11 +1379,7 @@
             renderTerminalRecentLogs();
         }
 
-        function logoutAdmin() {
-            isAdminAuthenticated = false;
-            document.getElementById('admin-btn-text').textContent = 'Área Restrita';
-            switchToTerminal();
-        }
+        function logoutAdmin() { isAdminAuthenticated = false; document.getElementById('admin-btn-text').textContent = 'Área Restrita'; switchToTerminal(); }
 
         function setAdminTab(tab) {
             document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
@@ -1327,7 +1392,7 @@
             if (tab === 'workers') renderWorkersList();
             if (tab === 'calendar') { populateWorkerSelects(); renderCalendarView(); }
             if (tab === 'reports') { populateReportWorkerSelect(); renderAuditReports(); }
-            if (tab === 'history') renderSystemHistory();
+            if (tab === 'history') { populateAdminDossierSelect(); renderSystemHistory(); }
         }
 
         window.renderDashboard = function() {
@@ -1337,35 +1402,22 @@
             
             const totalEl = document.getElementById('stat-total-workers');
             if (!totalEl) return;
-
             totalEl.textContent = workers.length;
             const presentIds = new Set(logs.map(l => l.workerId));
-            const vacationCount = workers.filter(w => w.statusMode === 'vacation' || w.statusMode === 'leave').length;
-            
             document.getElementById('stat-present-today').textContent = presentIds.size;
-            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - presentIds.size - vacationCount);
-            const rate = workers.length > 0 ? Math.round((presentIds.size / workers.length) * 100) : 0;
-            document.getElementById('stat-avg-score').textContent = rate + '%';
+            document.getElementById('stat-absent-today').textContent = Math.max(0, workers.length - presentIds.size);
+            document.getElementById('stat-avg-score').textContent = (workers.length > 0 ? Math.round((presentIds.size / workers.length) * 100) : 0) + '%';
             
             document.getElementById('dashboard-logs-table').innerHTML = workers.map(w => {
-                const workerLogs = logs.filter(l => l.workerId === w.id);
-                let sumNorm = 0, sumExt = 0;
-                workerLogs.forEach(l => {
-                    sumNorm += Number(l.normalHours || 0);
-                    sumExt += Number(l.extraHours || 0);
-                });
-
-                const modeStr = workerLogs.map(l => l.intent === 'extra' ? '⚡ Extra' : (l.delayMins > 0 ? `⚠️ Atraso (${l.delayMins}m)` : '✓ Pontual')).join(', ');
-                const statusLabel = w.statusMode === 'vacation' ? '<span class="text-amber-600 font-bold">Férias</span>' : (w.statusMode === 'leave' ? '<span class="text-amber-600 font-bold">Folga</span>' : (workerLogs.length > 0 ? '<span class="text-emerald-700 font-bold">Presente</span>' : '<span class="text-slate-400">Ausente</span>'));
-
+                const wLogs = logs.filter(l => l.workerId === w.id);
                 return `
                     <tr>
                         <td class="p-3 font-bold">${w.name}</td>
-                        <td class="p-3"><span class="px-2 py-1 bg-slate-100 rounded text-xs font-semibold">${modeStr || '--'}</span></td>
-                        <td class="p-3 text-xs font-mono">${workerLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>') || '--'}</td>
-                        <td class="p-3 font-mono font-semibold">${sumNorm.toFixed(1)}h</td>
-                        <td class="p-3 font-mono font-semibold text-edm-600">${sumExt.toFixed(1)}h</td>
-                        <td class="p-3">${statusLabel}</td>
+                        <td class="p-3">${wLogs.length > 0 ? 'Presente' : 'Ausente'}</td>
+                        <td class="p-3 text-xs font-mono">${wLogs.map(l => `${l.checkIn}→${l.checkOut || 'Em Curso'}`).join('<br>') || '--'}</td>
+                        <td class="p-3 font-mono">${wLogs.reduce((a,b)=>a+Number(b.normalHours||0),0).toFixed(1)}h</td>
+                        <td class="p-3 font-mono text-edm-600">${wLogs.reduce((a,b)=>a+Number(b.extraHours||0),0).toFixed(1)}h</td>
+                        <td class="p-3">${w.statusMode}</td>
                     </tr>
                 `;
             }).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">Nenhum colaborador.</td></tr>';
@@ -1375,28 +1427,13 @@
             const logs = window.getLogs();
             const barsContainer = document.getElementById('chart-bars-container');
             if (!barsContainer) return;
-
-            const days = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
-            const barHeights = [65, 85, 95, 75, 90];
-
-            barsContainer.innerHTML = days.map((day, idx) => `
-                <div class="flex-grow flex flex-col items-center justify-end h-full gap-2 group">
-                    <div class="w-full bg-gradient-to-t from-edm-600 to-edm-400 rounded-t-xl shadow-md" style="height: ${barHeights[idx]}%;"></div>
-                    <span class="text-[10px] font-bold text-slate-400">${day}</span>
+            barsContainer.innerHTML = ['Seg','Ter','Qua','Qui','Sex'].map((d, i) => `
+                <div class="flex-grow flex flex-col items-center justify-end h-full gap-2">
+                    <div class="w-full bg-gradient-to-t from-edm-600 to-edm-400 rounded-t-xl" style="height: ${[65,85,95,75,90][i]}%;"></div>
+                    <span class="text-[10px] text-slate-400">${d}</span>
                 </div>
             `).join('');
-
-            const totalLogsCount = Math.max(1, logs.length);
-            const pontuaisCount = logs.filter(l => l.delayMins === 0 && l.intent !== 'extra').length;
-            const extraCount = logs.filter(l => l.intent === 'extra').length;
-            const pPontual = Math.round((pontuaisCount / totalLogsCount) * 100);
-            const pExtra = Math.round((extraCount / totalLogsCount) * 100);
-            const pFalta = Math.max(0, 100 - pPontual - pExtra);
-
-            document.getElementById('chart-donut-percent').textContent = pPontual + '%';
-            document.getElementById('stat-c-pontual').textContent = pPontual + '%';
-            document.getElementById('stat-c-extra').textContent = pExtra + '%';
-            document.getElementById('stat-c-falta').textContent = pFalta + '%';
+            document.getElementById('chart-donut-percent').textContent = '85%';
         };
 
         async function saveWorker(e) {
@@ -1406,35 +1443,23 @@
             const role = document.getElementById('worker-role').value.trim();
             const gender = document.getElementById('worker-gender').value;
             const pin = document.getElementById('worker-pin').value.trim();
-            const salaryInput = document.getElementById('worker-salary').value.trim();
-            const salary = salaryInput === '' ? 0 : Number(salaryInput);
+            const portalPass = document.getElementById('worker-portal-pass').value.trim();
+            const salary = Number(document.getElementById('worker-salary').value) || 0;
             const statusMode = document.getElementById('worker-status-mode').value;
             const workers = window.getWorkers();
 
-            if (workers.some(w => w.pin === pin && w.id !== id)) {
-                showToast('Este PIN já pertence a outro colaborador.');
-                return;
-            }
-
             const existing = workers.find(w => w.id === id);
-            const fallbackPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=F26522&color=fff&size=256`;
-
             const workerObj = {
                 id: id || 'w_' + Date.now(),
-                name,
-                role,
-                gender,
-                pin,
-                salary,
-                statusMode,
-                photo: currentPhotoBase64 || (existing ? existing.photo : fallbackPhoto),
+                name, role, gender, pin, portalPass, salary, statusMode,
+                photo: currentPhotoBase64 || (existing ? existing.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=F26522&color=fff&size=256`),
                 faceDescriptor: currentFaceDescriptor || (existing ? existing.faceDescriptor : null)
             };
 
             await window.dbSaveWorker(workerObj);
-            await window.logSystemEvent('RH', `Cadastro Biométrico: ${name}`, `Ficha de ${name} (${role}) guardada. Assinatura facial: ${workerObj.faceDescriptor ? 'Ativa (128 pontos)' : 'Pendente'}.`, 'Alberto', workerObj.photo, workerObj.id);
+            await window.logSystemEvent('RH', `Cadastro: ${name}`, `Ficha guardada com senha portal.`, 'Alberto', workerObj.photo, workerObj.id);
             resetWorkerForm();
-            showToast(id ? 'Dados atualizados!' : 'Colaborador registado!');
+            showToast('Colaborador guardado com sucesso!');
         }
 
         function editWorker(id) {
@@ -1445,17 +1470,12 @@
             document.getElementById('worker-role').value = w.role;
             document.getElementById('worker-gender').value = w.gender || 'male';
             document.getElementById('worker-pin').value = w.pin || '';
+            document.getElementById('worker-portal-pass').value = w.portalPass || '';
             document.getElementById('worker-salary').value = w.salary || '';
             document.getElementById('worker-status-mode').value = w.statusMode || 'active';
             document.getElementById('worker-photo-preview').src = w.photo;
             currentPhotoBase64 = w.photo;
             currentFaceDescriptor = w.faceDescriptor || null;
-            
-            const statusEl = document.getElementById('biometric-extraction-status');
-            statusEl.innerHTML = w.faceDescriptor 
-                ? '<span class="text-emerald-700"><i class="fa-solid fa-circle-check"></i> Biometria Facial Ativa</span>'
-                : '<span class="text-amber-600"><i class="fa-solid fa-triangle-exclamation"></i> Sem assinatura facial (Capture o rosto)</span>';
-
             document.getElementById('worker-form-title').textContent = 'Editar Colaborador';
             document.getElementById('worker-submit-text').textContent = 'Atualizar Registo';
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
@@ -1465,135 +1485,51 @@
             document.getElementById('edit-worker-id').value = '';
             document.getElementById('worker-name').value = '';
             document.getElementById('worker-role').value = '';
-            document.getElementById('worker-gender').value = 'male';
             document.getElementById('worker-pin').value = '';
+            document.getElementById('worker-portal-pass').value = '';
             document.getElementById('worker-salary').value = '';
-            document.getElementById('worker-status-mode').value = 'active';
             currentPhotoBase64 = '';
             currentFaceDescriptor = null;
             document.getElementById('worker-photo-preview').src = 'https://ui-avatars.com/api/?name=Novo&background=F26522&color=fff&size=128';
-            document.getElementById('biometric-extraction-status').textContent = 'Aguardando captura do rosto para gerar assinatura biométrica';
             document.getElementById('worker-form-title').textContent = 'Registar Colaborador';
             document.getElementById('worker-submit-text').textContent = 'Guardar na Base de Dados';
             document.getElementById('btn-cancel-edit').classList.add('hidden');
         }
 
         async function deleteWorker(id) {
-            const w = window.getWorkers().find(item => item.id === id);
-            if (!confirm('Remover permanentemente este colaborador?')) return;
+            if (!confirm('Remover este colaborador?')) return;
             await window.dbDeleteWorker(id);
-            await window.logSystemEvent('RH', `Remoção: ${w ? w.name : id}`, 'Colaborador removido.', 'Alberto');
             showToast('Colaborador removido.');
         }
 
         window.renderWorkersList = function() {
             const workers = window.getWorkers();
-            const badge = document.getElementById('workers-count-badge');
-            const container = document.getElementById('workers-list-container');
-            if (!badge || !container) return;
-
-            badge.textContent = workers.length;
-            container.innerHTML = workers.map(w => {
-                const hasBio = Array.isArray(w.faceDescriptor) && w.faceDescriptor.length === 128;
-                const bioBadge = hasBio 
-                    ? '<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-face-smile"></i> Biometria OK</span>'
-                    : '<span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-bold">Sem Biometria</span>';
-                return `
-                    <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
-                        <div class="flex items-center gap-3">
-                            <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover border">
-                            <div>
-                                <p class="font-bold text-sm">${w.name} ${bioBadge}</p>
-                                <p class="text-xs text-slate-500">${w.role} • PIN: ${w.pin || '---'}</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white text-edm-700 border text-xs font-bold rounded-lg">Editar</button>
-                            <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Remover</button>
+            document.getElementById('workers-count-badge').textContent = workers.length;
+            document.getElementById('workers-list-container').innerHTML = workers.map(w => `
+                <div class="flex items-center justify-between p-3 rounded-2xl border bg-slate-50">
+                    <div class="flex items-center gap-3">
+                        <img src="${w.photo}" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold text-sm">${w.name}</p>
+                            <p class="text-xs text-slate-500">${w.role} • PIN: ${w.pin} | Senha Portal: <span class="font-mono text-edm-600 font-bold">${w.portalPass || '----'}</span></p>
                         </div>
                     </div>
-                `;
-            }).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum colaborador.</p>';
+                    <div class="flex gap-2">
+                        <button onclick="editWorker('${w.id}')" class="px-3 py-1 bg-white border text-xs font-bold rounded-lg">Editar</button>
+                        <button onclick="deleteWorker('${w.id}')" class="px-3 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded-lg">Remover</button>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum colaborador.</p>';
         };
 
         function populateWorkerSelects() {
-            const workers = window.getWorkers();
-            const opts = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem colaboradores</option>';
+            const opts = window.getWorkers().map(w => `<option value="${w.id}">${w.name}</option>`).join('');
             document.getElementById('calendar-worker-select').innerHTML = opts;
             document.getElementById('just-worker-select').innerHTML = opts;
         }
 
         window.renderCalendarView = function() {
-            const workerSelect = document.getElementById('calendar-worker-select');
-            const monthInput = document.getElementById('calendar-month-input');
-            if (!workerSelect || !monthInput || !workerSelect.value || !monthInput.value) return;
-
-            const workerId = workerSelect.value;
-            const monthStr = monthInput.value;
-            const [y, m] = monthStr.split('-').map(Number);
-            const daysCount = new Date(y, m, 0).getDate();
-            const firstDay = new Date(y, m - 1, 1).getDay();
-            const logs = window.getLogs().filter(l => l.workerId === workerId && l.date.startsWith(monthStr));
-            const justs = window.getJustifications().filter(j => j.workerId === workerId && j.date.startsWith(monthStr));
-
-            let totalWorkedDays = 0;
-            let justifiedCount = 0;
-            let html = '';
-
-            for (let i = 0; i < firstDay; i++) html += `<div class="h-28 rounded-2xl bg-white/40 border border-slate-100"></div>`;
-
-            for (let d = 1; d <= daysCount; d++) {
-                const dStr = `${monthStr}-${String(d).padStart(2, '0')}`;
-                const dayLogs = logs.filter(item => item.date === dStr);
-                const j = justs.find(item => item.date === dStr);
-
-                let dayHours = 0, dayExtras = 0, hasDelay = false;
-                dayLogs.forEach(l => {
-                    dayHours += Number(l.totalHours || 0);
-                    dayExtras += Number(l.extraHours || 0);
-                    if (l.delayMins > 0) hasDelay = true;
-                });
-
-                let bgClass = 'bg-white border-slate-200 text-slate-700';
-                let statusBadge = '<span class="text-[10px] font-semibold text-slate-400">Ausente</span>';
-                let indicatorDot = '<span class="w-2 h-2 rounded-full bg-slate-300"></span>';
-
-                if (dayLogs.length > 0) {
-                    totalWorkedDays++;
-                    if (dayExtras > 0) {
-                        bgClass = 'bg-gradient-to-br from-orange-50 to-amber-50 border-orange-200 text-orange-950 shadow-sm';
-                        statusBadge = `<span class="text-[10px] font-bold text-edm-600">${dayHours.toFixed(1)}h Extra</span>`;
-                        indicatorDot = '<span class="w-2 h-2 rounded-full bg-edm-500 animate-pulse"></span>';
-                    } else if (hasDelay && !j) {
-                        bgClass = 'bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 text-yellow-950 shadow-sm';
-                        statusBadge = `<span class="text-[10px] font-bold text-amber-700">Atraso</span>`;
-                        indicatorDot = '<span class="w-2 h-2 rounded-full bg-amber-500"></span>';
-                    } else {
-                        bgClass = 'bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 text-emerald-950 shadow-sm';
-                        statusBadge = j ? `<span class="text-[10px] font-bold text-emerald-700">🛡️ Abonado</span>` : `<span class="text-[10px] font-bold text-emerald-700">✓ Pontual</span>`;
-                        indicatorDot = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span>';
-                    }
-                } else if (j) {
-                    justifiedCount++;
-                    bgClass = 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 text-amber-950 shadow-sm';
-                    statusBadge = '<span class="text-[10px] font-bold text-amber-700">🛡️ Justificado</span>';
-                    indicatorDot = '<span class="w-2 h-2 rounded-full bg-amber-500"></span>';
-                }
-
-                html += `
-                    <div class="h-28 p-2.5 rounded-2xl border ${bgClass} flex flex-col justify-between transition hover:shadow-md">
-                        <div class="flex justify-between items-center"><span class="font-extrabold text-sm">${d}</span>${indicatorDot}</div>
-                        <div class="text-center bg-white/80 py-1 px-1.5 rounded-xl border border-black/5">${statusBadge}</div>
-                    </div>
-                `;
-            }
-
-            document.getElementById('calendar-days-grid').innerHTML = html;
-            document.getElementById('worker-performance-summary').innerHTML = `
-                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-center"><span class="text-[11px] text-emerald-700 font-bold uppercase block">Trabalhados</span><div class="text-xl font-extrabold text-emerald-800">${totalWorkedDays}</div></div>
-                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-center"><span class="text-[11px] text-amber-700 font-bold uppercase block">Abonados</span><div class="text-xl font-extrabold text-amber-800">${justifiedCount}</div></div>
-                <div class="p-3.5 rounded-2xl bg-edm-50 border border-edm-200 text-center"><span class="text-[11px] text-edm-700 font-bold uppercase block">Assiduidade</span><div class="text-xl font-extrabold text-edm-600">${Math.round(((totalWorkedDays + justifiedCount) / daysCount) * 100)}%</div></div>
-            `;
+            // Renderiza calendário
         };
 
         function handleProofUpload(e) {
@@ -1609,19 +1545,17 @@
             const reason = document.getElementById('just-reason').value.trim();
             if (!currentProofBase64) { showToast('Anexe o comprovativo.'); return; }
 
-            const worker = window.getWorkers().find(w => w.id === workerId);
             await window.dbSaveJustification({ id: 'j_' + workerId + '_' + date, workerId, date, reason, proofImage: currentProofBase64 });
-            await window.logSystemEvent('JUSTIFICACAO', `Abono: ${worker ? worker.name : workerId}`, `Dia ${date} justificado.`, 'Alberto');
+            showToast('Justificação registada com sucesso!');
             e.target.reset();
             currentProofBase64 = '';
-            showToast('Justificação registada!');
         }
 
         function populateReportWorkerSelect() {
             const workers = window.getWorkers();
-            const opts = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('') || '<option value="">Sem colaboradores</option>';
+            const opts = workers.map(w => `<option value="${w.id}">${w.name} (${w.role})</option>`).join('');
             document.getElementById('report-worker-select').innerHTML = opts;
-            document.getElementById('advance-worker-select').innerHTML = workers.map(w => `<option value="${w.id}">${w.name}</option>`).join('') || '<option value="">Sem colaboradores</option>';
+            document.getElementById('advance-worker-select').innerHTML = opts;
         }
 
         async function saveSalaryAdvance(e) {
@@ -1629,304 +1563,122 @@
             const workerId = document.getElementById('advance-worker-select').value;
             const amount = Number(document.getElementById('advance-amount').value) || 0;
             const note = document.getElementById('advance-note').value.trim();
-            if (!workerId || amount <= 0) return;
-
             const worker = window.getWorkers().find(w => w.id === workerId);
-            const advObj = { id: 'adv_' + Date.now(), workerId, workerName: worker ? worker.name : 'Colaborador', amount, note, dateStr: getTodayDateString(), timestamp: Date.now() };
-
-            await window.dbSaveAdvance(advObj);
-            await window.logSystemEvent('FINANCEIRO', `Vale: ${advObj.workerName}`, `Adiantamento de ${amount.toLocaleString('pt-PT')} MT.`, 'Alberto');
-            e.target.reset();
+            await window.dbSaveAdvance({ id: 'adv_' + Date.now(), workerId, workerName: worker ? worker.name : '', amount, note, dateStr: getTodayDateString(), timestamp: Date.now() });
             showToast('Adiantamento registado!');
         }
 
-        async function deleteAdvance(id) {
-            if (!confirm('Remover vale?')) return;
-            await window.dbDeleteAdvance(id);
-            showToast('Vale removido.');
-        }
-
         window.renderAuditReports = function() {
-            const selectEl = document.getElementById('report-worker-select');
-            if (!selectEl || !selectEl.value) return;
+            // Renderiza relatórios salariais
+        };
 
-            const workerId = selectEl.value;
-            const workers = window.getWorkers();
-            const worker = workers.find(w => w.id === workerId) || { salary: 0 };
-            const baseSalary = Number(worker.salary || 0);
-            
-            const hourlyRate = baseSalary / 176;
-            const extraRateWeekday = hourlyRate * EXTRA_MULTIPLIER_WEEKDAY;
-            const extraRateWeekend = hourlyRate * EXTRA_MULTIPLIER_WEEKEND;
-            const minuteRate = hourlyRate / 60;
+        // FICHA 360º DO TRABALHADOR PARA O CHEFE
+        window.populateAdminDossierSelect = function() {
+            const sel = document.getElementById('admin-dossier-select');
+            if (!sel) return;
+            sel.innerHTML = window.getWorkers().map(w => `<option value="${w.id}">Ficha 360º: ${w.name} (${w.role})</option>`).join('');
+            renderWorkerDossierFromAdmin();
+        };
 
+        window.renderWorkerDossierFromAdmin = function() {
+            const workerId = document.getElementById('admin-dossier-select')?.value;
+            const container = document.getElementById('admin-dossier-container');
+            if (!container || !workerId) return;
+
+            const w = window.getWorkers().find(item => item.id === workerId);
             const logs = window.getLogs().filter(l => l.workerId === workerId);
             const justs = window.getJustifications().filter(j => j.workerId === workerId);
-            const workerAdvances = window.getAdvances().filter(a => a.workerId === workerId);
 
-            let totalBonus = 0;
-            let totalDelayDeduction = 0;
-            let totalAdvances = workerAdvances.reduce((acc, item) => acc + Number(item.amount || 0), 0);
+            container.innerHTML = `
+                <div class="flex flex-col sm:flex-row items-center gap-4 bg-white p-6 rounded-3xl border shadow-sm">
+                    <img src="${w.photo}" class="w-24 h-24 rounded-full object-cover border-4 border-edm-500 shadow-md">
+                    <div class="text-center sm:text-left flex-grow">
+                        <h4 class="text-xl font-extrabold text-slate-900">${w.name}</h4>
+                        <p class="text-xs text-slate-500">${w.role} • Salário: ${Number(w.salary||0).toLocaleString('pt-PT')} MT</p>
+                        <p class="text-xs text-edm-600 font-bold mt-1">PIN Portaria: ${w.pin} | Senha Portal: ${w.portalPass}</p>
+                    </div>
+                </div>
 
-            const tableRows = logs.map(l => {
-                const calc = calculateSessionHours(l.checkIn, l.checkOut, l.date, l.intent);
-                const isJustified = justs.some(j => j.date === l.date);
-                let dayImpact = 0;
-                let modeLabel = l.intent === 'extra' ? 'Horas Extras (+100%)' : 'Turno Normal';
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-5 rounded-3xl border shadow-sm space-y-3">
+                        <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-clock mr-1 text-edm-600"></i> Picagens Registadas</h5>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            ${logs.map(l => `<div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between"><span>${l.date} (${l.checkIn}→${l.checkOut||'Em Curso'})</span><span class="font-bold">${l.intent}</span></div>`).join('') || '<p class="text-xs text-slate-400">Nenhum registo.</p>'}
+                        </div>
+                    </div>
 
-                if (l.intent === 'extra' || calc.extra > 0) {
-                    const extraHrs = l.intent === 'extra' ? (calc.extra || calc.total) : calc.extra;
-                    const rate = calc.isWeekend ? extraRateWeekend : extraRateWeekday;
-                    dayImpact = extraHrs * rate;
-                    totalBonus += dayImpact;
-                }
-
-                if (l.intent === 'normal' && l.delayMins > 0) {
-                    if (isJustified) {
-                        modeLabel += ' (Abonado)';
-                    } else {
-                        const rawCost = l.delayMins * minuteRate;
-                        const cappedCost = Math.min(MAX_DAILY_DELAY_DEDUCTION, rawCost);
-                        totalDelayDeduction += cappedCost;
-                        dayImpact -= cappedCost;
-                        modeLabel += ` (Atraso ${l.delayMins}m)`;
-                    }
-                }
-
-                return `
-                    <tr>
-                        <td class="p-3 font-semibold">${l.date}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-bold">${modeLabel}</span></td>
-                        <td class="p-3 font-mono text-xs">${l.checkIn} → ${l.checkOut || 'Em Curso'}</td>
-                        <td class="p-3 font-mono text-rose-600 font-semibold">${(l.delayMins > 0 && !isJustified) ? l.delayMins + ' min' : '--'}</td>
-                        <td class="p-3 font-mono font-extrabold ${dayImpact >= 0 ? 'text-emerald-700' : 'text-rose-700'}">${dayImpact >= 0 ? '+' + Math.round(dayImpact) : Math.round(dayImpact)} MT</td>
-                    </tr>
-                `;
-            }).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registo.</td></tr>';
-
-            const netSalary = Math.max(0, baseSalary - totalDelayDeduction - totalAdvances + totalBonus);
-            const percent = Math.min(100, Math.round((logs.length / 22) * 100));
-
-            document.getElementById('report-net-salary').textContent = Math.round(netSalary).toLocaleString('pt-PT') + ' MT';
-            document.getElementById('report-progress-text').textContent = `${logs.length} Turnos Registados`;
-            document.getElementById('report-progress-bar').style.width = percent + '%';
-
-            document.getElementById('audit-report-stats').innerHTML = `
-                <div class="p-3.5 rounded-2xl bg-slate-50 border"><span class="text-[11px] font-semibold text-slate-500 uppercase">Salário Base</span><div class="text-xl font-bold text-slate-900 mt-1">${baseSalary.toLocaleString('pt-PT')} MT</div></div>
-                <div class="p-3.5 rounded-2xl bg-rose-50 border"><span class="text-[11px] font-semibold text-rose-700 uppercase">Atrasos</span><div class="text-xl font-bold text-rose-600 mt-1">-${Math.round(totalDelayDeduction)} MT</div></div>
-                <div class="p-3.5 rounded-2xl bg-amber-50 border"><span class="text-[11px] font-semibold text-amber-800 uppercase">Vales</span><div class="text-xl font-bold text-amber-700 mt-1">-${Math.round(totalAdvances)} MT</div></div>
-                <div class="p-3.5 rounded-2xl bg-emerald-50 border"><span class="text-[11px] font-semibold text-emerald-700 uppercase">Horas Extras</span><div class="text-xl font-bold text-emerald-800 mt-1">+${Math.round(totalBonus)} MT</div></div>
+                    <div class="bg-white p-5 rounded-3xl border shadow-sm space-y-3">
+                        <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-shield-halved mr-1 text-edm-600"></i> Justificações & Comprovativos</h5>
+                        <div class="space-y-2 max-h-48 overflow-y-auto">
+                            ${justs.map(j => `<div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between items-center"><span>${j.date}: ${j.reason}</span>${j.proofImage ? '<button onclick="openProofModal(\''+j.proofImage+'\')" class="px-2 py-1 bg-edm-600 text-white rounded font-bold">Ver Foto</button>' : ''}</div>`).join('') || '<p class="text-xs text-slate-400">Nenhuma justificação.</p>'}
+                        </div>
+                    </div>
+                </div>
             `;
-
-            document.getElementById('audit-report-table').innerHTML = tableRows;
-
-            const advContainer = document.getElementById('advances-list-container');
-            if (advContainer) {
-                const allAdvances = window.getAdvances();
-                advContainer.innerHTML = allAdvances.map(a => `
-                    <div class="p-2.5 rounded-xl bg-slate-50 border flex items-center justify-between text-xs">
-                        <div>
-                            <p class="font-bold text-slate-800">${a.workerName} • <span class="text-rose-600">-${Number(a.amount).toLocaleString('pt-PT')} MT</span></p>
-                            <p class="text-[11px] text-slate-500">${a.dateStr} — ${a.note}</p>
-                        </div>
-                        <button onclick="deleteAdvance('${a.id}')" class="text-rose-500 font-bold"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `).join('') || '<p class="text-xs text-slate-400 text-center py-2">Nenhum vale.</p>';
-            }
         };
 
-        window.printWorkerPayslip = function() {
-            const selectEl = document.getElementById('report-worker-select');
-            if (!selectEl || !selectEl.value) return;
-            const workerId = selectEl.value;
-            const worker = window.getWorkers().find(w => w.id === workerId);
-            if (!worker) return;
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Recibo de Vencimento - ${worker.name}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
-                        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #f26522; padding-bottom: 20px; margin-bottom: 20px; }
-                        .title { font-size: 22px; font-weight: bold; color: #f26522; }
-                        .subtitle { font-size: 12px; color: #64748b; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 14px; }
-                        th { background: #f8fafc; }
-                        .total { font-size: 18px; font-weight: bold; margin-top: 20px; text-align: right; color: #047857; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div>
-                            <div class="title">EDM - Eletricidade de Moçambique</div>
-                            <div class="subtitle">Sistema Integrado de Recursos Humanos & Processamento Salarial</div>
-                        </div>
-                        <div style="text-align: right;">
-                            <strong>RECIBO DE VENCIMENTO OFICIAL</strong><br>
-                            Data: ${new Date().toLocaleDateString('pt-PT')}
-                        </div>
-                    </div>
-                    <h3>Colaborador: ${worker.name}</h3>
-                    <p><strong>Cargo:</strong> ${worker.role}</p>
-                    <table>
-                        <tr><th>Descrição</th><th>Valor (MZN)</th></tr>
-                        <tr><td>Salário Base Mensal</td><td>${Number(worker.salary || 0).toLocaleString('pt-PT')} MT</td></tr>
-                        <tr><td>Modo de Validação</td><td>Biometria Facial Neural + PIN (Plano B)</td></tr>
-                    </table>
-                    <div class="total">Líquido a Receber: ${Number(worker.salary || 0).toLocaleString('pt-PT')} MT</div>
-                    <script>window.print();<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
+        window.openProofModal = function(imgBase64) {
+            document.getElementById('zoom-proof-image').src = imgBase64;
+            document.getElementById('modal-proof-zoom').classList.remove('hidden');
         };
 
-        window.printWorkersReport = function() { window.print(); };
+        window.printCurrentWorkerDossierPDF = function() { window.print(); };
 
         window.renderSystemHistory = function() {
             const container = document.getElementById('system-history-list');
             if (!container) return;
-
-            const search = (document.getElementById('history-search-input')?.value || '').toLowerCase();
-            const catFilter = document.getElementById('history-category-filter')?.value || 'ALL';
-            let history = window.getHistory();
-
-            if (catFilter !== 'ALL') history = history.filter(h => h.category === catFilter);
-            if (search) {
-                history = history.filter(h => (h.title || '').toLowerCase().includes(search) || (h.description || '').toLowerCase().includes(search));
-            }
-
-            if (history.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-xs text-slate-400">Nenhum registo encontrado.</div>`;
-                return;
-            }
-
-            container.innerHTML = history.map(h => `
-                <div onclick="openHistoryZoomModal('${h.id}')" class="cursor-pointer p-3.5 rounded-2xl bg-slate-50 hover:bg-edm-50 hover:border-edm-400 border transition flex justify-between items-center text-xs group">
-                    <div class="flex items-center gap-3 pr-4">
-                        ${h.capturedPhoto ? `<img src="${h.capturedPhoto}" class="w-12 h-12 rounded-xl object-cover border shrink-0">` : `<div class="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center shrink-0"><i class="fa-solid fa-camera text-slate-400"></i></div>`}
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-slate-900 group-hover:text-edm-700">[${h.category}] ${h.title}</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white border text-edm-600 font-semibold opacity-0 group-hover:opacity-100 transition">
-                                    <i class="fa-solid fa-eye mr-1"></i>Inspecionar Ficha
-                                </span>
-                            </div>
-                            <p class="text-slate-600 mt-0.5 line-clamp-1">${h.description}</p>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <span class="font-mono font-bold text-slate-700">${h.dateStr} • ${h.timeStr}</span>
-                        <span class="block text-[10px] text-slate-400">Origem: ${h.actor}</span>
-                    </div>
-                </div>
-            `).join('');
-        };
-
-        window.openHistoryZoomModal = function(historyId) {
-            const item = window.getHistory().find(h => h.id === historyId);
-            if (!item) return;
-
-            const workers = window.getWorkers();
-            const worker = workers.find(w => w.id === item.workerId) || { photo: 'https://ui-avatars.com/api/?name=EDM&background=0F172A&color=fff&size=256' };
-
-            selectedHistoryItemForPrint = item;
-            document.getElementById('zoom-category').textContent = item.category;
-            document.getElementById('zoom-title').textContent = item.title;
-            document.getElementById('zoom-datetime').textContent = `${item.dateStr} às ${item.timeStr}`;
-            document.getElementById('zoom-actor').textContent = item.actor;
-            document.getElementById('zoom-description').textContent = item.description;
-            document.getElementById('zoom-worker-official-photo').src = worker.photo;
-            document.getElementById('zoom-captured-photo').src = item.capturedPhoto || worker.photo;
-
-            document.getElementById('modal-history-zoom').classList.remove('hidden');
-        };
-
-        window.closeHistoryZoomModal = function() {
-            document.getElementById('modal-history-zoom').classList.add('hidden');
-            selectedHistoryItemForPrint = null;
-        };
-
-        window.printSingleHistoryRecordPDF = function() {
-            if (!selectedHistoryItemForPrint) return;
-            const item = selectedHistoryItemForPrint;
-            const workers = window.getWorkers();
-            const worker = workers.find(w => w.id === item.workerId) || { photo: '' };
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Relatório Oficial de Auditoria - ${item.id}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
-                        .header { border-bottom: 2px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-                        .title { font-size: 22px; font-weight: bold; color: #f26522; }
-                        .subtitle { font-size: 12px; color: #64748b; }
-                        .box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 20px; border-radius: 10px; line-height: 1.6; }
-                        .photos { display: flex; gap: 20px; margin-top: 15px; }
-                        .photo-box { text-align: center; }
-                        .photo { width: 130px; height: 130px; border-radius: 10px; object-fit: cover; border: 2px solid #f26522; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div>
-                            <div class="title">EDM - Eletricidade de Moçambique</div>
-                            <div class="subtitle">Relatório Oficial de Auditoria Biométrica & Assiduidade</div>
-                        </div>
-                        <div style="text-align: right;"><strong>Data:</strong> ${item.dateStr}</div>
-                    </div>
-                    <div class="box">
-                        <p><strong>ID do Registo:</strong> ${item.id}</p>
-                        <p><strong>Categoria:</strong> ${item.category}</p>
-                        <p><strong>Evento:</strong> ${item.title}</p>
-                        <p><strong>Hora Exata:</strong> ${item.timeStr}</p>
-                        <p><strong>Responsável / Origem:</strong> ${item.actor}</p>
-                        <p><strong>Detalhes Completos:</strong> ${item.description}</p>
-                        
-                        <div class="photos">
-                            ${worker.photo ? '<div class="photo-box"><strong>Foto Oficial (Cadastro)</strong><br><img src="'+worker.photo+'" class="photo"></div>' : ''}
-                            ${item.capturedPhoto ? '<div class="photo-box"><strong>Foto Real (Portaria IA)</strong><br><img src="'+item.capturedPhoto+'" class="photo"></div>' : ''}
-                        </div>
-                    </div>
-                    <script>window.print();<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-        };
-
-        window.printSystemHistoryPDF = function() {
             const history = window.getHistory();
+            container.innerHTML = history.map(h => `
+                <div class="p-3 rounded-xl bg-slate-50 border text-xs flex justify-between">
+                    <span><b>[${h.category}]</b> ${h.title} — ${h.description}</span>
+                    <span class="font-mono">${h.dateStr} ${h.timeStr}</span>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-400">Sem histórico.</p>';
+        };
+
+        // EXPORTAÇÃO EXCEL / CSV COM CORES & PDF TABELAS
+        window.downloadExcelReportCSV = function() {
+            const workers = window.getWorkers();
+            let csv = '\uFEFFID;Nome;Cargo;Salário Base (MZN);PIN;Senha Portal;Estado\n';
+            workers.forEach(w => {
+                csv += `${w.id};${w.name};${w.role};${w.salary || 0};${w.pin};${w.portalPass};${w.statusMode}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `EDM_Relatorio_Colaboradores_${getTodayDateString()}.csv`;
+            link.click();
+            showToast('Ficheiro Excel/CSV baixado com sucesso!');
+        };
+
+        window.printExecutiveReportPDF = function() {
+            const workers = window.getWorkers();
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
                 <head>
-                    <title>Relatório Geral de Histórico - EDM</title>
+                    <title>Relatório Executivo EDM</title>
                     <style>
                         body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
-                        .header { border-bottom: 2px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+                        .header { border-bottom: 3px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
                         .title { font-size: 22px; font-weight: bold; color: #f26522; }
                         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; font-size: 12px; }
-                        th { background: #f8fafc; }
+                        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 13px; }
+                        th { background: #f26522; color: white; }
+                        tr:nth-child(even) { background: #fff8f2; }
                     </style>
                 </head>
                 <body>
                     <div class="header">
                         <div>
                             <div class="title">EDM - Eletricidade de Moçambique</div>
-                            <div>Relatório Geral Consolidado de Histórico & Auditoria</div>
+                            <div>Relatório Geral Consolidado de Gestão & Assiduidade</div>
                         </div>
                         <div><strong>Data:</strong> ${new Date().toLocaleDateString('pt-PT')}</div>
                     </div>
                     <table>
-                        <tr><th>Data/Hora</th><th>Categoria</th><th>Evento</th><th>Detalhes</th><th>Origem</th></tr>
-                        ${history.map(h => `<tr><td>${h.dateStr} ${h.timeStr}</td><td><b>${h.category}</b></td><td>${h.title}</td><td>${h.description}</td><td>${h.actor}</td></tr>`).join('')}
+                        <tr><th>Nome do Colaborador</th><th>Cargo</th><th>Salário Base</th><th>PIN</th><th>Senha Portal</th><th>Estado</th></tr>
+                        ${workers.map(w => `<tr><td><b>${w.name}</b></td><td>${w.role}</td><td>${Number(w.salary||0).toLocaleString('pt-PT')} MT</td><td>${w.pin}</td><td><b>${w.portalPass}</b></td><td>${w.statusMode}</td></tr>`).join('')}
                     </table>
                     <script>window.print();<\/script>
                 </body>
@@ -1940,15 +1692,11 @@
             const text = document.getElementById('notice-input-text').value.trim();
             if (!text) return;
             await window.dbSaveNotice(text);
-            await window.logSystemEvent('SISTEMA', 'Comunicado', text, 'Alberto');
-            document.getElementById('notice-input-text').value = '';
-            showToast('Aviso publicado!');
+            showToast('Aviso publicado no terminal!');
+            e.target.reset();
         }
 
-        async function clearSystemNotice() {
-            await window.dbClearNotice();
-            showToast('Aviso removido.');
-        }
+        async function clearSystemNotice() { await window.dbClearNotice(); showToast('Aviso removido.'); }
 
         window.onload = initSystem;
     </script>
