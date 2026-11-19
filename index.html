@@ -38,33 +38,78 @@
             box-shadow: 0 0 12px #F97316; animation: scan-line 2s infinite ease-in-out;
         }
         .chart-card { background: #0F172A; color: #F8FAFC; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2); }
-        
-        /* EFEITO NEON LAMP EXCLUSIVO PARA O PORTAL */
-        .neon-modal-card {
-            background: #0B0F19;
-            color: #F8FAFC;
-            border: 1px solid rgba(242, 101, 34, 0.3);
-            box-shadow: 0 0 35px rgba(242, 101, 34, 0.25), 0 20px 40px rgba(0, 0, 0, 0.6);
-            position: relative;
-            overflow: hidden;
+
+        /* PORTAL NEON LAMP TELA CHEIA */
+        :root {
+            --neon-color: #F26522;
+            --neon-glow: rgba(242, 101, 34, 0.45);
         }
-        .neon-modal-card::before {
-            content: '';
-            position: absolute;
-            top: -50px; left: -50px;
-            width: 150px; height: 150px;
-            background: radial-gradient(circle, rgba(242,101,34,0.4) 0%, transparent 70%);
-            border-radius: 50%;
+        .neon-portal-bg {
+            background: radial-gradient(circle at 25% 35%, var(--neon-glow), transparent 45%), #070A12;
+            transition: background 0.45s ease;
+        }
+        @keyframes lamp-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        .lamp-shade-glow {
+            background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+            border-bottom: 4px solid var(--neon-color);
+            box-shadow: 0 0 28px var(--neon-glow), inset 0 -10px 18px var(--neon-glow);
+            animation: lamp-float 3.2s ease-in-out infinite;
+            transition: all 0.35s ease;
+        }
+        .lamp-light-cone {
+            background: conic-gradient(from 160deg at 50% 0%, transparent 120deg, var(--neon-glow) 180deg, transparent 240deg);
+            filter: blur(10px);
+            opacity: 0.75;
             pointer-events: none;
+            transition: all 0.35s ease;
+        }
+        .neon-card-panel {
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid var(--neon-color);
+            box-shadow: 0 0 30px var(--neon-glow), 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+            transition: border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .neon-accent-btn {
+            background: var(--neon-color);
+            box-shadow: 0 6px 22px var(--neon-glow);
+            transition: transform 0.15s ease, filter 0.2s ease, background-color 0.35s ease;
+        }
+        .neon-accent-btn:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
         }
 
+        /* IMPRESSÃO ISOLADA APENAS DA FICHA / RELATÓRIO ATIVO */
+        #printable-fiche-zone {
+            display: none;
+        }
         @media print {
-            body { background: white !important; color: black !important; }
-            header, nav, button, .no-print { display: none !important; }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body > *:not(#printable-fiche-zone) {
+                display: none !important;
+            }
+            #printable-fiche-zone {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 16px !important;
+                background: #ffffff !important;
+                color: #0f172a !important;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-edm-200 selection:text-edm-900">
+
+    <!-- ZONA EXCLUSIVA DE IMPRESSÃO (IMPRIME APENAS O CONTEÚDO DA FICHA + LOGÓTIPO 12.png) -->
+    <div id="printable-fiche-zone"></div>
 
     <!-- CABEÇALHO COM LOGÓTIPO OFICIAL 12.png -->
     <header class="bg-white border-b border-edm-200 sticky top-0 z-30 shadow-sm no-print">
@@ -206,7 +251,7 @@
                 </div>
             </div>
 
-            <!-- PAINEL DO DIA ATUAL (RENOVA AUTOMATICAMENTE A CADA NOVO DIA SEM APAGAR O HISTÓRICO GERAL) -->
+            <!-- PAINEL DO DIA ATUAL -->
             <div class="bg-white rounded-3xl p-6 border border-edm-200 shadow-sm">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                     <h4 class="font-bold text-slate-800 flex items-center gap-2">
@@ -459,7 +504,7 @@
                             </div>
                             <div class="flex gap-2">
                                 <select id="report-worker-select" onchange="renderAuditReports()" class="px-3 py-2 border rounded-xl text-sm bg-slate-50 font-semibold"></select>
-                                <button onclick="printWorkerPayslip()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Imprimir Recibo PDF</button>
+                                <button onclick="printWorkerPayslip()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-invoice-dollar mr-1"></i> Imprimir Recibo</button>
                             </div>
                         </div>
 
@@ -522,9 +567,8 @@
                 </div>
             </div>
 
-            <!-- ABA 6: HISTÓRICO GERAL PERMANENTE & FICHA 360º (EXCLUSÃO PROTEGIDA SÓ PARA O CHEFE) -->
+            <!-- ABA 6: HISTÓRICO GERAL PERMANENTE & FICHA 360º -->
             <div id="admin-tab-history" class="admin-tab-content hidden space-y-6">
-                <!-- Ficha 360º Individual -->
                 <div class="bg-white rounded-3xl p-6 border shadow-sm space-y-5">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b">
                         <div class="flex items-center gap-3">
@@ -538,7 +582,8 @@
                         </div>
                         <div class="flex flex-wrap gap-2 w-full md:w-auto">
                             <select id="admin-dossier-select" onchange="renderWorkerDossierFromAdmin()" class="px-3 py-2 border rounded-xl text-sm bg-edm-50 font-bold text-edm-800 flex-grow md:w-64"></select>
-                            <button onclick="printCurrentWorkerDossierPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-file-pdf mr-1"></i> Imprimir Ficha</button>
+                            <button onclick="openFullScreenWorkerFiche()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-maximize mr-1"></i> Abrir Ficha em Tela Cheia</button>
+                            <button onclick="printCurrentWorkerDossierPDF()" class="px-4 py-2 bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold rounded-xl shadow"><i class="fa-solid fa-print mr-1"></i> Imprimir Ficha</button>
                         </div>
                     </div>
 
@@ -588,7 +633,7 @@
                                     <i class="fa-solid fa-id-card-clip text-xl text-edm-600"></i>
                                     <h3 class="font-bold text-lg">Relatório Executivo em Ficha com Foto & Catálogo MAGUÊZI,SA</h3>
                                 </div>
-                                <p class="text-xs text-slate-500 mt-1">Gera a ficha corporativa oficial com o ícone de identificação <strong>MAGUÊZI,SA (12.png)</strong>, foto do colaborador e todos os registos do período.</p>
+                                <p class="text-xs text-slate-500 mt-1">Imprime ou exporta a ficha corporativa oficial com o logótipo <strong>MAGUÊZI,SA (12.png)</strong>, foto do colaborador e todos os registos do período.</p>
                             </div>
                             <img src="12.png" alt="MAGUÊZI,SA" class="h-12 w-auto object-contain rounded-xl border border-edm-200 p-1.5 bg-amber-50/60 shrink-0" onerror="this.style.display='none'">
                         </div>
@@ -615,7 +660,7 @@
                                 <i class="fa-solid fa-file-excel"></i> Baixar Tabela CSV
                             </button>
                             <button onclick="downloadCorporatePhotoDossierPDF()" class="py-3 px-4 rounded-xl bg-edm-600 hover:bg-edm-700 text-white font-bold text-xs shadow flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-file-pdf"></i> Baixar Ficha com Logótipo & Foto
+                                <i class="fa-solid fa-print"></i> Imprimir / Exportar Ficha com Logótipo
                             </button>
                         </div>
                     </div>
@@ -647,72 +692,132 @@
         </section>
     </main>
 
-    <!-- PORTAL EXCLUSIVO DO TRABALHADOR (ESTILO NEON LAMP) -->
-    <div id="modal-worker-portal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="neon-modal-card rounded-3xl max-w-md w-full p-8 shadow-2xl space-y-6 relative my-8">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+    <!-- FICHA DO TRABALHADOR EM TELA CHEIA (ABRE QUANDO CLICA NO HISTÓRICO / FICHA 360º) -->
+    <div id="modal-worker-fullscreen-fiche" class="fixed inset-0 w-screen h-screen bg-slate-950/90 backdrop-blur-md z-50 hidden overflow-y-auto p-4 sm:p-8 no-print">
+        <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl border border-edm-200 overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="h-10 px-2 rounded-xl bg-white/95 flex items-center justify-center border border-edm-500/30 shadow overflow-hidden">
-                        <img src="12.png" alt="MAGUÊZI,SA" class="h-8 w-auto object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                        <i class="fa-solid fa-id-badge text-edm-500 hidden"></i>
+                    <div class="h-10 px-2 rounded-xl bg-white flex items-center justify-center">
+                        <img src="12.png" alt="MAGUÊZI,SA" class="h-8 w-auto object-contain" onerror="this.style.display='none'">
                     </div>
                     <div>
-                        <span class="text-[10px] font-extrabold uppercase tracking-widest text-edm-400">Área Exclusiva</span>
-                        <h3 class="text-sm font-extrabold text-white">MAGUÊZI,SA — Portal</h3>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-edm-400">Visualização em Tela Cheia</span>
+                        <h3 id="fullscreen-fiche-title" class="text-base sm:text-lg font-extrabold">Ficha 360º do Colaborador</h3>
                     </div>
                 </div>
-                <button onclick="closeWorkerPortalModal()" class="w-8 h-8 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Ecrã de Login do Trabalhador -->
-            <div id="portal-login-screen" class="space-y-6 text-center py-2">
-                <div class="w-20 h-20 bg-gradient-to-br from-edm-500/25 to-amber-500/10 rounded-full flex items-center justify-center mx-auto text-edm-400 text-3xl border border-edm-500/40 shadow-[0_0_20px_rgba(242,101,34,0.3)]">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div>
-                    <h4 class="text-xl font-bold text-white">Insira a sua Senha Pessoal</h4>
-                    <p class="text-xs text-slate-400 mt-1">Digite a sua senha de 4 dígitos para consultar os seus dados laborais.</p>
-                </div>
-                <form onsubmit="verifyWorkerPortalLogin(event)" class="space-y-5">
-                    <input type="password" id="worker-portal-login-pass" required maxlength="4" placeholder="••••" class="w-full px-4 py-3.5 bg-slate-900/90 border border-slate-700 rounded-2xl text-center font-mono text-2xl font-extrabold tracking-[1em] text-white focus:border-edm-500 focus:ring-2 focus:ring-edm-500/50 outline-none">
-                    <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-edm-500 to-edm-600 hover:from-edm-600 hover:to-edm-700 text-white font-extrabold text-sm shadow-[0_4px_20px_rgba(242,101,34,0.4)] transition-all">
-                        Aceder ao Meu Histórico
+                <div class="flex items-center gap-2">
+                    <button onclick="printCurrentWorkerDossierPDF()" class="px-4 py-2 rounded-xl bg-edm-600 hover:bg-edm-700 text-white text-xs font-bold shadow">
+                        <i class="fa-solid fa-print mr-1"></i> Imprimir Só Esta Ficha
                     </button>
-                </form>
+                    <button onclick="closeFullScreenWorkerFiche()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold">
+                        <i class="fa-solid fa-compress mr-1"></i> Fechar Tela Cheia
+                    </button>
+                </div>
+            </div>
+            <div id="fullscreen-fiche-body" class="p-6 sm:p-8 space-y-6 bg-slate-50"></div>
+        </div>
+    </div>
+
+    <!-- PORTAL EXCLUSIVO DO TRABALHADOR EM TELA CHEIA COM CANDEEIRO NEON ANIMADO -->
+    <div id="modal-worker-portal" class="fixed inset-0 w-screen h-screen neon-portal-bg z-50 hidden overflow-y-auto no-print">
+        <div class="min-h-screen w-full flex flex-col justify-between p-4 sm:p-8 relative">
+            <!-- Barra Superior Tela Cheia -->
+            <div class="max-w-6xl w-full mx-auto flex items-center justify-between gap-3 z-20">
+                <div class="flex items-center gap-3">
+                    <div class="h-11 px-2.5 rounded-xl bg-white flex items-center justify-center shadow-lg">
+                        <img src="12.png" alt="MAGUÊZI,SA" class="h-8 w-auto object-contain" onerror="this.style.display='none'">
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-widest" style="color: var(--neon-color);">Portal do Trabalhador • Tela Cheia</span>
+                        <h3 class="text-sm sm:text-base font-extrabold text-white">MAGUÊZI,SA & Parceria EDM</h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="cycleNeonLampColor()" class="px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-bold border border-slate-700 flex items-center gap-2 shadow">
+                        <i class="fa-solid fa-lightbulb" style="color: var(--neon-color);"></i>
+                        <span>Mudar Luz Neon</span>
+                    </button>
+                    <button type="button" onclick="closeWorkerPortalModal()" class="px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-rose-600 text-white text-xs font-bold border border-slate-700 flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-xmark"></i>
+                        <span>Sair</span>
+                    </button>
+                </div>
             </div>
 
-            <!-- Ecrã com os Dados Exclusivos do Trabalhador -->
-            <div id="portal-dashboard-screen" class="hidden space-y-6">
-                <div class="flex items-center justify-between bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
-                    <div class="flex items-center gap-3">
-                        <img id="portal-worker-photo" src="" class="w-14 h-14 rounded-full object-cover border-2 border-edm-500 shadow cursor-pointer" onclick="openZoomImage(this.src)">
+            <!-- Centro: Candeeiro Neon Animado + Formulário / Histórico -->
+            <div class="max-w-5xl w-full mx-auto my-auto py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center z-10">
+                <!-- Candeeiro Neon Interativo (Estilo Vídeo) -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center relative select-none">
+                    <div class="relative flex flex-col items-center cursor-pointer group" onclick="cycleNeonLampColor()" title="Clique para alternar a luz neon">
+                        <div class="w-44 h-24 rounded-t-full lamp-shade-glow flex items-center justify-center relative z-10">
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/80">Neon Lamp</span>
+                        </div>
+                        <div class="w-6 h-4 bg-slate-800 rounded-b-md z-10"></div>
+                        <div class="w-2.5 h-36 bg-gradient-to-b from-slate-700 to-slate-900 relative">
+                            <div class="absolute right-[-14px] top-6 w-0.5 h-14 bg-slate-500 group-hover:translate-y-2 transition-transform"></div>
+                            <div class="absolute right-[-17px] top-20 w-2 h-2 rounded-full" style="background: var(--neon-color); box-shadow: 0 0 10px var(--neon-color);"></div>
+                        </div>
+                        <div class="w-36 h-4 rounded-full bg-slate-900 border border-slate-700 shadow-2xl"></div>
+                        <div class="w-72 h-56 lamp-light-cone top-20 rounded-b-full absolute -z-0"></div>
+                    </div>
+                    <p class="mt-5 text-xs font-semibold text-slate-300 text-center">
+                        Clique no candeeiro para alternar a cor da iluminação ambiente.
+                    </p>
+                </div>
+
+                <!-- Painel Direito: Login ou Dados do Trabalhador -->
+                <div class="lg:col-span-7">
+                    <div id="portal-login-screen" class="neon-card-panel rounded-3xl p-7 sm:p-10 space-y-6 text-center">
+                        <div class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-2xl text-white" style="background: var(--neon-color); box-shadow: 0 0 25px var(--neon-glow);">
+                            <i class="fa-solid fa-user-lock"></i>
+                        </div>
                         <div>
-                            <h4 id="portal-worker-name" class="font-extrabold text-base text-white">Nome</h4>
-                            <p id="portal-worker-role" class="text-xs text-slate-400">Cargo</p>
-                            <span id="portal-worker-status-badge" class="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold">Estado</span>
+                            <h4 class="text-2xl font-extrabold text-white">Bem-vindo ao Portal do Colaborador</h4>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-1">Insira a sua senha pessoal de 4 dígitos para ver o seu histórico, horas e turnos.</p>
+                        </div>
+                        <form onsubmit="verifyWorkerPortalLogin(event)" class="space-y-5 max-w-sm mx-auto">
+                            <input type="password" id="worker-portal-login-pass" required maxlength="4" placeholder="••••" class="w-full px-4 py-3.5 bg-slate-950/90 border border-slate-700 rounded-2xl text-center font-mono text-2xl font-extrabold tracking-[1em] text-white focus:outline-none">
+                            <button type="submit" class="w-full py-3.5 rounded-2xl neon-accent-btn text-white font-extrabold text-sm">
+                                Entrar no Meu Portal
+                            </button>
+                        </form>
+                    </div>
+
+                    <div id="portal-dashboard-screen" class="hidden neon-card-panel rounded-3xl p-6 sm:p-8 space-y-6 text-white">
+                        <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-950/70 p-4 rounded-2xl border border-slate-800">
+                            <div class="flex items-center gap-3">
+                                <img id="portal-worker-photo" src="" class="w-16 h-16 rounded-full object-cover border-2 shadow cursor-pointer" style="border-color: var(--neon-color);" onclick="openZoomImage(this.src)">
+                                <div>
+                                    <h4 id="portal-worker-name" class="font-extrabold text-lg text-white">Nome</h4>
+                                    <p id="portal-worker-role" class="text-xs text-slate-400">Cargo</p>
+                                    <span id="portal-worker-status-badge" class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Estado</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="printWorkerPortalPDF()" class="px-3.5 py-2 rounded-xl neon-accent-btn text-white text-xs font-bold">
+                                    <i class="fa-solid fa-print mr-1"></i> Imprimir Ficha
+                                </button>
+                                <button onclick="logoutWorkerPortal()" class="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 text-xs font-bold hover:bg-rose-500/30 border border-rose-500/30">Sair</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30"><span class="text-[10px] text-emerald-400 font-bold uppercase block">Horas Normais</span><div id="portal-stat-norm" class="text-lg font-extrabold text-emerald-300">0h</div></div>
+                            <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30"><span class="text-[10px] text-amber-400 font-bold uppercase block">Horas Extras</span><div id="portal-stat-extra" class="text-lg font-extrabold text-amber-300">0h</div></div>
+                            <div class="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30"><span class="text-[10px] text-rose-400 font-bold uppercase block">Atrasos</span><div id="portal-stat-delays" class="text-lg font-extrabold text-rose-300">0</div></div>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-xs uppercase tracking-wider text-slate-300 mb-2">Seu Histórico de Presenças</h5>
+                            <div id="portal-logs-container" class="space-y-2 max-h-64 overflow-y-auto pr-1"></div>
                         </div>
                     </div>
-                    <button onclick="logoutWorkerPortal()" class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 text-xs font-bold hover:bg-rose-500/30 border border-rose-500/30">Sair</button>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-3 gap-3 text-center">
-                    <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30"><span class="text-[9px] text-emerald-400 font-bold uppercase block">Normais</span><div id="portal-stat-norm" class="text-base font-extrabold text-emerald-300">0h</div></div>
-                    <div class="p-3 rounded-2xl bg-edm-500/10 border border-edm-500/30"><span class="text-[9px] text-edm-400 font-bold uppercase block">Extras</span><div id="portal-stat-extra" class="text-base font-extrabold text-edm-400">0h</div></div>
-                    <div class="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30"><span class="text-[9px] text-rose-400 font-bold uppercase block">Atrasos</span><div id="portal-stat-delays" class="text-base font-extrabold text-rose-300">0</div></div>
-                </div>
-
-                <div>
-                    <h5 class="font-bold text-xs text-slate-300 mb-2">Seu Histórico de Presenças</h5>
-                    <div id="portal-logs-container" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button onclick="printWorkerPortalPDF()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl shadow flex items-center gap-2 border border-slate-700">
-                        <i class="fa-solid fa-file-pdf"></i> Imprimir Meus Dados
-                    </button>
-                </div>
+            <div class="text-center text-[11px] text-slate-500 z-10">
+                MAGUÊZI,SA • Iluminação Neon Interativa & Portal do Colaborador
             </div>
         </div>
     </div>
@@ -978,6 +1083,15 @@
         const TOLERANCE_MINS = 10;
         const FACE_MATCH_THRESHOLD = 0.50;
 
+        const NEON_PALETTE = [
+            { color: '#F26522', glow: 'rgba(242, 101, 34, 0.45)' },
+            { color: '#10B981', glow: 'rgba(16, 185, 129, 0.45)' },
+            { color: '#38BDF8', glow: 'rgba(56, 189, 248, 0.45)' },
+            { color: '#EC4899', glow: 'rgba(236, 72, 153, 0.45)' },
+            { color: '#A855F7', glow: 'rgba(168, 85, 247, 0.45)' }
+        ];
+        let neonColorIndex = 0;
+
         let isAdminAuthenticated = false;
         let authenticatedWorker = null;
         let currentPhotoBase64 = '';
@@ -988,6 +1102,40 @@
         let adminCaptureStream = null;
         let isAiModelsLoaded = false;
         let activeTerminalDate = '';
+
+        function cycleNeonLampColor() {
+            neonColorIndex = (neonColorIndex + 1) % NEON_PALETTE.length;
+            const palette = NEON_PALETTE[neonColorIndex];
+            document.documentElement.style.setProperty('--neon-color', palette.color);
+            document.documentElement.style.setProperty('--neon-glow', palette.glow);
+        }
+
+        // IMPRIME APENAS O CONTEÚDO DA FICHA / RELATÓRIO (SEM O RESTO DA PÁGINA) + LOGÓTIPO 12.png
+        function printIsolatedFiche(innerHtml, docTitle = 'Ficha MAGUÊZI,SA') {
+            const printZone = document.getElementById('printable-fiche-zone');
+            const prevTitle = document.title;
+            document.title = docTitle;
+            printZone.innerHTML = `
+                <div style="border-bottom: 3px solid #f26522; padding-bottom: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <img src="12.png" alt="MAGUÊZI,SA" style="height: 58px; width: auto; object-fit: contain;">
+                        <div>
+                            <div style="font-size: 19px; font-weight: 800; color: #f26522;">MAGUÊZI,SA & Parceria (EDM)</div>
+                            <div style="font-size: 12px; color: #475569; font-weight: 600;">${docTitle}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right; font-size: 11px; color: #475569;">
+                        <strong>Data:</strong> ${new Date().toLocaleDateString('pt-PT')}
+                    </div>
+                </div>
+                <div>${innerHtml}</div>
+            `;
+            window.print();
+            setTimeout(() => {
+                printZone.innerHTML = '';
+                document.title = prevTitle;
+            }, 300);
+        }
 
         async function loadFaceApiModels() {
             const badge = document.getElementById('ai-engine-badge');
@@ -1035,19 +1183,16 @@
             if (expEnd) expEnd.value = todayStr;
         }
 
-        // RELÓGIO COM DETEÇÃO AUTOMÁTICA DE NOVO DIA / PERÍODO ESGOTADO
         function startLiveClock() {
             const updateClock = () => {
                 const now = new Date();
                 const currentDayStr = getTodayDateString();
 
-                // Verifica se o dia mudou (período anterior esgotado -> novo dia)
                 if (activeTerminalDate && currentDayStr !== activeTerminalDate) {
                     const previousDate = activeTerminalDate;
                     activeTerminalDate = currentDayStr;
                     localStorage.setItem('maguezi_last_terminal_date', currentDayStr);
 
-                    // Limpa visualmente o painel diário do terminal para o novo dia sem apagar o histórico geral
                     syncDateInputsToToday(currentDayStr);
                     if (typeof window.renderTerminalRecentLogs === 'function') window.renderTerminalRecentLogs();
                     if (typeof window.renderDashboard === 'function') window.renderDashboard();
@@ -1092,7 +1237,6 @@
             }
         }
 
-        // ZOOM DE IMAGENS EM TELA CHEIA
         window.openZoomImage = function(src) {
             if (!src) return;
             document.getElementById('zoom-fullscreen-img').src = src;
@@ -1103,7 +1247,7 @@
             document.getElementById('modal-image-zoom').classList.add('hidden');
         };
 
-        // PORTAL DO TRABALHADOR
+        // PORTAL DO TRABALHADOR EM TELA CHEIA
         function openWorkerLoginModal() {
             document.getElementById('portal-login-screen').classList.remove('hidden');
             document.getElementById('portal-dashboard-screen').classList.add('hidden');
@@ -1170,11 +1314,11 @@
 
             const container = document.getElementById('portal-logs-container');
             container.innerHTML = logs.map(l => `
-                <div class="p-3 rounded-2xl bg-slate-900 border border-slate-800 flex justify-between items-center text-xs text-slate-300">
+                <div class="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 flex justify-between items-center text-xs text-slate-300">
                     <div class="flex items-center gap-3">
                         ${l.capturedPhoto ? `<img src="${l.capturedPhoto}" class="w-9 h-9 rounded-full object-cover border border-slate-700 cursor-pointer" onclick="openZoomImage(this.src)" title="Ver foto da portaria">` : ''}
                         <div>
-                            <p class="font-bold text-white">${l.date} • <span class="text-edm-400">${l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal'}</span></p>
+                            <p class="font-bold text-white">${l.date} • <span style="color: var(--neon-color);">${l.intent === 'extra' ? 'Horas Extras' : 'Turno Normal'}</span></p>
                             <p class="text-[11px] text-slate-400 font-mono">Entrada: ${l.checkIn} | Saída: ${l.checkOut || 'Em Curso'}</p>
                         </div>
                     </div>
@@ -1190,47 +1334,37 @@
             const w = authenticatedWorker;
             const logs = window.getLogs().filter(l => l.workerId === w.id).sort((a, b) => b.date.localeCompare(a.date));
 
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Relatório Pessoal - ${w.name}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
-                        .header { border-bottom: 3px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-                        .brand { display: flex; align-items: center; gap: 15px; }
-                        .brand img { height: 55px; width: auto; object-fit: contain; }
-                        .title { font-size: 20px; font-weight: bold; color: #f26522; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 13px; }
-                        th { background: #f8fafc; color: #0f172a; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div class="brand">
-                            <img src="12.png" alt="MAGUÊZI,SA" onerror="this.style.display='none'">
-                            <div>
-                                <div class="title">MAGUÊZI,SA & Parceria (EDM)</div>
-                                <div>Relatório Individual de Assiduidade e Desempenho</div>
-                            </div>
-                        </div>
-                        <div><strong>Data:</strong> ${new Date().toLocaleDateString('pt-PT')}</div>
-                    </div>
-                    <h3>Colaborador: ${w.name}</h3>
-                    <p><strong>Cargo:</strong> ${w.role}</p>
-                    <table>
-                        <tr><th>Data</th><th>Regime</th><th>Entrada</th><th>Saída</th><th>Estado</th></tr>
-                        ${logs.map(l => `<tr><td>${l.date}</td><td>${l.intent}</td><td>${l.checkIn}</td><td>${l.checkOut || 'Em Curso'}</td><td>${l.delayMins > 0 ? 'Atraso' : 'Pontual'}</td></tr>`).join('')}
-                    </table>
-                    <script>window.print();<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
+            const html = `
+                <div style="margin-bottom: 16px;">
+                    <h3 style="margin: 0; font-size: 16px;">Colaborador: ${w.name}</h3>
+                    <p style="margin: 4px 0 0; font-size: 12px; color: #475569;"><strong>Cargo:</strong> ${w.role}</p>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Data</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Regime</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Entrada</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Saída</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${logs.map(l => `
+                            <tr>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.date}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.intent}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.checkIn}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.checkOut || 'Em Curso'}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            printIsolatedFiche(html, `Relatório Pessoal - ${w.name}`);
         };
 
-        // EXTRATOR REAL DE 128 PONTOS FACIAIS
         async function extractDescriptorFromImageElement(imgOrVideoEl) {
             if (!isAiModelsLoaded) return null;
             const detection = await faceapi
@@ -1319,7 +1453,6 @@
             }
         }
 
-        // SCANNER FACIAL REAL NA PORTARIA
         async function startRealAiFacialScan() {
             const frameBox = document.getElementById('scanner-frame-box');
             const feedbackEl = document.getElementById('live-face-feedback');
@@ -1379,7 +1512,6 @@
             evaluateWorkerClockIn(bestMatchWorker, `Biometria IA (${confidencePct}%)`, capturedFaceBase64);
         }
 
-        // PIN (PLANO B)
         function appendPin(d) { document.getElementById('worker-pin-input').value += d; }
         function clearPin() { document.getElementById('worker-pin-input').value = ''; }
 
@@ -1503,7 +1635,6 @@
 
         function closeWelcomeModal() { document.getElementById('modal-welcome').classList.add('hidden'); }
 
-        // LISTA DO TERMINAL: MOSTRA EXCLUSIVAMENTE O DIA ATUAL
         window.renderTerminalRecentLogs = function() {
             const today = getTodayDateString();
             const lbl = document.getElementById('current-date-label');
@@ -1715,6 +1846,34 @@
             `).join('') || '<p class="text-xs text-slate-400 text-center py-4">Nenhum colaborador.</p>';
         };
 
+        window.printWorkersReport = function() {
+            const workers = window.getWorkers();
+            const html = `
+                <h3 style="margin: 0 0 12px; font-size: 16px;">Quadro de Pessoal (${workers.length})</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background: #f1f5f9;">
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Nome</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Cargo</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Salário Base</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${workers.map(w => `
+                            <tr>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${w.name}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${w.role}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${Number(w.salary || 0).toLocaleString('pt-PT')} MT</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${w.statusMode}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            printIsolatedFiche(html, 'Quadro de Pessoal - MAGUÊZI,SA');
+        };
+
         function populateWorkerSelects() {
             const opts = window.getWorkers().map(w => `<option value="${w.id}">${w.name}</option>`).join('');
             const sel1 = document.getElementById('calendar-worker-select');
@@ -1723,7 +1882,6 @@
             if (sel2) sel2.innerHTML = opts;
         }
 
-        // CALENDÁRIO ESPETACULAR VISUAL
         window.renderCalendarView = function() {
             const workerId = document.getElementById('calendar-worker-select')?.value;
             const monthVal = document.getElementById('calendar-month-input')?.value || getTodayDateString().slice(0, 7);
@@ -1892,45 +2050,17 @@
             const w = window.getWorkers().find(item => item.id === workerId);
             if (!w) return;
             const netText = document.getElementById('report-net-salary').textContent;
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Recibo Salarial - ${w.name}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; }
-                        .header { border-bottom: 3px solid #f26522; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-                        .brand { display: flex; align-items: center; gap: 15px; }
-                        .brand img { height: 55px; width: auto; object-fit: contain; }
-                        .title { font-size: 20px; font-weight: bold; color: #f26522; }
-                        .box { background: #fff8f2; border: 2px solid #fed7aa; padding: 20px; border-radius: 12px; margin-top: 20px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div class="brand">
-                            <img src="12.png" alt="MAGUÊZI,SA" onerror="this.style.display='none'">
-                            <div>
-                                <div class="title">MAGUÊZI,SA & Parceria (EDM)</div>
-                                <div>Recibo Oficial de Vencimento Mensal</div>
-                            </div>
-                        </div>
-                        <div><strong>Data:</strong> ${new Date().toLocaleDateString('pt-PT')}</div>
-                    </div>
-                    <div class="box">
-                        <p><strong>Colaborador:</strong> ${w.name}</p>
-                        <p><strong>Cargo:</strong> ${w.role}</p>
-                        <p><strong>Salário Base:</strong> ${Number(w.salary || 0).toLocaleString('pt-PT')} MZN</p>
-                        <h2>Vencimento Líquido: ${netText}</h2>
-                    </div>
-                    <script>window.print();<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
+            const html = `
+                <div style="background: #fff8f2; border: 2px solid #fed7aa; padding: 20px; border-radius: 12px;">
+                    <p style="margin: 6px 0;"><strong>Colaborador:</strong> ${w.name}</p>
+                    <p style="margin: 6px 0;"><strong>Cargo:</strong> ${w.role}</p>
+                    <p style="margin: 6px 0;"><strong>Salário Base:</strong> ${Number(w.salary || 0).toLocaleString('pt-PT')} MZN</p>
+                    <h2 style="margin: 14px 0 0; color: #0f172a;">Vencimento Líquido: ${netText}</h2>
+                </div>
+            `;
+            printIsolatedFiche(html, `Recibo Salarial - ${w.name}`);
         };
 
-        // EXCLUSÃO INDIVIDUAL DO HISTÓRICO (EXCLUSIVO CHEFIA COM SENHA)
         window.deleteSingleLogByAdmin = async function(logId) {
             if (!isAdminAuthenticated) {
                 showToast('🚫 Acesso negado: Apenas o chefe pode apagar registos do histórico.');
@@ -1946,27 +2076,13 @@
             showToast('✅ Registo removido pelo administrador.');
         };
 
-        // FICHA 360º DO TRABALHADOR PARA O CHEFE
-        window.populateAdminDossierSelect = function() {
-            const sel = document.getElementById('admin-dossier-select');
-            if (!sel) return;
-            const currentVal = sel.value;
-            sel.innerHTML = window.getWorkers().map(w => `<option value="${w.id}">Ficha 360º: ${w.name} (${w.role})</option>`).join('');
-            if (currentVal) sel.value = currentVal;
-            renderWorkerDossierFromAdmin();
-        };
-
-        window.renderWorkerDossierFromAdmin = function() {
-            const workerId = document.getElementById('admin-dossier-select')?.value;
-            const container = document.getElementById('admin-dossier-container');
-            if (!container || !workerId) return;
-
+        function buildWorkerFicheHtml(workerId, includeDeleteButton = true) {
             const w = window.getWorkers().find(item => item.id === workerId);
-            if (!w) return;
+            if (!w) return '<p class="text-center text-slate-400 text-sm py-6">Colaborador não encontrado.</p>';
             const logs = window.getLogs().filter(l => l.workerId === workerId).sort((a, b) => b.date.localeCompare(a.date));
             const justs = window.getJustifications().filter(j => j.workerId === workerId);
 
-            container.innerHTML = `
+            return `
                 <div class="flex flex-col sm:flex-row items-center gap-4 bg-white p-6 rounded-3xl border shadow-sm">
                     <img src="${w.photo}" class="w-24 h-24 rounded-full object-cover border-4 border-edm-500 shadow-md cursor-pointer" onclick="openZoomImage(this.src)" title="Ver foto oficial">
                     <div class="text-center sm:text-left flex-grow">
@@ -1980,7 +2096,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white p-5 rounded-3xl border shadow-sm space-y-3">
                         <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-clock mr-1 text-edm-600"></i> Histórico Completo de Dias & Fotos da Portaria</h5>
-                        <div class="space-y-2 max-h-60 overflow-y-auto">
+                        <div class="space-y-2 max-h-72 overflow-y-auto">
                             ${logs.map(l => `
                                 <div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between items-center gap-2">
                                     <div class="flex items-center gap-2">
@@ -1992,7 +2108,7 @@
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <span class="font-bold ${l.delayMins > 0 ? 'text-rose-600' : 'text-emerald-600'}">${l.delayMins > 0 ? 'Atraso '+l.delayMins+'m' : 'Pontual'}</span>
-                                        <button onclick="deleteSingleLogByAdmin('${l.id}')" class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600" title="Apagar registo (Exclusivo Chefe)"><i class="fa-solid fa-trash-can"></i></button>
+                                        ${includeDeleteButton ? `<button onclick="deleteSingleLogByAdmin('${l.id}')" class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600" title="Apagar registo (Exclusivo Chefe)"><i class="fa-solid fa-trash-can"></i></button>` : ''}
                                     </div>
                                 </div>
                             `).join('') || '<p class="text-xs text-slate-400">Nenhum registo.</p>'}
@@ -2001,15 +2117,89 @@
 
                     <div class="bg-white p-5 rounded-3xl border shadow-sm space-y-3">
                         <h5 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-shield-halved mr-1 text-edm-600"></i> Justificações & Comprovativos</h5>
-                        <div class="space-y-2 max-h-60 overflow-y-auto">
+                        <div class="space-y-2 max-h-72 overflow-y-auto">
                             ${justs.map(j => `<div class="p-2.5 rounded-xl bg-slate-50 border text-xs flex justify-between items-center"><span>${j.date}: ${j.reason}</span>${j.proofImage ? '<button onclick="openZoomImage(\''+j.proofImage+'\')" class="px-2 py-1 bg-edm-600 text-white rounded font-bold">Ver Comprovativo</button>' : ''}</div>`).join('') || '<p class="text-xs text-slate-400">Nenhuma justificação.</p>'}
                         </div>
                     </div>
                 </div>
             `;
+        }
+
+        window.populateAdminDossierSelect = function() {
+            const sel = document.getElementById('admin-dossier-select');
+            if (!sel) return;
+            const currentVal = sel.value;
+            sel.innerHTML = window.getWorkers().map(w => `<option value="${w.id}">Ficha 360º: ${w.name} (${w.role})</option>`).join('');
+            if (currentVal) sel.value = currentVal;
+            renderWorkerDossierFromAdmin();
         };
 
-        // RENDERIZA O ARQUIVO HISTÓRICO GERAL DE TODOS OS DIAS PARA O CHEFE
+        window.renderWorkerDossierFromAdmin = function() {
+            const workerId = document.getElementById('admin-dossier-select')?.value;
+            const container = document.getElementById('admin-dossier-container');
+            if (!container || !workerId) return;
+            container.innerHTML = buildWorkerFicheHtml(workerId, true);
+        };
+
+        window.openFullScreenWorkerFiche = function() {
+            const workerId = document.getElementById('admin-dossier-select')?.value;
+            const w = window.getWorkers().find(item => item.id === workerId);
+            if (!w) { showToast('Selecione um colaborador.'); return; }
+            document.getElementById('fullscreen-fiche-title').textContent = `Ficha 360º — ${w.name} (${w.role})`;
+            document.getElementById('fullscreen-fiche-body').innerHTML = buildWorkerFicheHtml(workerId, true);
+            document.getElementById('modal-worker-fullscreen-fiche').classList.remove('hidden');
+        };
+
+        window.closeFullScreenWorkerFiche = function() {
+            document.getElementById('modal-worker-fullscreen-fiche').classList.add('hidden');
+        };
+
+        window.printCurrentWorkerDossierPDF = function() {
+            const workerId = document.getElementById('admin-dossier-select')?.value;
+            const w = window.getWorkers().find(item => item.id === workerId);
+            if (!w) return;
+            const logs = window.getLogs().filter(l => l.workerId === workerId).sort((a, b) => a.date.localeCompare(b.date));
+
+            const html = `
+                <div style="display: flex; align-items: center; gap: 18px; background: #fff8f2; border: 2px solid #fed7aa; padding: 16px; border-radius: 14px; margin-bottom: 18px;">
+                    <img src="${w.photo}" alt="${w.name}" style="width: 82px; height: 82px; border-radius: 50%; object-fit: cover; border: 3px solid #f26522;">
+                    <div style="font-size: 13px;">
+                        <div style="font-size: 17px; font-weight: 800; color: #0f172a;">${w.name}</div>
+                        <div style="margin-top: 4px;"><strong>Cargo:</strong> ${w.role}</div>
+                        <div><strong>Salário Base:</strong> ${Number(w.salary||0).toLocaleString('pt-PT')} MZN</div>
+                        <div><strong>Estado:</strong> ${String(w.statusMode || '').toUpperCase()}</div>
+                    </div>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background: #f26522; color: #ffffff;">
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Data</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Regime</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Entrada</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Saída</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Horas Normais</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Horas Extras</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${logs.map(l => `
+                            <tr>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.date}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.intent}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.checkIn}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.checkOut || 'Em Curso'}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.normalHours || 0}h</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.extraHours || 0}h</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}</td>
+                            </tr>
+                        `).join('') || '<tr><td colspan="7" style="border: 1px solid #cbd5e1; padding: 12px; text-align: center;">Sem registos.</td></tr>'}
+                    </tbody>
+                </table>
+            `;
+            printIsolatedFiche(html, `Ficha 360º - ${w.name}`);
+        };
+
         window.renderGlobalAuditHistory = function() {
             const container = document.getElementById('global-audit-history-list');
             if (!container) return;
@@ -2034,9 +2224,6 @@
             `).join('');
         };
 
-        window.printCurrentWorkerDossierPDF = function() { window.print(); };
-
-        // POPULAR SELECTOR DE EXPORTAÇÃO
         window.populateExportWorkerSelect = function() {
             const sel = document.getElementById('export-worker-select');
             if (!sel) return;
@@ -2044,7 +2231,6 @@
             sel.innerHTML = opts;
         };
 
-        // DOWNLOAD CSV
         window.downloadCustomExcelCSV = function() {
             const startDate = document.getElementById('export-start-date').value;
             const endDate = document.getElementById('export-end-date').value;
@@ -2073,7 +2259,6 @@
             showToast('Ficheiro CSV baixado com sucesso!');
         };
 
-        // DOWNLOAD DA FICHA CORPORATIVA COM LOGÓTIPO 12.png E FOTO DO COLABORADOR
         window.downloadCorporatePhotoDossierPDF = function() {
             const workerId = document.getElementById('export-worker-select').value;
             const startDate = document.getElementById('export-start-date').value;
@@ -2091,84 +2276,51 @@
                 return true;
             }).sort((a, b) => a.date.localeCompare(b.date));
 
-            const htmlContent = `
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Ficha de Identificação e Relatório - ${worker.name}</title>
-                    <style>
-                        body { font-family: 'Plus Jakarta Sans', Arial, sans-serif; padding: 40px; color: #1e293b; background: #ffffff; }
-                        .header { border-bottom: 3px solid #f26522; padding-bottom: 18px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-                        .brand-box { display: flex; align-items: center; gap: 16px; }
-                        .brand-logo { height: 68px; width: auto; object-fit: contain; border-radius: 10px; }
-                        .title { font-size: 22px; font-weight: 800; color: #f26522; }
-                        .subtitle { font-size: 13px; color: #64748b; font-weight: 600; }
-                        .card-profile { display: flex; align-items: center; gap: 22px; background: #fff8f2; border: 2px solid #fed7aa; padding: 22px; border-radius: 16px; margin-bottom: 25px; }
-                        .profile-img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid #f26522; }
-                        .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 14px; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-                        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 13px; }
-                        th { background: #f26522; color: white; }
-                        tr:nth-child(even) { background: #f8fafc; }
-                        .footer-sign { margin-top: 45px; display: flex; justify-content: space-between; font-size: 12px; color: #64748b; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <div class="brand-box">
-                            <img src="12.png" alt="MAGUÊZI,SA" class="brand-logo" onerror="this.style.display='none'">
-                            <div>
-                                <div class="title">MAGUÊZI,SA & Parceria (EDM)</div>
-                                <div class="subtitle">Catálogo de Identificação e Relatório Oficial de Assiduidade</div>
-                            </div>
-                        </div>
-                        <div style="text-align: right; font-size: 12px;">
-                            <strong>Emitido em:</strong> ${new Date().toLocaleDateString('pt-PT')}<br>
-                            <strong>Período:</strong> ${startDate || 'Início'} a ${endDate || 'Hoje'}
-                        </div>
+            const html = `
+                <div style="font-size: 11px; color: #475569; margin-bottom: 12px;">
+                    <strong>Período:</strong> ${startDate || 'Início'} a ${endDate || 'Hoje'}
+                </div>
+                <div style="display: flex; align-items: center; gap: 18px; background: #fff8f2; border: 2px solid #fed7aa; padding: 18px; border-radius: 14px; margin-bottom: 20px;">
+                    <img src="${worker.photo}" alt="${worker.name}" style="width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid #f26522;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 18px; font-size: 13px; width: 100%;">
+                        <div><strong>Nome:</strong> ${worker.name}</div>
+                        <div><strong>Cargo:</strong> ${worker.role}</div>
+                        <div><strong>Salário Base:</strong> ${Number(worker.salary||0).toLocaleString('pt-PT')} MZN</div>
+                        <div><strong>Estado:</strong> ${String(worker.statusMode || '').toUpperCase()}</div>
                     </div>
-
-                    <div class="card-profile">
-                        <img src="${worker.photo}" class="profile-img">
-                        <div class="info-grid" style="width: 100%;">
-                            <div><strong>Nome Completo:</strong> ${worker.name}</div>
-                            <div><strong>Cargo / Função:</strong> ${worker.role}</div>
-                            <div><strong>Salário Base:</strong> ${Number(worker.salary||0).toLocaleString('pt-PT')} MZN</div>
-                            <div><strong>Estado Atual:</strong> ${worker.statusMode.toUpperCase()}</div>
-                        </div>
-                    </div>
-
-                    <h3>Registos Diários de Presenças e Portaria</h3>
-                    <table>
-                        <tr><th>Data</th><th>Regime</th><th>Entrada</th><th>Saída</th><th>Horas Normais</th><th>Horas Extras</th><th>Estado</th></tr>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background: #f26522; color: #ffffff;">
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Data</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Regime</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Entrada</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Saída</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Horas Normais</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Horas Extras</th>
+                            <th style="border: 1px solid #cbd5e1; padding: 8px; text-align: left;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         ${workerLogs.map(l => `
                             <tr>
-                                <td>${l.date}</td>
-                                <td>${l.intent}</td>
-                                <td>${l.checkIn}</td>
-                                <td>${l.checkOut || 'Em Curso'}</td>
-                                <td>${l.normalHours || 0}h</td>
-                                <td>${l.extraHours || 0}h</td>
-                                <td>${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.date}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.intent}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.checkIn}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.checkOut || 'Em Curso'}</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.normalHours || 0}h</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.extraHours || 0}h</td>
+                                <td style="border: 1px solid #cbd5e1; padding: 8px;">${l.delayMins > 0 ? 'Atraso ('+l.delayMins+'m)' : 'Pontual'}</td>
                             </tr>
-                        `).join('') || '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">Nenhum registo no período selecionado.</td></tr>'}
-                    </table>
-
-                    <div class="footer-sign">
-                        <div>Assinatura do Colaborador: ___________________________</div>
-                        <div>Validação Chefia MAGUÊZI,SA: ___________________________</div>
-                    </div>
-                    <script>window.onload = function() { window.print(); };<\/script>
-                </body>
-                </html>
+                        `).join('') || '<tr><td colspan="7" style="border: 1px solid #cbd5e1; padding: 12px; text-align: center; color: #94a3b8;">Nenhum registo no período selecionado.</td></tr>'}
+                    </tbody>
+                </table>
+                <div style="margin-top: 36px; display: flex; justify-content: space-between; font-size: 12px; color: #475569;">
+                    <div>Assinatura do Colaborador: ___________________________</div>
+                    <div>Validação Chefia MAGUÊZI,SA: ___________________________</div>
+                </div>
             `;
-
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `MAGUEZI_SA_Ficha_${worker.name.replace(/\s+/g, '_')}.html`;
-            link.click();
-            showToast('Ficha com logótipo MAGUÊZI,SA e foto transferida!');
+            printIsolatedFiche(html, `Ficha de Identificação - ${worker.name}`);
         };
 
         async function saveSystemNotice(e) {
@@ -2182,7 +2334,6 @@
 
         async function clearSystemNotice() { await window.dbClearNotice(); showToast('Aviso removido.'); }
 
-        // FLUXO DE LIMPEZA GERAL COM DUPLA CONFIRMAÇÃO (EXCLUSIVO CHEFE)
         function executeSystemWipeStep1() {
             if (!isAdminAuthenticated) { showToast('🚫 Apenas o chefe pode iniciar a limpeza.'); return; }
             document.getElementById('wipe-confirm-pass').value = '';
